@@ -51,7 +51,8 @@
         .view.active { display: block; }
 
         .car-card { background-color: var(--surface-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid var(--border-color); }
-        .car-info h2 { font-size: 1.1rem; margin-bottom: 8px; }
+        .car-info h2 { font-size: 1.15rem; margin-bottom: 4px; color: var(--neon-green); }
+        .car-info h3 { font-size: 1rem; margin-bottom: 8px; font-weight: normal; }
         .car-info p { font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
         .car-info p span { display: flex; align-items: center; gap: 4px; }
         
@@ -75,6 +76,7 @@
         
         .back-btn { position: absolute; top: 15px; left: 15px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; z-index: 10; }
         .delete-car-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,59,48,0.1); color: var(--score-red); border: 1px solid var(--score-red); padding: 8px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
+        .duplicate-car-btn { position: absolute; top: 15px; right: 65px; background: rgba(10,132,255,0.1); color: #0A84FF; border: 1px solid #0A84FF; padding: 8px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
 
         .view-image-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 10px; background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 12px; z-index: 5; box-shadow: var(--neon-glow); }
         .view-image-btn p { color: var(--neon-green); font-size: 0.8rem; font-weight: bold; margin-top: 8px; }
@@ -90,9 +92,6 @@
         .data-group input, .data-group select { width: 100%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px; border-radius: 6px; font-size: 1rem; }
         .data-group input:focus, .data-group select:focus { outline: none; border-color: var(--neon-green); }
         
-        .offer-card { border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; margin-bottom: 15px; background: var(--bg-color); position: relative; }
-        .offer-header { color: var(--neon-green); font-weight: bold; margin-bottom: 15px; width: calc(100% - 30px); font-size: 1.1rem; background: transparent; border: none; outline: none; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px;}
-        .delete-offer-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--score-red); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; z-index: 10;}
         .offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .offer-grid .data-group { padding: 8px; margin: 0; background: var(--surface-color); border: 1px solid var(--border-color); }
         .offer-grid .data-group.full-width { grid-column: 1 / -1; }
@@ -152,11 +151,11 @@
         <div style="display: flex; gap: 10px; margin-top: 20px;">
             <button class="action-btn" onclick="addNewCar()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Añadir Manual
+                Añadir Oferta
             </button>
             <button class="action-btn secondary" style="margin-top: 10px;" onclick="document.getElementById('import-car-file').click()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Importar Vehículo JSON (Gem)
+                Importar JSON (Gem)
             </button>
             <input type="file" id="import-car-file" style="display: none;" accept=".json" onchange="importSingleCar(event)">
         </div>
@@ -219,6 +218,9 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                 Volver
             </button>
+            <button class="duplicate-car-btn" onclick="duplicateCurrentCar()" aria-label="Duplicar Vehículo">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
             <button class="delete-car-btn" onclick="deleteCurrentCar()" aria-label="Eliminar Vehículo">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
             </button>
@@ -246,11 +248,7 @@
 
         <div id="specs" class="tab-content active"></div>
         <div id="offers" class="tab-content">
-            <div id="offers-list"></div>
-            <button class="action-btn" onclick="addOffer()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Añadir Nueva Oferta
-            </button>
+            <div id="finance-container"></div>
         </div>
         <div id="equipment" class="tab-content">
             <div class="data-group" style="padding: 0;">
@@ -275,7 +273,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.11.0";
+        const APP_VERSION = "v1.12.0";
         
         const defaultWeights = { bateria: 20, precio: 20, diseno_calidad: 15, funcionalidad: 15, dinamica: 15, tecnologia: 15 };
         
@@ -386,15 +384,46 @@
         globalEquipList = deduplicateEquip(globalEquipList);
         localStorage.setItem('evcheck_global_equip', JSON.stringify(globalEquipList));
 
-        let appData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
-        
-        if (appData && appData.length > 0) {
-            appData.forEach(car => {
+        // --- SISTEMA DE MIGRACIÓN: Aplanar ofertas a coches 1:1 ---
+        let rawAppData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
+        let appData = [];
+
+        function runMigration(dataList) {
+            let migratedList = [];
+            dataList.forEach(car => {
+                if (car.ofertas && Array.isArray(car.ofertas)) {
+                    if (car.ofertas.length === 0) {
+                        let newCar = JSON.parse(JSON.stringify(car));
+                        newCar.concesionario = "Sin concesionario";
+                        newCar.oferta = { precioAlContado: 0, precioFinanciado: 0, tasacionNissanQashqai: 0, tipoFinanciacion: 'lineal', entrada: 0, meses: 0, cuotaMensual: 0, cuotaFinal: 0, tin: 0, tae: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false };
+                        delete newCar.ofertas;
+                        migratedList.push(newCar);
+                    } else {
+                        car.ofertas.forEach((o, idx) => {
+                            let newCar = JSON.parse(JSON.stringify(car));
+                            newCar.id = car.id + (idx > 0 ? `-${idx}` : '');
+                            newCar.concesionario = o.concesionario || "Concesionario " + (idx + 1);
+                            newCar.oferta = o;
+                            delete newCar.ofertas;
+                            migratedList.push(newCar);
+                        });
+                    }
+                } else {
+                    if (!car.concesionario) car.concesionario = "Sin concesionario";
+                    migratedList.push(car);
+                }
+            });
+
+            // Aplicar defaults técnicos y de equipo
+            migratedList.forEach(car => {
+                if(!car.tecnica) car.tecnica = {};
                 if(car.tecnica.maletero === undefined) car.tecnica.maletero = 0;
                 if(car.tecnica.frunk === undefined) car.tecnica.frunk = 0;
                 if(car.tecnica.garantiaGeneral === undefined) car.tecnica.garantiaGeneral = "";
                 if(car.tecnica.garantiaBateria === undefined) car.tecnica.garantiaBateria = "";
                 if(car.tecnica.mantenimiento === undefined) car.tecnica.mantenimiento = "";
+
+                if (!car.oferta) car.oferta = { precioAlContado: 0, precioFinanciado: 0, tasacionNissanQashqai: 0, tipoFinanciacion: 'lineal', entrada: 0, meses: 0, cuotaMensual: 0, cuotaFinal: 0, tin: 0, tae: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false };
 
                 globalEquipList.forEach(globalEq => {
                     if (!car.equipamiento || !car.equipamiento.some(eq => eq.nombre.toLowerCase() === globalEq.nombre.toLowerCase())) {
@@ -403,11 +432,12 @@
                     }
                 });
                 car.equipamiento = deduplicateEquip(car.equipamiento);
-                
-                car.ofertas.forEach(o => {
-                    if (o.incluyeMantenimiento === undefined) o.incluyeMantenimiento = false;
-                });
             });
+            return migratedList;
+        }
+
+        if (rawAppData.length > 0) {
+            appData = runMigration(rawAppData);
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
         }
 
@@ -474,11 +504,12 @@
         function addNewCar() {
             const newCar = {
                 id: "car-" + Date.now(),
+                concesionario: "Nuevo Concesionario",
                 marca: "Nueva Marca",
                 modelo: "Modelo",
                 img: "",
                 tecnica: { quimica: "", bateria: 0, wltp: 0, potenciaCargaDc: 0, maletero: 0, frunk: 0, garantiaGeneral: "", garantiaBateria: "", mantenimiento: "" },
-                ofertas: [],
+                oferta: { precioAlContado: 0, precioFinanciado: 0, tasacionNissanQashqai: 0, tipoFinanciacion: "flexible", entrada: 0, meses: 0, cuotaMensual: 0, cuotaFinal: 0, tin: 0, tae: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false },
                 equipamiento: JSON.parse(JSON.stringify(globalEquipList)),
                 puntuaciones: { estetica_ext: 5, estetica_int: 5, calidad_ext: 5, calidad_int: 5, funcionalidad_ext: 5, funcionalidad_int: 5, dinamica_conduccion: 5, aislamiento: 5, software_info: 5, seguridad_adas: 5 }
             };
@@ -487,8 +518,20 @@
             showDetail(newCar.id);
         }
 
+        function duplicateCurrentCar() {
+            const carToCopy = appData.find(c => c.id === currentCarId);
+            if (!carToCopy) return;
+            let newCar = JSON.parse(JSON.stringify(carToCopy));
+            newCar.id = "car-" + Date.now();
+            newCar.concesionario = newCar.concesionario + " (Copia)";
+            appData.push(newCar);
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+            alert("Vehículo duplicado correctamente.");
+            showDetail(newCar.id);
+        }
+
         function deleteCurrentCar() {
-            if (confirm("¿Estás seguro de que deseas eliminar este vehículo por completo?")) {
+            if (confirm("¿Estás seguro de que deseas eliminar esta oferta de vehículo por completo?")) {
                 appData = appData.filter(c => c.id !== currentCarId);
                 localStorage.setItem('evcheck_data', JSON.stringify(appData));
                 showView('dashboard-view');
@@ -515,7 +558,10 @@
                 try {
                     const parsed = JSON.parse(e.target.result);
                     if (parsed.data && parsed.weights) {
-                        localStorage.setItem('evcheck_data', JSON.stringify(parsed.data));
+                        let importedData = parsed.data;
+                        importedData = runMigration(importedData);
+                        
+                        localStorage.setItem('evcheck_data', JSON.stringify(importedData));
                         localStorage.setItem('evcheck_weights', JSON.stringify(parsed.weights));
                         if(parsed.globalEquip) {
                             localStorage.setItem('evcheck_global_equip', JSON.stringify(parsed.globalEquip));
@@ -532,7 +578,6 @@
             reader.readAsText(file);
         }
 
-        // --- NUEVA FUNCIÓN: IMPORTAR UN VEHÍCULO INDIVIDUAL DESDE GEM ---
         function importSingleCar(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -540,24 +585,13 @@
             reader.onload = (e) => {
                 try {
                     const parsed = JSON.parse(e.target.result);
-                    const carsToAdd = Array.isArray(parsed) ? parsed : [parsed];
+                    let carsToAdd = Array.isArray(parsed) ? parsed : [parsed];
+                    carsToAdd = runMigration(carsToAdd);
                     
                     let added = 0;
                     carsToAdd.forEach(newCar => {
                         if (newCar.marca && newCar.modelo) {
                             newCar.id = "car-" + Date.now() + Math.floor(Math.random() * 1000);
-                            
-                            if(!newCar.tecnica) newCar.tecnica = { quimica: "", bateria: 0, wltp: 0, potenciaCargaDc: 0, maletero: 0, frunk: 0, garantiaGeneral: "", garantiaBateria: "", mantenimiento: "" };
-                            if(!newCar.ofertas) newCar.ofertas = [];
-                            if(!newCar.puntuaciones) newCar.puntuaciones = { estetica_ext: 5, estetica_int: 5, calidad_ext: 5, calidad_int: 5, funcionalidad_ext: 5, funcionalidad_int: 5, dinamica_conduccion: 5, aislamiento: 5, software_info: 5, seguridad_adas: 5 };
-                            
-                            // Sincronizar equipamiento de Gem con la lista global
-                            const equipMap = new Map(newCar.equipamiento?.map(eq => [eq.nombre.toLowerCase(), eq.marcado]) || []);
-                            newCar.equipamiento = globalEquipList.map(gEq => ({
-                                nombre: gEq.nombre,
-                                marcado: equipMap.has(gEq.nombre.toLowerCase()) ? equipMap.get(gEq.nombre.toLowerCase()) : false
-                            }));
-
                             appData.push(newCar);
                             added++;
                         }
@@ -565,7 +599,7 @@
 
                     if (added > 0) {
                         localStorage.setItem('evcheck_data', JSON.stringify(appData));
-                        alert(`Se han importado ${added} vehículo(s) correctamente a tu lista.`);
+                        alert(`Se han importado ${added} oferta(s) correctamente a tu lista.`);
                         renderDashboard();
                     } else {
                         alert('El archivo no contiene un formato de vehículo válido para EVcheck.');
@@ -623,18 +657,16 @@
         function calculateScore(car) {
             let score = 0;
             const w = appWeights;
+            const o = car.oferta;
             
             let batScore = Math.min(((car.tecnica.bateria / 80) * 5) + ((car.tecnica.wltp / 600) * 5), 10);
             score += batScore * (w.bateria / 10);
 
-            let effectivePrices = car.ofertas.map(o => {
-                let isFin = (o.entrada > 0 || o.meses > 0);
-                let totalFin = isFin ? ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) : (o.precioAlContado || 0);
-                return totalFin - (o.tasacionNissanQashqai || 0);
-            });
-            let minPrice = effectivePrices.length ? Math.min(...effectivePrices) : 40000;
+            let isFin = (o.entrada > 0 || o.meses > 0);
+            let totalFin = isFin ? ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) : (o.precioAlContado || 0);
+            let effectivePrice = totalFin - (o.tasacionNissanQashqai || 0);
             
-            let priceScore = Math.max(10 - ((minPrice - 15000) / 2500), 1);
+            let priceScore = Math.max(10 - ((effectivePrice - 15000) / 2500), 1);
             priceScore = Math.min(priceScore, 10);
             score += priceScore * (w.precio / 10);
 
@@ -662,18 +694,17 @@
             const list = document.getElementById('car-list');
             appData.sort((a, b) => calculateScore(b) - calculateScore(a));
             list.innerHTML = appData.map(car => {
-                let mejorPrecio = car.ofertas.length ? Math.min(...car.ofertas.map(o => o.precioAlContado)).toLocaleString('es-ES') + " €" : "Sin oferta";
                 let currentScore = calculateScore(car);
                 
                 return `
                 <div class="car-card" onclick="showDetail('${car.id}')">
                     <div class="car-info">
                         <h2>${car.marca} ${car.modelo}</h2>
+                        <h3>🏢 ${car.concesionario}</h3>
                         <p>
                             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> ${car.tecnica.bateria} kWh</span> | 
                             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-3 6 3 6-3v12l-6 3-6-3-6 3V6z"/></svg> ${car.tecnica.wltp} km</span>
                         </p>
-                        <p style="color: var(--text-muted); margin-top: 5px;">Base: ${mejorPrecio}</p>
                     </div>
                     <div class="car-score ${getScoreColorClass(currentScore)}">${currentScore}</div>
                 </div>`;
@@ -720,7 +751,7 @@
             updateHeaderImageBtn(car.img);
             
             renderSpecs(car);
-            renderOffers(car);
+            renderFinances(car);
             renderEquipment(car);
             renderRatings(car);
             
@@ -738,6 +769,10 @@
             
             if (key === 'marca' || key === 'modelo') {
                 document.getElementById('detail-title').innerText = `${car.marca} ${car.modelo}`;
+                renderDashboard();
+            }
+            if (key === 'concesionario') {
+                renderDashboard();
             }
             if (key === 'img') {
                 updateHeaderImageBtn(val);
@@ -757,8 +792,9 @@
 
         function renderSpecs(car) {
             const baseFields = [
+                { k: 'concesionario', l: 'Concesionario / Título de la Oferta', type: 'text' },
                 { k: 'marca', l: 'Marca', type: 'text' },
-                { k: 'modelo', l: 'Modelo', type: 'text' },
+                { k: 'modelo', l: 'Modelo / Versión', type: 'text' },
                 { k: 'img', l: 'URL de la Imagen (Drive / Web)', type: 'url' }
             ];
             
@@ -793,123 +829,8 @@
             document.getElementById('specs').innerHTML = html;
         }
 
-        function renderOffers(car) {
-            document.getElementById('offers-list').innerHTML = car.ofertas.map((o, i) => {
-                const isFinanced = (o.entrada > 0 || o.meses > 0);
-                const totalPagadoConce = isFinanced ? 
-                    ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) 
-                    : (o.precioAlContado || 0);
-                    
-                const intereses = isFinanced ? (totalPagadoConce - (o.precioFinanciado || 0)) : 0;
-                const vsContado = isFinanced ? (totalPagadoConce - (o.precioAlContado || 0)) : 0;
-                const balanceNeto = totalPagadoConce - (o.tasacionNissanQashqai || 0);
-
-                return `
-                <div class="offer-card">
-                    <button class="delete-offer-btn" onclick="deleteOffer(${i})" aria-label="Borrar Oferta">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                    <input type="text" class="offer-header" value="${o.concesionario}" oninput="updateOfferData(${i}, 'concesionario', this.value, 'text')" placeholder="Nombre del Concesionario">
-                    
-                    <div class="offer-grid">
-                        <div class="data-group">
-                            <label>Precio al Contado (€)</label>
-                            <input type="number" value="${o.precioAlContado}" oninput="updateOfferData(${i}, 'precioAlContado', this.value, 'number')">
-                        </div>
-                        <div class="data-group">
-                            <label>Precio Financiado (Base) (€)</label>
-                            <input type="number" value="${o.precioFinanciado}" oninput="updateOfferData(${i}, 'precioFinanciado', this.value, 'number')">
-                        </div>
-                        <div class="data-group full-width">
-                            <label>Ingreso Tasación Qashqai (€)</label>
-                            <input type="number" value="${o.tasacionNissanQashqai}" oninput="updateOfferData(${i}, 'tasacionNissanQashqai', this.value, 'number')">
-                        </div>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" ${o.incluyePlanAuto ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyePlanAuto', this.checked, 'checkbox')"> Incluye Plan Auto+</label>
-                        <label><input type="checkbox" ${o.incluyeCae ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyeCae', this.checked, 'checkbox')"> Incluye CAE</label>
-                        <label>
-                            <input type="checkbox" ${o.incluyeCargador ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyeCargador', this.checked, 'checkbox')">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
-                            Cargador
-                        </label>
-                        <label><input type="checkbox" ${o.incluyeMantenimiento ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyeMantenimiento', this.checked, 'checkbox')"> Mantenimiento</label>
-                    </div>
-
-                    <h4 style="margin-bottom: 10px; font-size: 0.95rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Condiciones de Financiación</h4>
-                    
-                    <div class="offer-grid">
-                        <div class="data-group full-width">
-                            <label>Tipo de Financiación</label>
-                            <select onchange="updateOfferData(${i}, 'tipoFinanciacion', this.value, 'text')">
-                                <option value="lineal" ${o.tipoFinanciacion === 'lineal' ? 'selected' : ''}>Lineal Tradicional</option>
-                                <option value="flexible" ${o.tipoFinanciacion === 'flexible' ? 'selected' : ''}>Flexible / Multiopción (Con Cuota Final)</option>
-                            </select>
-                        </div>
-                        <div class="data-group">
-                            <label>Entrada (€)</label>
-                            <input type="number" value="${o.entrada}" oninput="updateOfferData(${i}, 'entrada', this.value, 'number')">
-                        </div>
-                        <div class="data-group">
-                            <label>Plazo (Meses)</label>
-                            <input type="number" value="${o.meses}" oninput="updateOfferData(${i}, 'meses', this.value, 'number')">
-                        </div>
-                        <div class="data-group">
-                            <label>Cuota Mensual (€)</label>
-                            <input type="number" value="${o.cuotaMensual}" oninput="updateOfferData(${i}, 'cuotaMensual', this.value, 'number')">
-                        </div>
-                        ${o.tipoFinanciacion === 'flexible' ? `
-                        <div class="data-group">
-                            <label>Cuota Final (€)</label>
-                            <input type="number" value="${o.cuotaFinal}" oninput="updateOfferData(${i}, 'cuotaFinal', this.value, 'number')">
-                        </div>` : ''}
-                        <div class="data-group">
-                            <label>TIN (%)</label>
-                            <input type="number" step="0.1" value="${o.tin}" oninput="updateOfferData(${i}, 'tin', this.value, 'number')">
-                        </div>
-                        <div class="data-group">
-                            <label>TAE (%)</label>
-                            <input type="number" step="0.1" value="${o.tae}" oninput="updateOfferData(${i}, 'tae', this.value, 'number')">
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 8px; padding: 15px; font-size: 0.95rem; margin-top: 15px;">
-                        <p style="margin-bottom: 8px; display: flex; justify-content: space-between;">
-                            <strong id="total-fin-lbl-${i}">${isFinanced ? 'Coste Total a Pagar:' : 'Coste Total al Contado:'}</strong> 
-                            <span id="total-fin-${i}" style="color:var(--text-color); font-weight: bold; font-size: 1.1rem;">${totalPagadoConce.toLocaleString('es-ES')} €</span>
-                        </p>
-                        <p style="margin-bottom: 5px; color: var(--text-muted); display: flex; justify-content: space-between;">
-                            <span>Intereses y gastos del crédito:</span> 
-                            <span id="intereses-${i}">${intereses > 0 ? intereses.toLocaleString('es-ES') : 0} €</span>
-                        </p>
-                        <p style="margin-bottom: 8px; display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-color);">
-                            <span>Sobrecoste frente al Contado:</span> 
-                            <span id="vs-contado-${i}" style="color: ${vsContado > 0 ? 'var(--score-red)' : 'var(--text-muted)'}">${vsContado > 0 ? '+' : ''}${vsContado.toLocaleString('es-ES')} €</span>
-                        </p>
-                        <p style="margin-bottom: 8px; display: flex; justify-content: space-between; padding-top: 5px;">
-                            <span>Ingreso Tasación (A tu cuenta):</span> 
-                            <span id="tasacion-val-${i}" style="color:var(--neon-green)">+ ${(o.tasacionNissanQashqai||0).toLocaleString('es-ES')} €</span>
-                        </p>
-                        <p style="margin-bottom: 0; display: flex; justify-content: space-between; align-items: center;">
-                            <strong>Balance Neto Operación:</strong> 
-                            <span id="a-pagar-${i}" style="color:${balanceNeto < 0 ? 'var(--neon-green)' : 'var(--text-color)'}; font-size:1.15rem; font-weight: bold;">${balanceNeto.toLocaleString('es-ES')} €</span>
-                        </p>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
-
-        function updateOfferData(idx, key, val, type) {
-            const car = appData.find(c => c.id === currentCarId);
-            if (type === 'checkbox') car.ofertas[idx][key] = val;
-            else if (type === 'number') car.ofertas[idx][key] = Number(val);
-            else car.ofertas[idx][key] = val;
-            
-            localStorage.setItem('evcheck_data', JSON.stringify(appData));
-            
-            const o = car.ofertas[idx];
+        function renderFinances(car) {
+            const o = car.oferta;
             const isFinanced = (o.entrada > 0 || o.meses > 0);
             const totalPagadoConce = isFinanced ? 
                 ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) 
@@ -919,12 +840,122 @@
             const vsContado = isFinanced ? (totalPagadoConce - (o.precioAlContado || 0)) : 0;
             const balanceNeto = totalPagadoConce - (o.tasacionNissanQashqai || 0);
 
-            const elTotalFinLbl = document.getElementById(`total-fin-lbl-${idx}`);
-            const elTotalFin = document.getElementById(`total-fin-${idx}`);
-            const elTasacion = document.getElementById(`tasacion-val-${idx}`);
-            const elAPagar = document.getElementById(`a-pagar-${idx}`);
-            const elIntereses = document.getElementById(`intereses-${idx}`);
-            const elVsContado = document.getElementById(`vs-contado-${idx}`);
+            const html = `
+            <div class="offer-card" style="border: none; padding: 0;">
+                <div class="offer-grid">
+                    <div class="data-group">
+                        <label>Precio al Contado (€)</label>
+                        <input type="number" value="${o.precioAlContado}" oninput="updateFinances('precioAlContado', this.value, 'number')">
+                    </div>
+                    <div class="data-group">
+                        <label>Precio Financiado (Base) (€)</label>
+                        <input type="number" value="${o.precioFinanciado}" oninput="updateFinances('precioFinanciado', this.value, 'number')">
+                    </div>
+                    <div class="data-group full-width">
+                        <label>Ingreso Tasación Qashqai (€)</label>
+                        <input type="number" value="${o.tasacionNissanQashqai}" oninput="updateFinances('tasacionNissanQashqai', this.value, 'number')">
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <label><input type="checkbox" ${o.incluyePlanAuto ? 'checked' : ''} onchange="updateFinances('incluyePlanAuto', this.checked, 'checkbox')"> Incluye Plan Auto+</label>
+                    <label><input type="checkbox" ${o.incluyeCae ? 'checked' : ''} onchange="updateFinances('incluyeCae', this.checked, 'checkbox')"> Incluye CAE</label>
+                    <label>
+                        <input type="checkbox" ${o.incluyeCargador ? 'checked' : ''} onchange="updateFinances('incluyeCargador', this.checked, 'checkbox')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
+                        Cargador
+                    </label>
+                    <label><input type="checkbox" ${o.incluyeMantenimiento ? 'checked' : ''} onchange="updateFinances('incluyeMantenimiento', this.checked, 'checkbox')"> Mantenimiento</label>
+                </div>
+
+                <h4 style="margin-bottom: 10px; font-size: 0.95rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Condiciones de Financiación</h4>
+                
+                <div class="offer-grid">
+                    <div class="data-group full-width">
+                        <label>Tipo de Financiación</label>
+                        <select onchange="updateFinances('tipoFinanciacion', this.value, 'text')">
+                            <option value="lineal" ${o.tipoFinanciacion === 'lineal' ? 'selected' : ''}>Lineal Tradicional</option>
+                            <option value="flexible" ${o.tipoFinanciacion === 'flexible' ? 'selected' : ''}>Flexible / Multiopción (Con Cuota Final)</option>
+                        </select>
+                    </div>
+                    <div class="data-group">
+                        <label>Entrada (€)</label>
+                        <input type="number" value="${o.entrada}" oninput="updateFinances('entrada', this.value, 'number')">
+                    </div>
+                    <div class="data-group">
+                        <label>Plazo (Meses)</label>
+                        <input type="number" value="${o.meses}" oninput="updateFinances('meses', this.value, 'number')">
+                    </div>
+                    <div class="data-group">
+                        <label>Cuota Mensual (€)</label>
+                        <input type="number" value="${o.cuotaMensual}" oninput="updateFinances('cuotaMensual', this.value, 'number')">
+                    </div>
+                    ${o.tipoFinanciacion === 'flexible' ? `
+                    <div class="data-group">
+                        <label>Cuota Final (€)</label>
+                        <input type="number" value="${o.cuotaFinal}" oninput="updateFinances('cuotaFinal', this.value, 'number')">
+                    </div>` : ''}
+                    <div class="data-group">
+                        <label>TIN (%)</label>
+                        <input type="number" step="0.1" value="${o.tin}" oninput="updateFinances('tin', this.value, 'number')">
+                    </div>
+                    <div class="data-group">
+                        <label>TAE (%)</label>
+                        <input type="number" step="0.1" value="${o.tae}" oninput="updateFinances('tae', this.value, 'number')">
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 8px; padding: 15px; font-size: 0.95rem; margin-top: 15px;">
+                    <p style="margin-bottom: 8px; display: flex; justify-content: space-between;">
+                        <strong id="total-fin-lbl">${isFinanced ? 'Coste Total a Pagar:' : 'Coste Total al Contado:'}</strong> 
+                        <span id="total-fin" style="color:var(--text-color); font-weight: bold; font-size: 1.1rem;">${totalPagadoConce.toLocaleString('es-ES')} €</span>
+                    </p>
+                    <p style="margin-bottom: 5px; color: var(--text-muted); display: flex; justify-content: space-between;">
+                        <span>Intereses y gastos del crédito:</span> 
+                        <span id="intereses">${intereses > 0 ? intereses.toLocaleString('es-ES') : 0} €</span>
+                    </p>
+                    <p style="margin-bottom: 8px; display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-color);">
+                        <span>Sobrecoste frente al Contado:</span> 
+                        <span id="vs-contado" style="color: ${vsContado > 0 ? 'var(--score-red)' : 'var(--text-muted)'}">${vsContado > 0 ? '+' : ''}${vsContado.toLocaleString('es-ES')} €</span>
+                    </p>
+                    <p style="margin-bottom: 8px; display: flex; justify-content: space-between; padding-top: 5px;">
+                        <span>Ingreso Tasación (A tu cuenta):</span> 
+                        <span id="tasacion-val" style="color:var(--neon-green)">+ ${(o.tasacionNissanQashqai||0).toLocaleString('es-ES')} €</span>
+                    </p>
+                    <p style="margin-bottom: 0; display: flex; justify-content: space-between; align-items: center;">
+                        <strong>Balance Neto Operación:</strong> 
+                        <span id="a-pagar" style="color:${balanceNeto < 0 ? 'var(--neon-green)' : 'var(--text-color)'}; font-size:1.15rem; font-weight: bold;">${balanceNeto.toLocaleString('es-ES')} €</span>
+                    </p>
+                </div>
+            </div>
+            `;
+            document.getElementById('finance-container').innerHTML = html;
+        }
+
+        function updateFinances(key, val, type) {
+            const car = appData.find(c => c.id === currentCarId);
+            if (type === 'checkbox') car.oferta[key] = val;
+            else if (type === 'number') car.oferta[key] = Number(val);
+            else car.oferta[key] = val;
+            
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+            
+            const o = car.oferta;
+            const isFinanced = (o.entrada > 0 || o.meses > 0);
+            const totalPagadoConce = isFinanced ? 
+                ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) 
+                : (o.precioAlContado || 0);
+                
+            const intereses = isFinanced ? (totalPagadoConce - (o.precioFinanciado || 0)) : 0;
+            const vsContado = isFinanced ? (totalPagadoConce - (o.precioAlContado || 0)) : 0;
+            const balanceNeto = totalPagadoConce - (o.tasacionNissanQashqai || 0);
+
+            const elTotalFinLbl = document.getElementById(`total-fin-lbl`);
+            const elTotalFin = document.getElementById(`total-fin`);
+            const elTasacion = document.getElementById(`tasacion-val`);
+            const elAPagar = document.getElementById(`a-pagar`);
+            const elIntereses = document.getElementById(`intereses`);
+            const elVsContado = document.getElementById(`vs-contado`);
 
             if(elTotalFinLbl) elTotalFinLbl.innerText = isFinanced ? 'Coste Total a Pagar:' : 'Coste Total al Contado:';
             if(elTotalFin) elTotalFin.innerText = totalPagadoConce.toLocaleString('es-ES') + ' €';
@@ -940,32 +971,10 @@
             }
 
             if (key === 'tipoFinanciacion') {
-                renderOffers(car);
+                renderFinances(car);
             }
             
             renderDashboard(); 
-        }
-
-        function deleteOffer(idx) {
-            if (confirm("¿Estás seguro de que deseas eliminar esta oferta?")) {
-                const car = appData.find(c => c.id === currentCarId);
-                car.ofertas.splice(idx, 1);
-                localStorage.setItem('evcheck_data', JSON.stringify(appData));
-                renderOffers(car);
-                renderDashboard(); 
-            }
-        }
-
-        function addOffer() {
-            const car = appData.find(c => c.id === currentCarId);
-            car.ofertas.push({ 
-                concesionario: "Nuevo Concesionario", 
-                precioAlContado: 0, precioFinanciado: 0, tasacionNissanQashqai: 0,
-                tipoFinanciacion: "flexible", entrada: 0, meses: 0, cuotaMensual: 0, cuotaFinal: 0, tin: 0, tae: 0,
-                incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false
-            });
-            localStorage.setItem('evcheck_data', JSON.stringify(appData));
-            renderOffers(car);
         }
 
         function renderEquipment(car) {
