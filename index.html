@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EVcheck</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icono.svg">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --surface-color: #1a1a1a;
+            --text-color: #ffffff;
+            --text-muted: #aaa;
+            --border-color: #333;
+            --neon-green: #00C800;
+            --neon-glow: 0 0 10px rgba(0, 200, 0, 0.3);
+        }
+
+        body.light-mode {
+            --bg-color: #f5f5f7;
+            --surface-color: #ffffff;
+            --text-color: #1d1d1f;
+            --text-muted: #555;
+            --border-color: #e5e5ea;
+            --neon-green: #00A000;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 80px; transition: background-color 0.3s; }
+        
+        header { background-color: var(--surface-color); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;}
+        .header-left { display: flex; align-items: center; }
+        header img { width: 30px; height: 30px; margin-right: 10px; border-radius: 8px;}
+        h1 { font-size: 1.2rem; font-weight: 600; }
+        .nav-btn { background: none; border: none; color: var(--neon-green); font-size: 1.5rem; cursor: pointer; }
+
+        /* Vistas */
+        .view { display: none; padding: 20px; }
+        .view.active { display: block; }
+
+        /* Dashboard */
+        .car-card { background-color: var(--surface-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid var(--border-color); }
+        .car-info h2 { font-size: 1.1rem; margin-bottom: 5px; }
+        .car-info p { font-size: 0.85rem; color: var(--text-muted); }
+        .car-score { background-color: rgba(0, 200, 0, 0.1); color: var(--neon-green); padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; border: 1px solid var(--neon-green); }
+
+        /* Configuración */
+        .config-section { background: var(--surface-color); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .config-section h3 { margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .weight-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .weight-row label { flex: 1; font-size: 0.9rem; }
+        .weight-row input { width: 60px; padding: 5px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
+        
+        /* Detalle de Coche */
+        #detail-view { padding: 0; }
+        .detail-header { position: relative; height: 200px; background-size: cover; background-position: center; }
+        .detail-header-overlay { position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, #0a0a0a); }
+        body.light-mode .detail-header-overlay { background: linear-gradient(transparent, rgba(255,255,255,0.9)); }
+        .back-btn { position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.6); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; backdrop-filter: blur(5px); }
+        
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); background: var(--surface-color); overflow-x: auto; }
+        .tab { flex: 1; text-align: center; padding: 12px 10px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+        .tab.active { color: var(--neon-green); border-bottom-color: var(--neon-green); font-weight: bold; }
+        .tab-content { display: none; padding: 20px; }
+        .tab-content.active { display: block; }
+
+        /* Formularios y Listas */
+        .data-group { margin-bottom: 15px; background: var(--surface-color); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .data-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
+        .data-group input, .data-group select { width: 100%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px; border-radius: 6px; font-size: 1rem; }
+        .data-group input:focus { outline: none; border-color: var(--neon-green); }
+        
+        .offer-card { border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        .offer-header { color: var(--neon-green); font-weight: bold; margin-bottom: 10px; }
+
+        /* Checklist Equipamiento */
+        .check-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+        .check-item:last-child { border-bottom: none; }
+        .check-item label { flex: 1; font-size: 0.95rem; display: flex; align-items: center; cursor: pointer; }
+        .check-item input[type="checkbox"] { width: 20px; height: 20px; margin-right: 15px; accent-color: var(--neon-green); }
+        .remove-btn { background: none; border: none; color: #ff3b30; font-size: 1.2rem; cursor: pointer; padding: 0 10px; }
+        
+        .add-equip-row { display: flex; gap: 10px; margin-top: 20px; }
+        .add-equip-row input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
+        
+        button.action-btn { background: var(--neon-green); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
+        button.action-btn.secondary { background: transparent; color: var(--neon-green); border: 1px solid var(--neon-green); }
+        button.action-btn.small { width: auto; padding: 10px 20px; margin-top: 0; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <img src="icono.svg" alt="EVcheck Logo">
+            <h1 id="header-title">EVcheck</h1>
+        </div>
+        <button class="nav-btn" onclick="toggleSettings()" id="settings-btn">⚙️</button>
+    </header>
+
+    <!-- 1. VISTA DASHBOARD -->
+    <div id="dashboard-view" class="view active">
+        <div id="car-list"></div>
+    </div>
+
+    <!-- 2. VISTA CONFIGURACIÓN -->
+    <div id="settings-view" class="view">
+        <div class="config-section">
+            <h3>Sistema</h3>
+            <div class="check-item" style="border:none; padding:0 0 15px 0;">
+                <label for="theme-toggle">Modo Noche / Día</label>
+                <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
+            </div>
+            <button class="action-btn secondary" onclick="checkOTA()">🔄 Buscar Actualizaciones OTA</button>
+            <p id="ota-status" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;"></p>
+        </div>
+
+        <div class="config-section">
+            <h3>Pesos de Puntuación (%)</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">La suma total debe ser 100. El equipamiento suma puntos extra directos a la nota base.</p>
+            <div id="weights-container"></div>
+            <div class="weight-row" style="font-weight: bold; border-top: 1px solid var(--border-color); padding-top: 10px;">
+                <label>Total:</label>
+                <span id="weight-total">100%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. VISTA DETALLE VEHÍCULO -->
+    <div id="detail-view" class="view">
+        <div class="detail-header" id="detail-image" style="background-image: url('');">
+            <button class="back-btn" onclick="showView('dashboard-view')">← Volver</button>
+            <div class="detail-header-overlay">
+                <h1 id="detail-title">Marca Modelo</h1>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('specs')">Técnica</div>
+            <div class="tab" onclick="switchTab('offers')">Ofertas</div>
+            <div class="tab" onclick="switchTab('equipment')">Equipamiento</div>
+            <div class="tab" onclick="switchTab('rating')">Valoración</div>
+        </div>
+
+        <div id="specs" class="tab-content active"></div>
+        
+        <div id="offers" class="tab-content">
+            <div id="offers-list"></div>
+            <button class="action-btn" onclick="addOffer()">+ Añadir Oferta</button>
+        </div>
+
+        <div id="equipment" class="tab-content">
+            <div class="data-group" style="padding: 0;">
+                <div id="equipment-list" style="padding: 0 15px;"></div>
+            </div>
+            <div class="add-equip-row">
+                <input type="text" id="new-equip-input" placeholder="Ej. Climatizador bizona">
+                <button class="action-btn small" onclick="addEquipment()">Añadir</button>
+            </div>
+        </div>
+
+        <div id="rating" class="tab-content"></div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN Y DATOS BASE
+        const defaultWeights = { bateria: 25, precio: 20, habitabilidad: 20, dinamica: 15, software: 10, seguridad: 10 };
+        const defaultEquip = [
+            { nombre: "Conducción One Pedal", marcado: false },
+            { nombre: "Levas de regeneración", marcado: false },
+            { nombre: "Bomba de calor", marcado: false },
+            { nombre: "Climatizador bizona", marcado: false },
+            { nombre: "Alerta ángulo muerto", marcado: false },
+            { nombre: "Cámara 360º", marcado: false }
+        ];
+
+        const defaultData = [
+            {
+                id: "kia-ev3-lr", marca: "KIA", modelo: "EV3 Earth Long Range",
+                img: "https://images.unsplash.com/photo-1698687794323-96b6378e9b81?q=80&w=600&auto=format&fit=crop",
+                tecnica: { quimica: "NMC", bateria: 78, wltp: 605, consumoOficial: 14.9, potenciaCargaDc: 135 },
+                ofertas: [{ concesionario: "KIA Autopista Sur", precioTarifa: 37850, precioNetoPromesas: 34489, tasacionNissanQashqai: 14000 }],
+                equipamiento: JSON.parse(JSON.stringify(defaultEquip)),
+                puntuaciones: { exterior: 7, interior: 8, dinamica: 8, software: 7, habitabilidad: 8, seguridad: 9 }
+            },
+            {
+                id: "byd-atto3-evo", marca: "BYD", modelo: "ATTO 3 EVO",
+                img: "https://images.unsplash.com/photo-1678195861198-d1a293a55fb4?q=80&w=600&auto=format&fit=crop",
+                tecnica: { quimica: "LFP CTB", bateria: 74.8, wltp: 510, consumoOficial: 16.0, potenciaCargaDc: 220 },
+                ofertas: [{ concesionario: "BYD Valencia", precioTarifa: 36200, precioNetoPromesas: 26165, tasacionNissanQashqai: 13500 }],
+                equipamiento: JSON.parse(JSON.stringify(defaultEquip)),
+                puntuaciones: { exterior: 8, interior: 7, dinamica: 7, software: 8, habitabilidad: 7, seguridad: 8 }
+            }
+        ];
+
+        let appData = JSON.parse(localStorage.getItem('evcheck_data')) || defaultData;
+        let appWeights = JSON.parse(localStorage.getItem('evcheck_weights')) || defaultWeights;
+        let isLightMode = localStorage.getItem('evcheck_theme') === 'light';
+        let currentCarId = null;
+
+        // INICIALIZACIÓN
+        window.onload = () => {
+            if (isLightMode) {
+                document.body.classList.add('light-mode');
+                document.getElementById('theme-toggle').checked = true;
+            }
+            renderDashboard();
+            renderWeightsConfig();
+        };
+
+        // NAVEGACIÓN
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            
+            document.getElementById('settings-btn').style.display = viewId === 'detail-view' ? 'none' : 'block';
+            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración' : 'EVcheck';
+            
+            if (viewId === 'dashboard-view') renderDashboard();
+        }
+
+        function toggleSettings() {
+            const currentView = document.querySelector('.view.active').id;
+            showView(currentView === 'settings-view' ? 'dashboard-view' : 'settings-view');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // SISTEMA Y CONFIGURACIÓN
+        function toggleTheme() {
+            isLightMode = document.getElementById('theme-toggle').checked;
+            document.body.classList.toggle('light-mode', isLightMode);
+            localStorage.setItem('evcheck_theme', isLightMode ? 'light' : 'dark');
+        }
+
+        function checkOTA() {
+            const status = document.getElementById('ota-status');
+            status.innerText = "Buscando actualizaciones...";
+            setTimeout(() => {
+                status.innerText = "EVcheck está en la última versión (v1.0).";
+                setTimeout(() => status.innerText = "", 3000);
+            }, 1500);
+        }
+
+        function renderWeightsConfig() {
+            const container = document.getElementById('weights-container');
+            const labels = { bateria: 'Batería y Carga', precio: 'Precio', habitabilidad: 'Habitabilidad', dinamica: 'Dinámica', software: 'Software', seguridad: 'Seguridad' };
+            
+            container.innerHTML = Object.keys(appWeights).map(key => `
+                <div class="weight-row">
+                    <label>${labels[key]}</label>
+                    <input type="number" min="0" max="100" value="${appWeights[key]}" onchange="updateWeight('${key}', this.value)">
+                </div>
+            `).join('');
+            updateTotalWeight();
+        }
+
+        function updateWeight(key, value) {
+            appWeights[key] = Number(value);
+            localStorage.setItem('evcheck_weights', JSON.stringify(appWeights));
+            updateTotalWeight();
+        }
+
+        function updateTotalWeight() {
+            const total = Object.values(appWeights).reduce((a, b) => a + b, 0);
+            const totalEl = document.getElementById('weight-total');
+            totalEl.innerText = `${total}%`;
+            totalEl.style.color = total === 100 ? 'var(--neon-green)' : '#ff3b30';
+        }
+
+        // CÁLCULO DE PUNTUACIÓN
+        function calculateScore(car) {
+            let score = 0;
+            const w = appWeights;
+            
+            // Batería (Normalizado: 80kWh = 10 pts, 600km = 10 pts)
+            let batScore = Math.min(((car.tecnica.bateria / 80) * 5) + ((car.tecnica.wltp / 600) * 5), 10);
+            score += batScore * (w.bateria / 10);
+
+            // Precio (Más barato = más nota. Base 25k€)
+            let minPrice = car.ofertas.length ? Math.min(...car.ofertas.map(o => o.precioNetoPromesas)) : 40000;
+            let priceScore = Math.max(10 - ((minPrice - 20000) / 2500), 1);
+            score += priceScore * (w.precio / 10);
+
+            // Subjetivas (Basadas en 1-10)
+            const pts = car.puntuaciones;
+            score += pts.habitabilidad * (w.habitabilidad / 10);
+            score += pts.dinamica * (w.dinamica / 10);
+            score += pts.software * (w.software / 10);
+            score += pts.seguridad * (w.seguridad / 10);
+
+            // Bonus por equipamiento (0.5 pts sobre el total de 100 por cada check activo)
+            const activeEquip = car.equipamiento.filter(e => e.marcado).length;
+            score += (activeEquip * 0.5);
+
+            return Math.min(Math.round(score * 10), 100);
+        }
+
+        // RENDERIZADO DE VISTAS DE COCHES
+        function renderDashboard() {
+            const list = document.getElementById('car-list');
+            appData.sort((a, b) => calculateScore(b) - calculateScore(a));
+            list.innerHTML = appData.map(car => {
+                let mejorPrecio = car.ofertas.length ? Math.min(...car.ofertas.map(o => o.precioNetoPromesas)).toLocaleString('es-ES') + " €" : "Sin oferta";
+                return `
+                <div class="car-card" onclick="showDetail('${car.id}')">
+                    <div class="car-info">
+                        <h2>${car.marca} ${car.modelo}</h2>
+                        <p>🔋 ${car.tecnica.bateria} kWh | 🛣️ ${car.tecnica.wltp} km</p>
+                        <p style="color: var(--neon-green); margin-top: 5px;">${mejorPrecio}</p>
+                    </div>
+                    <div class="car-score">${calculateScore(car)}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function showDetail(id) {
+            currentCarId = id;
+            const car = appData.find(c => c.id === id);
+            
+            document.getElementById('detail-title').innerText = `${car.marca} ${car.modelo}`;
+            document.getElementById('detail-image').style.backgroundImage = `url('${car.img}')`;
+            
+            renderSpecs(car);
+            renderOffers(car);
+            renderEquipment(car);
+            renderRatings(car);
+            
+            // Reset tabs
+            document.querySelectorAll('.tab').forEach((t, i) => {
+                t.classList.toggle('active', i===0);
+                document.querySelectorAll('.tab-content')[i].classList.toggle('active', i===0);
+            });
+            
+            showView('detail-view');
+        }
+
+        // TABS INTERNAS DEL COCHE
+        function renderSpecs(car) {
+            const fields = [
+                { k: 'quimica', l: 'Química', type: 'text' },
+                { k: 'bateria', l: 'Batería (kWh)', type: 'number' },
+                { k: 'wltp', l: 'WLTP (km)', type: 'number' },
+                { k: 'potenciaCargaDc', l: 'Carga DC (kW)', type: 'number' }
+            ];
+            document.getElementById('specs').innerHTML = fields.map(f => `
+                <div class="data-group">
+                    <label>${f.l}</label>
+                    <input type="${f.type}" value="${car.tecnica[f.k]}" onchange="updateCarData('tecnica', '${f.k}', this.value)">
+                </div>
+            `).join('');
+        }
+
+        function renderOffers(car) {
+            document.getElementById('offers-list').innerHTML = car.ofertas.map((o, i) => `
+                <div class="offer-card">
+                    <input type="text" class="offer-header" value="${o.concesionario}" onchange="updateOffer(${i}, 'concesionario', this.value)" style="background:transparent; border:none; width:100%; font-size:1rem;">
+                    <div class="data-group" style="padding:10px; margin-bottom:10px;">
+                        <label>Precio Neto (€)</label>
+                        <input type="number" value="${o.precioNetoPromesas}" onchange="updateOffer(${i}, 'precioNetoPromesas', this.value)">
+                    </div>
+                    <div class="data-group" style="padding:10px; margin-bottom:0;">
+                        <label>Tasación Qashqai (€)</label>
+                        <input type="number" value="${o.tasacionNissanQashqai}" onchange="updateOffer(${i}, 'tasacionNissanQashqai', this.value)">
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderEquipment(car) {
+            // Asegurar retrocompatibilidad si hay coches viejos sin array
+            if(!car.equipamiento) car.equipamiento = JSON.parse(JSON.stringify(defaultEquip));
+            
+            document.getElementById('equipment-list').innerHTML = car.equipamiento.map((eq, i) => `
+                <div class="check-item">
+                    <label>
+                        <input type="checkbox" ${eq.marcado ? 'checked' : ''} onchange="toggleEquip(${i}, this.checked)">
+                        ${eq.nombre}
+                    </label>
+                    <button class="remove-btn" onclick="removeEquip(${i})">×</button>
+                </div>
+            `).join('');
+        }
+
+        function renderRatings(car) {
+            const fields = [
+                { k: 'habitabilidad', l: 'Habitabilidad (1-10)' },
+                { k: 'dinamica', l: 'Dinámica (1-10)' },
+                { k: 'software', l: 'Software (1-10)' },
+                { k: 'seguridad', l: 'Seguridad (1-10)' }
+            ];
+            document.getElementById('rating').innerHTML = fields.map(f => `
+                <div class="data-group">
+                    <label>${f.l}</label>
+                    <input type="number" min="1" max="10" value="${car.puntuaciones[f.k]}" onchange="updateCarData('puntuaciones', '${f.k}', this.value)">
+                </div>
+            `).join('');
+        }
+
+        // ACTUALIZACIONES DE DATOS
+        function updateCarData(cat, key, val) {
+            const car = appData.find(c => c.id === currentCarId);
+            car[cat][key] = isNaN(val) ? val : Number(val);
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+        }
+
+        function updateOffer(idx, key, val) {
+            const car = appData.find(c => c.id === currentCarId);
+            car.ofertas[idx][key] = key === 'concesionario' ? val : Number(val);
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+        }
+
+        function addOffer() {
+            const car = appData.find(c => c.id === currentCarId);
+            car.ofertas.push({ concesionario: "Nuevo Concesionario", precioTarifa: 0, precioNetoPromesas: 0, tasacionNissanQashqai: 0 });
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+            renderOffers(car);
+        }
+
+        function toggleEquip(idx, isChecked) {
+            const car = appData.find(c => c.id === currentCarId);
+            car.equipamiento[idx].marcado = isChecked;
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+        }
+
+        function addEquipment() {
+            const input = document.getElementById('new-equip-input');
+            const val = input.value.trim();
+            if(!val) return;
+            
+            const car = appData.find(c => c.id === currentCarId);
+            car.equipamiento.push({ nombre: val, marcado: true });
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+            
+            input.value = '';
+            renderEquipment(car);
+        }
+
+        function removeEquip(idx) {
+            const car = appData.find(c => c.id === currentCarId);
+            car.equipamiento.splice(idx, 1);
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+            renderEquipment(car);
+        }
+    </script>
+</body>
+</html>
