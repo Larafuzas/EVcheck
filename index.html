@@ -15,7 +15,6 @@
             --text-muted: #aaa;
             --border-color: #333;
             
-            /* Colores de Puntuación */
             --score-green: #00C800;
             --score-yellow: #FFD60A;
             --score-orange: #FF9F0A;
@@ -241,7 +240,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.8.0";
+        const APP_VERSION = "v1.8.1";
         
         const defaultWeights = { 
             bateria: 20, 
@@ -252,7 +251,6 @@
             tecnologia: 15 
         };
         
-        // Base maestra de equipamiento fusionada y ampliada
         const defaultEquip = [
             { nombre: "Bomba de calor", marcado: false },
             { nombre: "Sistema V2L (Vehicle-to-Load)", marcado: false },
@@ -298,7 +296,6 @@
 
         let globalEquipList = JSON.parse(localStorage.getItem('evcheck_global_equip')) || [];
         
-        // MIGRACIÓN DE EQUIPAMIENTO GLOBAL: Añadir nuevos items de la v1.8.0 si no existen
         defaultEquip.forEach(defaultEq => {
             if (!globalEquipList.some(eq => eq.nombre === defaultEq.nombre)) {
                 globalEquipList.push({...defaultEq});
@@ -308,7 +305,6 @@
 
         let appData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
         
-        // MIGRACIÓN DE COCHES GUARDADOS: Añadir los nuevos equipamientos de la v1.8.0 a cada coche existente
         if (appData && appData.length > 0) {
             appData.forEach(car => {
                 globalEquipList.forEach(globalEq => {
@@ -554,6 +550,35 @@
             showView('detail-view');
         }
 
+        function updateBaseData(key, val) {
+            const car = appData.find(c => c.id === currentCarId);
+            
+            // Interceptor Inteligente para Google Drive Links
+            if (key === 'img' && val.includes('drive.google.com/file/d/')) {
+                const match = val.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    val = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                    // Actualiza el campo visualmente para que el usuario vea el enlace corregido
+                    setTimeout(() => {
+                        const inputs = document.querySelectorAll(`input[type="url"]`);
+                        inputs.forEach(input => {
+                            if(input.value.includes('drive.google.com/file/d/')) input.value = val;
+                        });
+                    }, 50);
+                }
+            }
+
+            car[key] = val;
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+            
+            if (key === 'marca' || key === 'modelo') {
+                document.getElementById('detail-title').innerText = `${car.marca} ${car.modelo}`;
+            }
+            if (key === 'img') {
+                document.getElementById('detail-image').style.backgroundImage = `url('${car.img}')`;
+            }
+        }
+
         function renderSpecs(car) {
             const baseFields = [
                 { k: 'marca', l: 'Marca', type: 'text' },
@@ -585,19 +610,6 @@
             `).join('');
             
             document.getElementById('specs').innerHTML = html;
-        }
-
-        function updateBaseData(key, val) {
-            const car = appData.find(c => c.id === currentCarId);
-            car[key] = val;
-            localStorage.setItem('evcheck_data', JSON.stringify(appData));
-            
-            if (key === 'marca' || key === 'modelo') {
-                document.getElementById('detail-title').innerText = `${car.marca} ${car.modelo}`;
-            }
-            if (key === 'img') {
-                document.getElementById('detail-image').style.backgroundImage = `url('${car.img}')`;
-            }
         }
 
         function renderOffers(car) {
@@ -702,7 +714,9 @@
             
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
             renderOffers(car); 
-            renderDashboard(); 
+            const backupView = document.querySelector('.view.active').id; 
+            renderDashboard();
+            if(backupView === 'detail-view') document.getElementById('dashboard-view').classList.remove('active');
         }
 
         function deleteOffer(idx) {
@@ -711,7 +725,9 @@
                 car.ofertas.splice(idx, 1);
                 localStorage.setItem('evcheck_data', JSON.stringify(appData));
                 renderOffers(car);
-                renderDashboard(); 
+                const backupView = document.querySelector('.view.active').id; 
+                renderDashboard();
+                if(backupView === 'detail-view') document.getElementById('dashboard-view').classList.remove('active');
             }
         }
 
