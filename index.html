@@ -215,7 +215,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.4.1";
+        const APP_VERSION = "v1.4.2";
         
         const defaultWeights = { bateria: 25, precio: 20, habitabilidad: 20, dinamica: 15, software: 10, seguridad: 10 };
         
@@ -439,7 +439,7 @@
             const activeEquip = car.equipamiento.filter(e => e.marcado).length;
             score += (activeEquip * 0.5);
 
-            return Math.min(Math.round(score * 10), 100);
+            return Math.min(Math.round(score), 100);
         }
 
         function renderDashboard() {
