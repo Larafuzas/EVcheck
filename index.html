@@ -229,9 +229,8 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.5.0";
+        const APP_VERSION = "v1.5.1";
         
-        // Nuevos pesos adaptados a las nuevas categorías
         const defaultWeights = { 
             bateria: 20, 
             precio: 20, 
@@ -261,59 +260,11 @@
             { nombre: "V2L (Carga de dispositivos externos)", marcado: false }
         ];
 
-        const defaultData = [
-            {
-                id: "kia-ev3-lr", marca: "KIA", modelo: "EV3 Earth Long Range",
-                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Kia_EV3_GT-Line_SV3_IAA_2024_1X7A0436.jpg/800px-Kia_EV3_GT-Line_SV3_IAA_2024_1X7A0436.jpg",
-                tecnica: { quimica: "NMC", bateria: 78, wltp: 605, consumoOficial: 14.9, potenciaCargaDc: 135 },
-                ofertas: [{ concesionario: "KIA Autopista Sur", precioAlContado: 37850, precioFinanciado: 34489, tasacionNissanQashqai: 14000, tipoFinanciacion: "flexible", entrada: 8000, meses: 48, cuotaMensual: 249, cuotaFinal: 18500, tin: 6.5, tae: 7.9, incluyePlanAuto: true, incluyeCae: false, incluyeCargador: true }],
-                equipamiento: JSON.parse(JSON.stringify(defaultEquip)),
-                puntuaciones: { estetica_ext: 7, estetica_int: 8, calidad_ext: 8, calidad_int: 8, funcionalidad_ext: 8, funcionalidad_int: 8, dinamica_conduccion: 8, aislamiento: 8, software_info: 7, seguridad_adas: 9 }
-            },
-            {
-                id: "byd-atto3-evo", marca: "BYD", modelo: "ATTO 3 EVO",
-                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/BYD_Atto_3_%282022%29_1.jpg/800px-BYD_Atto_3_%282022%29_1.jpg",
-                tecnica: { quimica: "LFP CTB", bateria: 74.8, wltp: 510, consumoOficial: 16.0, potenciaCargaDc: 220 },
-                ofertas: [{ concesionario: "BYD Valencia", precioAlContado: 36200, precioFinanciado: 36200, tasacionNissanQashqai: 13500, tipoFinanciacion: "lineal", entrada: 0, meses: 0, cuotaMensual: 0, cuotaFinal: 0, tin: 0, tae: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false }],
-                equipamiento: JSON.parse(JSON.stringify(defaultEquip)),
-                puntuaciones: { estetica_ext: 8, estetica_int: 7, calidad_ext: 8, calidad_int: 7, funcionalidad_ext: 7, funcionalidad_int: 7, dinamica_conduccion: 7, aislamiento: 8, software_info: 8, seguridad_adas: 8 }
-            }
-        ];
-
-        let appData = JSON.parse(localStorage.getItem('evcheck_data'));
-        
-        // MIGRACIÓN A LA NUEVA ESTRUCTURA DE VALORACIÓN
-        if (appData) {
-            appData.forEach(car => {
-                defaultEquip.forEach(defaultEq => {
-                    if (!car.equipamiento || !car.equipamiento.some(eq => eq.nombre === defaultEq.nombre)) {
-                        if (!car.equipamiento) car.equipamiento = [];
-                        car.equipamiento.push({...defaultEq});
-                    }
-                });
-                // Migrar puntuaciones antiguas a las nuevas si no existen
-                if (car.puntuaciones.exterior !== undefined) {
-                    car.puntuaciones = {
-                        estetica_ext: car.puntuaciones.exterior || 7,
-                        estetica_int: car.puntuaciones.interior || 7,
-                        calidad_ext: car.puntuaciones.exterior || 7,
-                        calidad_int: car.puntuaciones.interior || 7,
-                        funcionalidad_ext: car.puntuaciones.habitabilidad || 7,
-                        funcionalidad_int: car.puntuaciones.habitabilidad || 7,
-                        dinamica_conduccion: car.puntuaciones.dinamica || 7,
-                        aislamiento: car.puntuaciones.dinamica || 7,
-                        software_info: car.puntuaciones.software || 7,
-                        seguridad_adas: car.puntuaciones.seguridad || 7
-                    };
-                }
-            });
-        } else {
-            appData = defaultData;
-        }
-
+        let appData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
         let appWeights = JSON.parse(localStorage.getItem('evcheck_weights'));
+        
         if (!appWeights || Object.keys(appWeights).length === 0 || appWeights.diseno_calidad === undefined) {
-            appWeights = defaultWeights; // Reset a los nuevos pesos por defecto si viene de versión vieja
+            appWeights = defaultWeights; 
         } else {
             appWeights = { ...defaultWeights, ...appWeights };
         }
@@ -449,34 +400,26 @@
             let score = 0;
             const w = appWeights;
             
-            // Batería (Normalizado: 80kWh = 5 pts, 600km = 5 pts -> Max 10 pts)
             let batScore = Math.min(((car.tecnica.bateria / 80) * 5) + ((car.tecnica.wltp / 600) * 5), 10);
             score += batScore * (w.bateria / 10);
 
-            // Precio (Más barato = más nota. Base 20k€ = 10, cada 2.5k resta 1 punto)
             let minPrice = car.ofertas.length ? Math.min(...car.ofertas.map(o => o.precioAlContado || 40000)) : 40000;
             let priceScore = Math.max(10 - ((minPrice - 20000) / 2500), 1);
             score += priceScore * (w.precio / 10);
 
             const pts = car.puntuaciones;
-            
-            // Diseño y Calidad (Media de 4 variables)
             let disenoScore = (pts.estetica_ext + pts.estetica_int + pts.calidad_ext + pts.calidad_int) / 4;
             score += disenoScore * (w.diseno_calidad / 10);
             
-            // Funcionalidad y Habitabilidad
             let funcScore = (pts.funcionalidad_ext + pts.funcionalidad_int) / 2;
             score += funcScore * (w.funcionalidad / 10);
             
-            // Dinámica
             let dinScore = (pts.dinamica_conduccion + pts.aislamiento) / 2;
             score += dinScore * (w.dinamica / 10);
 
-            // Tecnología y Seguridad
             let techScore = (pts.software_info + pts.seguridad_adas) / 2;
             score += techScore * (w.tecnologia / 10);
 
-            // Bonus Equipamiento: Se valora el porcentaje de equipamiento marcado (Max +5 puntos directos a la nota final)
             const activeEquip = car.equipamiento.filter(e => e.marcado).length;
             const equipRatio = activeEquip / Math.max(car.equipamiento.length, 1);
             score += (equipRatio * 5);
@@ -736,11 +679,12 @@
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
         }
 
+        // Lógica actualizada para marcar y desmarcar equipamiento en tiempo real sin recargar vista
         function toggleEquip(idx, isChecked) {
             const car = appData.find(c => c.id === currentCarId);
             car.equipamiento[idx].marcado = isChecked;
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
-            showView('dashboard-view'); showDetail(currentCarId);
+            renderDashboard(); // Actualiza las notas en el dashboard oculto en segundo plano
         }
 
         function addEquipment() {
@@ -752,7 +696,7 @@
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
             input.value = '';
             renderEquipment(car);
-            showView('dashboard-view'); showDetail(currentCarId);
+            renderDashboard(); // Actualiza las notas en el dashboard oculto en segundo plano
         }
 
         function removeEquip(idx) {
@@ -760,7 +704,7 @@
             car.equipamiento.splice(idx, 1);
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
             renderEquipment(car);
-            showView('dashboard-view'); showDetail(currentCarId);
+            renderDashboard(); // Actualiza las notas en el dashboard oculto en segundo plano
         }
     </script>
 </body>
