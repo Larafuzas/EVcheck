@@ -76,7 +76,6 @@
         .back-btn { position: absolute; top: 15px; left: 15px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; z-index: 10; }
         .delete-car-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,59,48,0.1); color: var(--score-red); border: 1px solid var(--score-red); padding: 8px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
 
-        /* Botón de Imagen SVG Central */
         .view-image-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 10px; background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 12px; z-index: 5; box-shadow: var(--neon-glow); }
         .view-image-btn p { color: var(--neon-green); font-size: 0.8rem; font-weight: bold; margin-top: 8px; }
 
@@ -117,7 +116,6 @@
         .version-tag { font-size: 0.75rem; color: var(--text-muted); background: var(--surface-color); padding: 4px 8px; border-radius: 12px; border: 1px solid var(--border-color); margin-left: 10px; }
         .section-title { color: var(--neon-green); margin: 25px 0 10px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; font-size: 1.05rem; }
 
-        /* Modal de Imagen */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
         .modal-content { position: relative; width: 100%; height: 85%; max-width: 800px; background: var(--surface-color); border-radius: 12px; overflow: hidden; border: 1px solid var(--neon-green); box-shadow: var(--neon-glow); }
@@ -214,7 +212,6 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
             </button>
             
-            <!-- Botón SVG de Galería -->
             <div id="view-image-btn" class="view-image-btn" onclick="openImageModal()" style="display: none;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -256,7 +253,7 @@
         <div id="rating" class="tab-content"></div>
     </div>
 
-    <!-- Modal para ver imagen/Drive -->
+    <!-- Modal de Imagen -->
     <div id="image-modal" class="modal">
         <div class="modal-content">
             <button class="close-modal-btn" onclick="closeImageModal()">
@@ -267,7 +264,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.9.0";
+        const APP_VERSION = "v1.9.1";
         
         const defaultWeights = { bateria: 20, precio: 20, diseno_calidad: 15, funcionalidad: 15, dinamica: 15, tecnologia: 15 };
         
@@ -469,7 +466,7 @@
 
         function renderWeightsConfig() {
             const container = document.getElementById('weights-container');
-            const labels = { bateria: 'Batería y Eficiencia', precio: 'Precio', diseno_calidad: 'Diseño y Calidad', funcionalidad: 'Funcionalidad', dinamica: 'Dinámica', tecnologia: 'Tecnología' };
+            const labels = { bateria: 'Batería y Eficiencia', precio: 'Precio (Incl. Tasación)', diseno_calidad: 'Diseño y Calidad', funcionalidad: 'Funcionalidad', dinamica: 'Dinámica', tecnologia: 'Tecnología' };
             container.innerHTML = Object.keys(appWeights).map(key => `
                 <div class="weight-row">
                     <label>${labels[key]}</label>
@@ -483,6 +480,7 @@
             appWeights[key] = Number(value);
             localStorage.setItem('evcheck_weights', JSON.stringify(appWeights));
             updateTotalWeight();
+            renderDashboard(); // Recalcula las notas ocultas
         }
 
         function updateTotalWeight() {
@@ -506,7 +504,9 @@
             let batScore = Math.min(((car.tecnica.bateria / 80) * 5) + ((car.tecnica.wltp / 600) * 5), 10);
             score += batScore * (w.bateria / 10);
 
-            let minPrice = car.ofertas.length ? Math.min(...car.ofertas.map(o => o.precioAlContado || 40000)) : 40000;
+            // CORRECCIÓN: Usamos el coste final descontando la tasación para premiar tasaciones altas
+            let effectivePrices = car.ofertas.map(o => (o.precioAlContado || 40000) - (o.tasacionNissanQashqai || 0));
+            let minPrice = effectivePrices.length ? Math.min(...effectivePrices) : 40000;
             let priceScore = Math.max(10 - ((minPrice - 20000) / 2500), 1);
             score += priceScore * (w.precio / 10);
 
@@ -552,13 +552,11 @@
             }).join('');
         }
 
-        // --- SISTEMA DE MODAL DE IMAGEN ---
         function formatGoogleDriveUrl(url) {
             if (!url) return '';
             if (url.includes('drive.google.com')) {
                 const match = url.match(/\/(?:d|open\?id=)([a-zA-Z0-9_-]+)/);
                 if (match && match[1]) {
-                    // El formato preview es el único que Drive permite embeber libremente en un iframe
                     return `https://drive.google.com/file/d/${match[1]}/preview`;
                 }
             }
@@ -591,8 +589,6 @@
             const car = appData.find(c => c.id === id);
             
             document.getElementById('detail-title').innerText = `${car.marca} ${car.modelo}`;
-            
-            // Comprobar si hay URL para mostrar el botón de la cámara
             updateHeaderImageBtn(car.img);
             
             renderSpecs(car);
@@ -658,34 +654,35 @@
                 const totalFinanciacion = (o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0);
                 const intereses = totalFinanciacion - (o.precioFinanciado || 0);
                 const vsContado = totalFinanciacion - (o.precioAlContado || 0);
+                const aPagar = totalFinanciacion - (o.tasacionNissanQashqai || 0);
 
                 return `
                 <div class="offer-card">
                     <button class="delete-offer-btn" onclick="deleteOffer(${i})" aria-label="Borrar Oferta">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
-                    <input type="text" class="offer-header" value="${o.concesionario}" oninput="updateOffer(${i}, 'concesionario', this.value, 'text')" placeholder="Nombre del Concesionario">
+                    <input type="text" class="offer-header" value="${o.concesionario}" oninput="updateOfferData(${i}, 'concesionario', this.value, 'text')" placeholder="Nombre del Concesionario">
                     
                     <div class="offer-grid">
                         <div class="data-group">
                             <label>Precio al Contado (€)</label>
-                            <input type="number" value="${o.precioAlContado}" oninput="updateOffer(${i}, 'precioAlContado', this.value, 'number')">
+                            <input type="number" value="${o.precioAlContado}" oninput="updateOfferData(${i}, 'precioAlContado', this.value, 'number')">
                         </div>
                         <div class="data-group">
                             <label>Precio Financiado (Base) (€)</label>
-                            <input type="number" value="${o.precioFinanciado}" oninput="updateOffer(${i}, 'precioFinanciado', this.value, 'number')">
+                            <input type="number" value="${o.precioFinanciado}" oninput="updateOfferData(${i}, 'precioFinanciado', this.value, 'number')">
                         </div>
                         <div class="data-group full-width">
-                            <label>Tasación Qashqai (€) (A restar)</label>
-                            <input type="number" value="${o.tasacionNissanQashqai}" oninput="updateOffer(${i}, 'tasacionNissanQashqai', this.value, 'number')">
+                            <label>Tasación Qashqai (€) (A restar de tu bolsillo)</label>
+                            <input type="number" value="${o.tasacionNissanQashqai}" oninput="updateOfferData(${i}, 'tasacionNissanQashqai', this.value, 'number')">
                         </div>
                     </div>
 
                     <div class="checkbox-group">
-                        <label><input type="checkbox" ${o.incluyePlanAuto ? 'checked' : ''} onchange="updateOffer(${i}, 'incluyePlanAuto', this.checked, 'checkbox')"> Incluye Plan Auto+</label>
-                        <label><input type="checkbox" ${o.incluyeCae ? 'checked' : ''} onchange="updateOffer(${i}, 'incluyeCae', this.checked, 'checkbox')"> Incluye CAE</label>
+                        <label><input type="checkbox" ${o.incluyePlanAuto ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyePlanAuto', this.checked, 'checkbox')"> Incluye Plan Auto+</label>
+                        <label><input type="checkbox" ${o.incluyeCae ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyeCae', this.checked, 'checkbox')"> Incluye CAE</label>
                         <label>
-                            <input type="checkbox" ${o.incluyeCargador ? 'checked' : ''} onchange="updateOffer(${i}, 'incluyeCargador', this.checked, 'checkbox')">
+                            <input type="checkbox" ${o.incluyeCargador ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyeCargador', this.checked, 'checkbox')">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
                             Cargador Doméstico
                         </label>
@@ -696,50 +693,58 @@
                     <div class="offer-grid">
                         <div class="data-group full-width">
                             <label>Tipo de Financiación</label>
-                            <select onchange="updateOffer(${i}, 'tipoFinanciacion', this.value, 'text')">
+                            <select onchange="updateOfferData(${i}, 'tipoFinanciacion', this.value, 'text')">
                                 <option value="lineal" ${o.tipoFinanciacion === 'lineal' ? 'selected' : ''}>Lineal Tradicional</option>
                                 <option value="flexible" ${o.tipoFinanciacion === 'flexible' ? 'selected' : ''}>Flexible / Multiopción (Con Cuota Final)</option>
                             </select>
                         </div>
                         <div class="data-group">
                             <label>Entrada (€)</label>
-                            <input type="number" value="${o.entrada}" oninput="updateOffer(${i}, 'entrada', this.value, 'number')">
+                            <input type="number" value="${o.entrada}" oninput="updateOfferData(${i}, 'entrada', this.value, 'number')">
                         </div>
                         <div class="data-group">
                             <label>Plazo (Meses)</label>
-                            <input type="number" value="${o.meses}" oninput="updateOffer(${i}, 'meses', this.value, 'number')">
+                            <input type="number" value="${o.meses}" oninput="updateOfferData(${i}, 'meses', this.value, 'number')">
                         </div>
                         <div class="data-group">
                             <label>Cuota Mensual (€)</label>
-                            <input type="number" value="${o.cuotaMensual}" oninput="updateOffer(${i}, 'cuotaMensual', this.value, 'number')">
+                            <input type="number" value="${o.cuotaMensual}" oninput="updateOfferData(${i}, 'cuotaMensual', this.value, 'number')">
                         </div>
                         ${o.tipoFinanciacion === 'flexible' ? `
                         <div class="data-group">
                             <label>Cuota Final (€)</label>
-                            <input type="number" value="${o.cuotaFinal}" oninput="updateOffer(${i}, 'cuotaFinal', this.value, 'number')">
+                            <input type="number" value="${o.cuotaFinal}" oninput="updateOfferData(${i}, 'cuotaFinal', this.value, 'number')">
                         </div>` : ''}
                         <div class="data-group">
                             <label>TIN (%)</label>
-                            <input type="number" step="0.1" value="${o.tin}" oninput="updateOffer(${i}, 'tin', this.value, 'number')">
+                            <input type="number" step="0.1" value="${o.tin}" oninput="updateOfferData(${i}, 'tin', this.value, 'number')">
                         </div>
                         <div class="data-group">
                             <label>TAE (%)</label>
-                            <input type="number" step="0.1" value="${o.tae}" oninput="updateOffer(${i}, 'tae', this.value, 'number')">
+                            <input type="number" step="0.1" value="${o.tae}" oninput="updateOfferData(${i}, 'tae', this.value, 'number')">
                         </div>
                     </div>
 
                     <div style="background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 8px; padding: 15px; font-size: 0.95rem; margin-top: 15px;">
                         <p style="margin-bottom: 8px; display: flex; justify-content: space-between;">
-                            <strong>Coste Total Real Financiado:</strong> 
-                            <span style="color:var(--neon-green); font-size:1.15rem; font-weight: bold;">${totalFinanciacion.toLocaleString('es-ES')} €</span>
+                            <strong>Coste Total Financiado:</strong> 
+                            <span id="total-fin-${i}" style="color:var(--text-color); font-weight: bold;">${totalFinanciacion.toLocaleString('es-ES')} €</span>
+                        </p>
+                        <p style="margin-bottom: 8px; display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-color);">
+                            <span>Tasación Qashqai:</span> 
+                            <span id="tasacion-val-${i}" style="color:var(--neon-green)">- ${(o.tasacionNissanQashqai||0).toLocaleString('es-ES')} €</span>
+                        </p>
+                        <p style="margin-bottom: 12px; display: flex; justify-content: space-between;">
+                            <strong>A Pagar (Bolsillo):</strong> 
+                            <span id="a-pagar-${i}" style="color:var(--neon-green); font-size:1.15rem; font-weight: bold;">${aPagar.toLocaleString('es-ES')} €</span>
                         </p>
                         <p style="margin-bottom: 5px; color: var(--text-muted); display: flex; justify-content: space-between;">
                             <span>Intereses y gastos del crédito:</span> 
-                            <span>${intereses > 0 ? intereses.toLocaleString('es-ES') : 0} €</span>
+                            <span id="intereses-${i}">${intereses > 0 ? intereses.toLocaleString('es-ES') : 0} €</span>
                         </p>
                         <p style="color: var(--text-muted); display: flex; justify-content: space-between;">
                             <span>Sobrecoste frente al Contado:</span> 
-                            <span style="color: ${vsContado > 0 ? 'var(--score-red)' : 'var(--text-muted)'}">${vsContado > 0 ? '+' : ''}${vsContado.toLocaleString('es-ES')} €</span>
+                            <span id="vs-contado-${i}" style="color: ${vsContado > 0 ? 'var(--score-red)' : 'var(--text-muted)'}">${vsContado > 0 ? '+' : ''}${vsContado.toLocaleString('es-ES')} €</span>
                         </p>
                     </div>
                 </div>
@@ -747,14 +752,42 @@
             }).join('');
         }
 
-        function updateOffer(idx, key, val, type) {
+        // CORRECCIÓN: Actualización en segundo plano sin destruir el DOM (evita pérdida de teclado)
+        function updateOfferData(idx, key, val, type) {
             const car = appData.find(c => c.id === currentCarId);
             if (type === 'checkbox') car.ofertas[idx][key] = val;
             else if (type === 'number') car.ofertas[idx][key] = Number(val);
             else car.ofertas[idx][key] = val;
             
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
-            renderOffers(car); 
+            
+            const o = car.ofertas[idx];
+            const totalFinanciacion = (o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0);
+            const intereses = totalFinanciacion - (o.precioFinanciado || 0);
+            const vsContado = totalFinanciacion - (o.precioAlContado || 0);
+            const aPagar = totalFinanciacion - (o.tasacionNissanQashqai || 0);
+
+            // Actualizamos solo los números por DOM directo
+            const elTotalFin = document.getElementById(`total-fin-${idx}`);
+            const elTasacion = document.getElementById(`tasacion-val-${idx}`);
+            const elAPagar = document.getElementById(`a-pagar-${idx}`);
+            const elIntereses = document.getElementById(`intereses-${idx}`);
+            const elVsContado = document.getElementById(`vs-contado-${idx}`);
+
+            if(elTotalFin) elTotalFin.innerText = totalFinanciacion.toLocaleString('es-ES') + ' €';
+            if(elTasacion) elTasacion.innerText = '- ' + (o.tasacionNissanQashqai||0).toLocaleString('es-ES') + ' €';
+            if(elAPagar) elAPagar.innerText = aPagar.toLocaleString('es-ES') + ' €';
+            if(elIntereses) elIntereses.innerText = (intereses > 0 ? intereses.toLocaleString('es-ES') : 0) + ' €';
+            if(elVsContado) {
+                elVsContado.innerText = (vsContado > 0 ? '+' : '') + vsContado.toLocaleString('es-ES') + ' €';
+                elVsContado.style.color = vsContado > 0 ? 'var(--score-red)' : 'var(--text-muted)';
+            }
+
+            // Si cambiamos el tipo de financiación (Lineal/Flexible), sí recargamos la vista para mostrar/ocultar "Cuota Final"
+            if (key === 'tipoFinanciacion') {
+                renderOffers(car);
+            }
+            
             renderDashboard(); 
         }
 
