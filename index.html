@@ -255,7 +255,7 @@
                 <div id="equipment-list" style="padding: 0 15px;"></div>
             </div>
             <div class="add-equip-row">
-                <input type="text" id="new-equip-input" placeholder="Ej. Alfombrillas Velour">
+                <input type="text" id="new-equip-input" placeholder="Ej. Llantas 19 pulgadas">
                 <button class="action-btn small" onclick="addEquipment()">Añadir a Todos</button>
             </div>
         </div>
@@ -273,7 +273,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.12.0";
+        const APP_VERSION = "v1.13.0";
         
         const defaultWeights = { bateria: 20, precio: 20, diseno_calidad: 15, funcionalidad: 15, dinamica: 15, tecnologia: 15 };
         
@@ -384,7 +384,6 @@
         globalEquipList = deduplicateEquip(globalEquipList);
         localStorage.setItem('evcheck_global_equip', JSON.stringify(globalEquipList));
 
-        // --- SISTEMA DE MIGRACIÓN: Aplanar ofertas a coches 1:1 ---
         let rawAppData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
         let appData = [];
 
@@ -414,7 +413,6 @@
                 }
             });
 
-            // Aplicar defaults técnicos y de equipo
             migratedList.forEach(car => {
                 if(!car.tecnica) car.tecnica = {};
                 if(car.tecnica.maletero === undefined) car.tecnica.maletero = 0;
@@ -658,30 +656,31 @@
             let score = 0;
             const w = appWeights;
             const o = car.oferta;
+            const pts = car.puntuaciones;
             
-            let batScore = Math.min(((car.tecnica.bateria / 80) * 5) + ((car.tecnica.wltp / 600) * 5), 10);
-            score += batScore * (w.bateria / 10);
+            // MATH CONVERSIONS APPLIED EVERYWHERE
+            let batScore = Math.min(((Number(car.tecnica.bateria) / 80) * 5) + ((Number(car.tecnica.wltp) / 600) * 5), 10);
+            score += batScore * (Number(w.bateria) / 10);
 
-            let isFin = (o.entrada > 0 || o.meses > 0);
-            let totalFin = isFin ? ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) : (o.precioAlContado || 0);
-            let effectivePrice = totalFin - (o.tasacionNissanQashqai || 0);
+            let isFin = (Number(o.entrada) > 0 || Number(o.meses) > 0);
+            let totalFin = isFin ? (Number(o.entrada || 0) + (Number(o.cuotaMensual || 0) * Number(o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? Number(o.cuotaFinal || 0) : 0)) : Number(o.precioAlContado || 0);
+            let effectivePrice = totalFin - Number(o.tasacionNissanQashqai || 0);
             
             let priceScore = Math.max(10 - ((effectivePrice - 15000) / 2500), 1);
             priceScore = Math.min(priceScore, 10);
-            score += priceScore * (w.precio / 10);
+            score += priceScore * (Number(w.precio) / 10);
 
-            const pts = car.puntuaciones;
-            let disenoScore = ((pts.estetica_ext || 5) + (pts.estetica_int || 5) + (pts.calidad_ext || 5) + (pts.calidad_int || 5)) / 4;
-            score += disenoScore * (w.diseno_calidad / 10);
+            let disenoScore = (Number(pts.estetica_ext || 5) + Number(pts.estetica_int || 5) + Number(pts.calidad_ext || 5) + Number(pts.calidad_int || 5)) / 4;
+            score += disenoScore * (Number(w.diseno_calidad) / 10);
             
-            let funcScore = ((pts.funcionalidad_ext || 5) + (pts.funcionalidad_int || 5)) / 2;
-            score += funcScore * (w.funcionalidad / 10);
+            let funcScore = (Number(pts.funcionalidad_ext || 5) + Number(pts.funcionalidad_int || 5)) / 2;
+            score += funcScore * (Number(w.funcionalidad) / 10);
             
-            let dinScore = ((pts.dinamica_conduccion || 5) + (pts.aislamiento || 5)) / 2;
-            score += dinScore * (w.dinamica / 10);
+            let dinScore = (Number(pts.dinamica_conduccion || 5) + Number(pts.aislamiento || 5)) / 2;
+            score += dinScore * (Number(w.dinamica) / 10);
 
-            let techScore = ((pts.software_info || 5) + (pts.seguridad_adas || 5)) / 2;
-            score += techScore * (w.tecnologia / 10);
+            let techScore = (Number(pts.software_info || 5) + Number(pts.seguridad_adas || 5)) / 2;
+            score += techScore * (Number(w.tecnologia) / 10);
 
             const activeEquip = car.equipamiento.filter(e => e.marcado).length;
             const equipRatio = activeEquip / Math.max(car.equipamiento.length, 1);
@@ -831,14 +830,14 @@
 
         function renderFinances(car) {
             const o = car.oferta;
-            const isFinanced = (o.entrada > 0 || o.meses > 0);
+            const isFinanced = (Number(o.entrada) > 0 || Number(o.meses) > 0);
             const totalPagadoConce = isFinanced ? 
-                ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) 
-                : (o.precioAlContado || 0);
+                (Number(o.entrada || 0) + (Number(o.cuotaMensual || 0) * Number(o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? Number(o.cuotaFinal || 0) : 0)) 
+                : Number(o.precioAlContado || 0);
                 
-            const intereses = isFinanced ? (totalPagadoConce - (o.precioFinanciado || 0)) : 0;
-            const vsContado = isFinanced ? (totalPagadoConce - (o.precioAlContado || 0)) : 0;
-            const balanceNeto = totalPagadoConce - (o.tasacionNissanQashqai || 0);
+            const intereses = isFinanced ? (totalPagadoConce - Number(o.precioFinanciado || 0)) : 0;
+            const vsContado = isFinanced ? (totalPagadoConce - Number(o.precioAlContado || 0)) : 0;
+            const balanceNeto = totalPagadoConce - Number(o.tasacionNissanQashqai || 0);
 
             const html = `
             <div class="offer-card" style="border: none; padding: 0;">
@@ -920,7 +919,7 @@
                     </p>
                     <p style="margin-bottom: 8px; display: flex; justify-content: space-between; padding-top: 5px;">
                         <span>Ingreso Tasación (A tu cuenta):</span> 
-                        <span id="tasacion-val" style="color:var(--neon-green)">+ ${(o.tasacionNissanQashqai||0).toLocaleString('es-ES')} €</span>
+                        <span id="tasacion-val" style="color:var(--neon-green)">+ ${Number(o.tasacionNissanQashqai||0).toLocaleString('es-ES')} €</span>
                     </p>
                     <p style="margin-bottom: 0; display: flex; justify-content: space-between; align-items: center;">
                         <strong>Balance Neto Operación:</strong> 
@@ -935,20 +934,20 @@
         function updateFinances(key, val, type) {
             const car = appData.find(c => c.id === currentCarId);
             if (type === 'checkbox') car.oferta[key] = val;
-            else if (type === 'number') car.oferta[key] = Number(val);
+            else if (type === 'number') car.oferta[key] = val === '' ? '' : Number(val);
             else car.oferta[key] = val;
             
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
             
             const o = car.oferta;
-            const isFinanced = (o.entrada > 0 || o.meses > 0);
+            const isFinanced = (Number(o.entrada) > 0 || Number(o.meses) > 0);
             const totalPagadoConce = isFinanced ? 
-                ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) 
-                : (o.precioAlContado || 0);
+                (Number(o.entrada || 0) + (Number(o.cuotaMensual || 0) * Number(o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? Number(o.cuotaFinal || 0) : 0)) 
+                : Number(o.precioAlContado || 0);
                 
-            const intereses = isFinanced ? (totalPagadoConce - (o.precioFinanciado || 0)) : 0;
-            const vsContado = isFinanced ? (totalPagadoConce - (o.precioAlContado || 0)) : 0;
-            const balanceNeto = totalPagadoConce - (o.tasacionNissanQashqai || 0);
+            const intereses = isFinanced ? (totalPagadoConce - Number(o.precioFinanciado || 0)) : 0;
+            const vsContado = isFinanced ? (totalPagadoConce - Number(o.precioAlContado || 0)) : 0;
+            const balanceNeto = totalPagadoConce - Number(o.tasacionNissanQashqai || 0);
 
             const elTotalFinLbl = document.getElementById(`total-fin-lbl`);
             const elTotalFin = document.getElementById(`total-fin`);
@@ -959,7 +958,7 @@
 
             if(elTotalFinLbl) elTotalFinLbl.innerText = isFinanced ? 'Coste Total a Pagar:' : 'Coste Total al Contado:';
             if(elTotalFin) elTotalFin.innerText = totalPagadoConce.toLocaleString('es-ES') + ' €';
-            if(elTasacion) elTasacion.innerText = '+ ' + (o.tasacionNissanQashqai||0).toLocaleString('es-ES') + ' €';
+            if(elTasacion) elTasacion.innerText = '+ ' + Number(o.tasacionNissanQashqai||0).toLocaleString('es-ES') + ' €';
             if(elAPagar) {
                 elAPagar.innerText = balanceNeto.toLocaleString('es-ES') + ' €';
                 elAPagar.style.color = balanceNeto < 0 ? 'var(--neon-green)' : 'var(--text-color)';
