@@ -240,7 +240,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.8.1";
+        const APP_VERSION = "v1.8.2";
         
         const defaultWeights = { 
             bateria: 20, 
@@ -554,17 +554,29 @@
             const car = appData.find(c => c.id === currentCarId);
             
             // Interceptor Inteligente para Google Drive Links
-            if (key === 'img' && val.includes('drive.google.com/file/d/')) {
-                const match = val.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                if (match && match[1]) {
-                    val = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                    // Actualiza el campo visualmente para que el usuario vea el enlace corregido
-                    setTimeout(() => {
-                        const inputs = document.querySelectorAll(`input[type="url"]`);
-                        inputs.forEach(input => {
-                            if(input.value.includes('drive.google.com/file/d/')) input.value = val;
-                        });
-                    }, 50);
+            if (key === 'img') {
+                if (val.includes('drive.google.com/file/d/')) {
+                    const match = val.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                    if (match && match[1]) {
+                        val = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`;
+                        setTimeout(() => {
+                            const inputs = document.querySelectorAll('input[type="url"]');
+                            inputs.forEach(input => {
+                                if(input.value.includes('drive.google.com/file/d/')) input.value = val;
+                            });
+                        }, 50);
+                    }
+                } else if (val.includes('drive.google.com/open?id=')) {
+                    const match = val.match(/id=([a-zA-Z0-9_-]+)/);
+                    if (match && match[1]) {
+                        val = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`;
+                        setTimeout(() => {
+                            const inputs = document.querySelectorAll('input[type="url"]');
+                            inputs.forEach(input => {
+                                if(input.value.includes('drive.google.com/open?id=')) input.value = val;
+                            });
+                        }, 50);
+                    }
                 }
             }
 
