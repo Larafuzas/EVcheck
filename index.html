@@ -250,7 +250,7 @@
                 <div id="equipment-list" style="padding: 0 15px;"></div>
             </div>
             <div class="add-equip-row">
-                <input type="text" id="new-equip-input" placeholder="Ej. Llantas 19 pulgadas">
+                <input type="text" id="new-equip-input" placeholder="Ej. Alfombrillas Velour">
                 <button class="action-btn small" onclick="addEquipment()">Añadir a Todos</button>
             </div>
         </div>
@@ -268,7 +268,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.9.4";
+        const APP_VERSION = "v1.10.0";
         
         const defaultWeights = { bateria: 20, precio: 20, diseno_calidad: 15, funcionalidad: 15, dinamica: 15, tecnologia: 15 };
         
@@ -284,21 +284,37 @@
             { nombre: "Función de conducción One-Pedal", marcado: false },
             { nombre: "Control de crucero adaptativo inteligente", marcado: false },
             { nombre: "Sistema de centrado y mantenimiento de carril", marcado: false },
+            { nombre: "Asistente de conducción en atascos", marcado: false },
+            { nombre: "Conducción autónoma Nivel 2 (Asistencia avanzada)", marcado: false },
+            { nombre: "Sistema anticolisión con asistencia de frenado", marcado: false },
             { nombre: "Alerta de ángulo muerto", marcado: false },
             { nombre: "Cámaras de visión 360º", marcado: false },
+            { nombre: "Cámara de visión trasera", marcado: false },
             { nombre: "Sensores de aparcamiento delanteros y traseros", marcado: false },
+            { nombre: "Asistente de aparcamiento automático", marcado: false },
             { nombre: "Cámaras de grabación de entorno (Modo centinela)", marcado: false },
+            { nombre: "Selector de modos de conducción", marcado: false },
+            { nombre: "Suspensión adaptativa", marcado: false },
             { nombre: "Frunk (maletero delantero)", marcado: false },
             { nombre: "Organizadores de cables para el maletero o frunk", marcado: false },
             { nombre: "Portón del maletero con apertura eléctrica y función manos libres", marcado: false },
             { nombre: "Kit antipinchazos", marcado: false },
             { nombre: "Compresor de aire portátil", marcado: false },
             { nombre: "Baliza de emergencia V-16 conectada", marcado: false },
+            { nombre: "Apertura y arranque sin llave (Keyless)", marcado: false },
+            { nombre: "Tiradores de puertas enrasados", marcado: false },
+            { nombre: "Barras de techo longitudinales", marcado: false },
             { nombre: "Climatizador bizona", marcado: false },
             { nombre: "Climatización 'Driver Only'", marcado: false },
+            { nombre: "Tapicería de tela", marcado: false },
+            { nombre: "Tapicería de piel sintética/cuero vegano", marcado: false },
             { nombre: "Asientos delanteros y traseros calefactables", marcado: false },
             { nombre: "Asientos ventilados", marcado: false },
             { nombre: "Volante calefactable", marcado: false },
+            { nombre: "Espejos retrovisores plegables eléctricamente y calefactados", marcado: false },
+            { nombre: "Retrovisor interior antideslumbramiento automático", marcado: false },
+            { nombre: "Sensores de luces y lluvia", marcado: false },
+            { nombre: "Limpiaparabrisas trasero", marcado: false },
             { nombre: "Llantas aerodinámicas", marcado: false },
             { nombre: "Neumáticos de baja resistencia a la rodadura específicos para VE", marcado: false },
             { nombre: "Sistema de infoentretenimiento con planificador de rutas y puntos de carga", marcado: false },
@@ -306,9 +322,9 @@
             { nombre: "Conectividad 4G/5G integrada", marcado: false },
             { nombre: "Capacidad de actualizaciones OTA (Over-The-Air)", marcado: false },
             { nombre: "Aplicación móvil para control remoto (carga, clima, apertura)", marcado: false },
+            { nombre: "Cargador inalámbrico para smartphones", marcado: false },
             { nombre: "Faros Matrix LED o Full LED adaptativos", marcado: false },
             { nombre: "Head-Up Display (HUD)", marcado: false },
-            { nombre: "Cargador inalámbrico para smartphones", marcado: false },
             { nombre: "Techo de cristal panorámico", marcado: false },
             { nombre: "Puertos USB-C delanteros y traseros", marcado: false },
             { nombre: "Sistema de sonido premium", marcado: false },
@@ -329,7 +345,9 @@
             "levas de regeneración en volante": "Levas en el volante para regeneración",
             "preacondicionamiento de batería (nav/manual)": "Preacondicionamiento de batería",
             "control de crucero adaptativo (acc)": "Control de crucero adaptativo inteligente",
-            "faros matrix led adaptativos": "Faros Matrix LED o Full LED adaptativos"
+            "faros matrix led adaptativos": "Faros Matrix LED o Full LED adaptativos",
+            "climatización remota": "Aplicación móvil para control remoto (carga, clima, apertura)",
+            "cargador de móvil inalámbrico": "Cargador inalámbrico para smartphones"
         };
 
         function deduplicateEquip(equipList) {
@@ -362,8 +380,17 @@
         localStorage.setItem('evcheck_global_equip', JSON.stringify(globalEquipList));
 
         let appData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
+        
         if (appData && appData.length > 0) {
             appData.forEach(car => {
+                // Migración de campos técnicos nuevos
+                if(car.tecnica.maletero === undefined) car.tecnica.maletero = 0;
+                if(car.tecnica.frunk === undefined) car.tecnica.frunk = 0;
+                if(car.tecnica.garantiaGeneral === undefined) car.tecnica.garantiaGeneral = "";
+                if(car.tecnica.garantiaBateria === undefined) car.tecnica.garantiaBateria = "";
+                if(car.tecnica.mantenimiento === undefined) car.tecnica.mantenimiento = "";
+
+                // Migración de equipamiento
                 globalEquipList.forEach(globalEq => {
                     if (!car.equipamiento || !car.equipamiento.some(eq => eq.nombre.toLowerCase() === globalEq.nombre.toLowerCase())) {
                         if (!car.equipamiento) car.equipamiento = [];
@@ -371,6 +398,11 @@
                     }
                 });
                 car.equipamiento = deduplicateEquip(car.equipamiento);
+                
+                // Migración del checkbox mantenimiento en ofertas
+                car.ofertas.forEach(o => {
+                    if (o.incluyeMantenimiento === undefined) o.incluyeMantenimiento = false;
+                });
             });
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
         }
@@ -441,7 +473,7 @@
                 marca: "Nueva Marca",
                 modelo: "Modelo",
                 img: "",
-                tecnica: { quimica: "", bateria: 0, wltp: 0, potenciaCargaDc: 0 },
+                tecnica: { quimica: "", bateria: 0, wltp: 0, potenciaCargaDc: 0, maletero: 0, frunk: 0, garantiaGeneral: "", garantiaBateria: "", mantenimiento: "" },
                 ofertas: [],
                 equipamiento: JSON.parse(JSON.stringify(globalEquipList)),
                 puntuaciones: { estetica_ext: 5, estetica_int: 5, calidad_ext: 5, calidad_int: 5, funcionalidad_ext: 5, funcionalidad_int: 5, dinamica_conduccion: 5, aislamiento: 5, software_info: 5, seguridad_adas: 5 }
@@ -521,7 +553,7 @@
             appWeights[key] = Number(value);
             localStorage.setItem('evcheck_weights', JSON.stringify(appWeights));
             updateTotalWeight();
-            renderDashboard(); 
+            renderDashboard();
         }
 
         function updateTotalWeight() {
@@ -545,7 +577,6 @@
             let batScore = Math.min(((car.tecnica.bateria / 80) * 5) + ((car.tecnica.wltp / 600) * 5), 10);
             score += batScore * (w.bateria / 10);
 
-            // Calculamos el Balance Neto (Coste real - Ingreso Tasación) para premiar las buenas tasaciones
             let effectivePrices = car.ofertas.map(o => {
                 let isFin = (o.entrada > 0 || o.meses > 0);
                 let totalFin = isFin ? ((o.entrada || 0) + ((o.cuotaMensual || 0) * (o.meses || 0)) + (o.tipoFinanciacion === 'flexible' ? (o.cuotaFinal || 0) : 0)) : (o.precioAlContado || 0);
@@ -553,7 +584,6 @@
             });
             let minPrice = effectivePrices.length ? Math.min(...effectivePrices) : 40000;
             
-            // Ajustamos la escala para que un balance neto de 15.000€ sea un 10, y vaya bajando.
             let priceScore = Math.max(10 - ((minPrice - 15000) / 2500), 1);
             priceScore = Math.min(priceScore, 10);
             score += priceScore * (w.precio / 10);
@@ -664,6 +694,18 @@
             }
         }
 
+        // Modificado para aceptar parámetro de tipo (text, number, url) para guardar strings correctamente
+        function updateCarData(cat, key, val, type = 'number') {
+            const car = appData.find(c => c.id === currentCarId);
+            if(type === 'text' || type === 'url') {
+                car[cat][key] = val;
+            } else {
+                car[cat][key] = val === '' ? '' : Number(val);
+            }
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+            renderDashboard(); 
+        }
+
         function renderSpecs(car) {
             const baseFields = [
                 { k: 'marca', l: 'Marca', type: 'text' },
@@ -672,10 +714,15 @@
             ];
             
             const techFields = [
-                { k: 'quimica', l: 'Química', type: 'text' },
-                { k: 'bateria', l: 'Batería (kWh)', type: 'number' },
-                { k: 'wltp', l: 'WLTP (km)', type: 'number' },
-                { k: 'potenciaCargaDc', l: 'Carga DC (kW)', type: 'number' }
+                { k: 'quimica', l: 'Química de la Batería', type: 'text' },
+                { k: 'bateria', l: 'Batería Util (kWh)', type: 'number' },
+                { k: 'wltp', l: 'Autonomía WLTP (km)', type: 'number' },
+                { k: 'potenciaCargaDc', l: 'Pico Carga DC (kW)', type: 'number' },
+                { k: 'maletero', l: 'Maletero Principal (Litros)', type: 'number' },
+                { k: 'frunk', l: 'Maletero Delantero - Frunk (Litros)', type: 'number' },
+                { k: 'garantiaGeneral', l: 'Garantía Gral. (Ej. 7 años / 150.000km)', type: 'text' },
+                { k: 'garantiaBateria', l: 'Garantía Batería (Ej. 8 años / 160.000km)', type: 'text' },
+                { k: 'mantenimiento', l: 'Mantenimientos (Ej. 2 años / 30.000km)', type: 'text' }
             ];
 
             let html = `<h4 class="section-title" style="margin-top: 0;">Datos Generales</h4>`;
@@ -686,11 +733,11 @@
                 </div>
             `).join('');
 
-            html += `<h4 class="section-title">Especificaciones Técnicas</h4>`;
+            html += `<h4 class="section-title">Especificaciones Técnicas y Garantías</h4>`;
             html += techFields.map(f => `
                 <div class="data-group">
                     <label>${f.l}</label>
-                    <input type="${f.type}" value="${car.tecnica[f.k]}" oninput="updateCarData('tecnica', '${f.k}', this.value)">
+                    <input type="${f.type}" value="${car.tecnica[f.k] !== undefined ? car.tecnica[f.k] : ''}" oninput="updateCarData('tecnica', '${f.k}', this.value, '${f.type}')">
                 </div>
             `).join('');
             
@@ -736,8 +783,9 @@
                         <label>
                             <input type="checkbox" ${o.incluyeCargador ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyeCargador', this.checked, 'checkbox')">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
-                            Cargador Doméstico
+                            Cargador
                         </label>
+                        <label><input type="checkbox" ${o.incluyeMantenimiento ? 'checked' : ''} onchange="updateOfferData(${i}, 'incluyeMantenimiento', this.checked, 'checkbox')"> Mantenimiento</label>
                     </div>
 
                     <h4 style="margin-bottom: 10px; font-size: 0.95rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Condiciones de Financiación</h4>
@@ -865,7 +913,7 @@
                 concesionario: "Nuevo Concesionario", 
                 precioAlContado: 0, precioFinanciado: 0, tasacionNissanQashqai: 0,
                 tipoFinanciacion: "flexible", entrada: 0, meses: 0, cuotaMensual: 0, cuotaFinal: 0, tin: 0, tae: 0,
-                incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false
+                incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false
             });
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
             renderOffers(car);
@@ -924,17 +972,10 @@
                 ${g.fields.map(f => `
                     <div class="data-group">
                         <label>${f.l} (1-10)</label>
-                        <input type="number" min="1" max="10" value="${car.puntuaciones[f.k]}" oninput="updateCarData('puntuaciones', '${f.k}', this.value)">
+                        <input type="number" min="1" max="10" value="${car.puntuaciones[f.k]}" oninput="updateCarData('puntuaciones', '${f.k}', this.value, 'number')">
                     </div>
                 `).join('')}
             `).join('');
-        }
-
-        function updateCarData(cat, key, val) {
-            const car = appData.find(c => c.id === currentCarId);
-            car[cat][key] = isNaN(val) ? val : Number(val);
-            localStorage.setItem('evcheck_data', JSON.stringify(appData));
-            renderDashboard(); 
         }
 
         function toggleEquip(idx, isChecked) {
