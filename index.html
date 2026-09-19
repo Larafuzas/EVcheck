@@ -15,6 +15,7 @@
             --text-muted: #aaa;
             --border-color: #333;
             
+            /* Colores de Puntuación */
             --score-green: #00C800;
             --score-yellow: #FFD60A;
             --score-orange: #FF9F0A;
@@ -164,6 +165,10 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 Restaurar Datos
             </button>
+            <button class="action-btn secondary" style="margin-top: 15px; border-color: var(--score-green);" onclick="location.reload()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                Recargar Imágenes y App
+            </button>
         </div>
 
         <div class="config-section">
@@ -228,15 +233,15 @@
                 <div id="equipment-list" style="padding: 0 15px;"></div>
             </div>
             <div class="add-equip-row">
-                <input type="text" id="new-equip-input" placeholder="Ej. Llantas 19 pulgadas">
-                <button class="action-btn small" onclick="addEquipment()">Añadir</button>
+                <input type="text" id="new-equip-input" placeholder="Ej. Alfombrillas Velour">
+                <button class="action-btn small" onclick="addEquipment()">Añadir a Todos</button>
             </div>
         </div>
         <div id="rating" class="tab-content"></div>
     </div>
 
     <script>
-        const APP_VERSION = "v1.6.0";
+        const APP_VERSION = "v1.8.0";
         
         const defaultWeights = { 
             bateria: 20, 
@@ -247,29 +252,76 @@
             tecnologia: 15 
         };
         
+        // Base maestra de equipamiento fusionada y ampliada
         const defaultEquip = [
-            { nombre: "Conducción One Pedal", marcado: false },
-            { nombre: "Levas de regeneración en volante", marcado: false },
             { nombre: "Bomba de calor", marcado: false },
+            { nombre: "Sistema V2L (Vehicle-to-Load)", marcado: false },
+            { nombre: "Cargador embarcado de 22 kW (CA)", marcado: false },
+            { nombre: "Cable de carga Tipo 2 (Modo 3)", marcado: false },
+            { nombre: "Cargador portátil de emergencia (Modo 2 / Schuko)", marcado: false },
             { nombre: "Preacondicionamiento de batería", marcado: false },
+            { nombre: "Sistema de frenada regenerativa ajustable", marcado: false },
+            { nombre: "Levas en el volante para regeneración", marcado: false },
+            { nombre: "Función de conducción One-Pedal", marcado: false },
+            { nombre: "Control de crucero adaptativo inteligente", marcado: false },
+            { nombre: "Sistema de centrado y mantenimiento de carril", marcado: false },
+            { nombre: "Alerta de ángulo muerto", marcado: false },
+            { nombre: "Cámaras de visión 360º", marcado: false },
+            { nombre: "Sensores de aparcamiento delanteros y traseros", marcado: false },
+            { nombre: "Cámaras de grabación de entorno (Modo centinela)", marcado: false },
+            { nombre: "Frunk (maletero delantero)", marcado: false },
+            { nombre: "Organizadores de cables para el maletero o frunk", marcado: false },
+            { nombre: "Portón del maletero con apertura eléctrica y función manos libres", marcado: false },
+            { nombre: "Kit antipinchazos", marcado: false },
+            { nombre: "Compresor de aire portátil", marcado: false },
+            { nombre: "Baliza de emergencia V-16 conectada", marcado: false },
             { nombre: "Climatizador bizona", marcado: false },
             { nombre: "Climatización 'Driver Only'", marcado: false },
-            { nombre: "Alerta de ángulo muerto", marcado: false },
-            { nombre: "Cámaras 360º", marcado: false },
-            { nombre: "Control de crucero adaptativo (ACC)", marcado: false },
-            { nombre: "Centrado de carril activo", marcado: false },
-            { nombre: "Faros Matrix LED adaptativos", marcado: false },
-            { nombre: "Apple CarPlay / Android Auto inalámbrico", marcado: false },
-            { nombre: "Asientos calefactables", marcado: false },
+            { nombre: "Asientos delanteros y traseros calefactables", marcado: false },
+            { nombre: "Asientos ventilados", marcado: false },
             { nombre: "Volante calefactable", marcado: false },
-            { nombre: "Techo panorámico", marcado: false },
-            { nombre: "Frunk (Maletero delantero)", marcado: false },
-            { nombre: "V2L (Carga de dispositivos externos)", marcado: false }
+            { nombre: "Llantas aerodinámicas", marcado: false },
+            { nombre: "Neumáticos de baja resistencia a la rodadura específicos para VE", marcado: false },
+            { nombre: "Sistema de infoentretenimiento con planificador de rutas y puntos de carga", marcado: false },
+            { nombre: "Apple CarPlay / Android Auto inalámbrico", marcado: false },
+            { nombre: "Conectividad 4G/5G integrada", marcado: false },
+            { nombre: "Capacidad de actualizaciones OTA (Over-The-Air)", marcado: false },
+            { nombre: "Aplicación móvil para control remoto (carga, clima, apertura)", marcado: false },
+            { nombre: "Faros Matrix LED o Full LED adaptativos", marcado: false },
+            { nombre: "Head-Up Display (HUD)", marcado: false },
+            { nombre: "Cargador inalámbrico para smartphones", marcado: false },
+            { nombre: "Techo de cristal panorámico", marcado: false },
+            { nombre: "Puertos USB-C delanteros y traseros", marcado: false },
+            { nombre: "Sistema de sonido premium", marcado: false },
+            { nombre: "Cristales tintados y acústicos", marcado: false }
         ];
 
-        let appData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
-        let appWeights = JSON.parse(localStorage.getItem('evcheck_weights'));
+        let globalEquipList = JSON.parse(localStorage.getItem('evcheck_global_equip')) || [];
         
+        // MIGRACIÓN DE EQUIPAMIENTO GLOBAL: Añadir nuevos items de la v1.8.0 si no existen
+        defaultEquip.forEach(defaultEq => {
+            if (!globalEquipList.some(eq => eq.nombre === defaultEq.nombre)) {
+                globalEquipList.push({...defaultEq});
+            }
+        });
+        localStorage.setItem('evcheck_global_equip', JSON.stringify(globalEquipList));
+
+        let appData = JSON.parse(localStorage.getItem('evcheck_data')) || [];
+        
+        // MIGRACIÓN DE COCHES GUARDADOS: Añadir los nuevos equipamientos de la v1.8.0 a cada coche existente
+        if (appData && appData.length > 0) {
+            appData.forEach(car => {
+                globalEquipList.forEach(globalEq => {
+                    if (!car.equipamiento || !car.equipamiento.some(eq => eq.nombre.toLowerCase() === globalEq.nombre.toLowerCase())) {
+                        if (!car.equipamiento) car.equipamiento = [];
+                        car.equipamiento.push({...globalEq, marcado: false});
+                    }
+                });
+            });
+            localStorage.setItem('evcheck_data', JSON.stringify(appData));
+        }
+
+        let appWeights = JSON.parse(localStorage.getItem('evcheck_weights'));
         if (!appWeights || Object.keys(appWeights).length === 0 || appWeights.diseno_calidad === undefined) {
             appWeights = defaultWeights; 
         } else {
@@ -328,7 +380,6 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // --- FUNCIONES NUEVAS: AÑADIR Y BORRAR VEHÍCULOS ---
         function addNewCar() {
             const newCar = {
                 id: "car-" + Date.now(),
@@ -337,7 +388,7 @@
                 img: "",
                 tecnica: { quimica: "", bateria: 0, wltp: 0, potenciaCargaDc: 0 },
                 ofertas: [],
-                equipamiento: JSON.parse(JSON.stringify(defaultEquip)),
+                equipamiento: JSON.parse(JSON.stringify(globalEquipList)),
                 puntuaciones: { estetica_ext: 5, estetica_int: 5, calidad_ext: 5, calidad_int: 5, funcionalidad_ext: 5, funcionalidad_int: 5, dinamica_conduccion: 5, aislamiento: 5, software_info: 5, seguridad_adas: 5 }
             };
             appData.push(newCar);
@@ -354,7 +405,7 @@
         }
 
         function exportData() {
-            const backup = { data: appData, weights: appWeights };
+            const backup = { data: appData, weights: appWeights, globalEquip: globalEquipList };
             const dataStr = JSON.stringify(backup, null, 2);
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
@@ -375,6 +426,9 @@
                     if (parsed.data && parsed.weights) {
                         localStorage.setItem('evcheck_data', JSON.stringify(parsed.data));
                         localStorage.setItem('evcheck_weights', JSON.stringify(parsed.weights));
+                        if(parsed.globalEquip) {
+                            localStorage.setItem('evcheck_global_equip', JSON.stringify(parsed.globalEquip));
+                        }
                         alert('Copia de seguridad restaurada correctamente. La aplicación se recargará.');
                         location.reload();
                     } else {
@@ -518,7 +572,7 @@
             html += baseFields.map(f => `
                 <div class="data-group">
                     <label>${f.l}</label>
-                    <input type="${f.type}" value="${car[f.k]}" oninput="updateBaseData('${f.k}', this.value)">
+                    <input type="${f.type}" value="${car[f.k] || ''}" oninput="updateBaseData('${f.k}', this.value)">
                 </div>
             `).join('');
 
@@ -648,9 +702,7 @@
             
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
             renderOffers(car); 
-            const backupView = document.querySelector('.view.active').id; 
-            renderDashboard();
-            if(backupView === 'detail-view') document.getElementById('dashboard-view').classList.remove('active');
+            renderDashboard(); 
         }
 
         function deleteOffer(idx) {
@@ -659,9 +711,7 @@
                 car.ofertas.splice(idx, 1);
                 localStorage.setItem('evcheck_data', JSON.stringify(appData));
                 renderOffers(car);
-                const backupView = document.querySelector('.view.active').id; 
-                renderDashboard();
-                if(backupView === 'detail-view') document.getElementById('dashboard-view').classList.remove('active');
+                renderDashboard(); 
             }
         }
 
@@ -754,11 +804,24 @@
             const input = document.getElementById('new-equip-input');
             const val = input.value.trim();
             if(!val) return;
-            const car = appData.find(c => c.id === currentCarId);
-            car.equipamiento.push({ nombre: val, marcado: true });
+            
+            if (!globalEquipList.some(e => e.nombre.toLowerCase() === val.toLowerCase())) {
+                globalEquipList.push({ nombre: val, marcado: false });
+                localStorage.setItem('evcheck_global_equip', JSON.stringify(globalEquipList));
+            }
+
+            appData.forEach(car => {
+                if (!car.equipamiento.some(e => e.nombre.toLowerCase() === val.toLowerCase())) {
+                    car.equipamiento.push({ nombre: val, marcado: (car.id === currentCarId) });
+                } else if (car.id === currentCarId) {
+                    let eq = car.equipamiento.find(e => e.nombre.toLowerCase() === val.toLowerCase());
+                    if(eq) eq.marcado = true;
+                }
+            });
+
             localStorage.setItem('evcheck_data', JSON.stringify(appData));
             input.value = '';
-            renderEquipment(car);
+            renderEquipment(appData.find(c => c.id === currentCarId));
             renderDashboard(); 
         }
 
