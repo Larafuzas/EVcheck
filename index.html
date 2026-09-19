@@ -149,10 +149,17 @@
 
     <div id="dashboard-view" class="view active">
         <div id="car-list"></div>
-        <button class="action-btn" onclick="addNewCar()" style="margin-top: 20px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Añadir Nuevo Vehículo
-        </button>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="action-btn" onclick="addNewCar()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Añadir Manual
+            </button>
+            <button class="action-btn secondary" style="margin-top: 10px;" onclick="document.getElementById('import-car-file').click()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Importar Vehículo JSON (Gem)
+            </button>
+            <input type="file" id="import-car-file" style="display: none;" accept=".json" onchange="importSingleCar(event)">
+        </div>
     </div>
 
     <div id="settings-view" class="view">
@@ -162,15 +169,15 @@
         </div>
 
         <div class="config-section">
-            <h3>Datos y Copias de Seguridad</h3>
+            <h3>Base de Datos Global</h3>
             <button class="action-btn secondary" onclick="exportData()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Exportar Datos (Backup)
+                Descargar Copia (Completa)
             </button>
             <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
             <button class="action-btn secondary" onclick="document.getElementById('import-file').click()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Restaurar Datos
+                Restaurar Copia (Reescribe)
             </button>
             <button class="action-btn secondary" style="margin-top: 15px; border-color: var(--score-green);" onclick="location.reload()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
@@ -268,7 +275,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.10.0";
+        const APP_VERSION = "v1.11.0";
         
         const defaultWeights = { bateria: 20, precio: 20, diseno_calidad: 15, funcionalidad: 15, dinamica: 15, tecnologia: 15 };
         
@@ -383,14 +390,12 @@
         
         if (appData && appData.length > 0) {
             appData.forEach(car => {
-                // Migración de campos técnicos nuevos
                 if(car.tecnica.maletero === undefined) car.tecnica.maletero = 0;
                 if(car.tecnica.frunk === undefined) car.tecnica.frunk = 0;
                 if(car.tecnica.garantiaGeneral === undefined) car.tecnica.garantiaGeneral = "";
                 if(car.tecnica.garantiaBateria === undefined) car.tecnica.garantiaBateria = "";
                 if(car.tecnica.mantenimiento === undefined) car.tecnica.mantenimiento = "";
 
-                // Migración de equipamiento
                 globalEquipList.forEach(globalEq => {
                     if (!car.equipamiento || !car.equipamiento.some(eq => eq.nombre.toLowerCase() === globalEq.nombre.toLowerCase())) {
                         if (!car.equipamiento) car.equipamiento = [];
@@ -399,7 +404,6 @@
                 });
                 car.equipamiento = deduplicateEquip(car.equipamiento);
                 
-                // Migración del checkbox mantenimiento en ofertas
                 car.ofertas.forEach(o => {
                     if (o.incluyeMantenimiento === undefined) o.incluyeMantenimiento = false;
                 });
@@ -524,6 +528,52 @@
                 } catch (err) {
                     alert('Error al leer el archivo JSON.');
                 }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- NUEVA FUNCIÓN: IMPORTAR UN VEHÍCULO INDIVIDUAL DESDE GEM ---
+        function importSingleCar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    const carsToAdd = Array.isArray(parsed) ? parsed : [parsed];
+                    
+                    let added = 0;
+                    carsToAdd.forEach(newCar => {
+                        if (newCar.marca && newCar.modelo) {
+                            newCar.id = "car-" + Date.now() + Math.floor(Math.random() * 1000);
+                            
+                            if(!newCar.tecnica) newCar.tecnica = { quimica: "", bateria: 0, wltp: 0, potenciaCargaDc: 0, maletero: 0, frunk: 0, garantiaGeneral: "", garantiaBateria: "", mantenimiento: "" };
+                            if(!newCar.ofertas) newCar.ofertas = [];
+                            if(!newCar.puntuaciones) newCar.puntuaciones = { estetica_ext: 5, estetica_int: 5, calidad_ext: 5, calidad_int: 5, funcionalidad_ext: 5, funcionalidad_int: 5, dinamica_conduccion: 5, aislamiento: 5, software_info: 5, seguridad_adas: 5 };
+                            
+                            // Sincronizar equipamiento de Gem con la lista global
+                            const equipMap = new Map(newCar.equipamiento?.map(eq => [eq.nombre.toLowerCase(), eq.marcado]) || []);
+                            newCar.equipamiento = globalEquipList.map(gEq => ({
+                                nombre: gEq.nombre,
+                                marcado: equipMap.has(gEq.nombre.toLowerCase()) ? equipMap.get(gEq.nombre.toLowerCase()) : false
+                            }));
+
+                            appData.push(newCar);
+                            added++;
+                        }
+                    });
+
+                    if (added > 0) {
+                        localStorage.setItem('evcheck_data', JSON.stringify(appData));
+                        alert(`Se han importado ${added} vehículo(s) correctamente a tu lista.`);
+                        renderDashboard();
+                    } else {
+                        alert('El archivo no contiene un formato de vehículo válido para EVcheck.');
+                    }
+                } catch (err) {
+                    alert('Error al leer el archivo JSON. Asegúrate de que el Gem lo haya generado correctamente.');
+                }
+                event.target.value = ''; 
             };
             reader.readAsText(file);
         }
@@ -694,7 +744,6 @@
             }
         }
 
-        // Modificado para aceptar parámetro de tipo (text, number, url) para guardar strings correctamente
         function updateCarData(cat, key, val, type = 'number') {
             const car = appData.find(c => c.id === currentCarId);
             if(type === 'text' || type === 'url') {
