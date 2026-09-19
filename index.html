@@ -264,7 +264,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v1.9.1";
+        const APP_VERSION = "v1.9.2";
         
         const defaultWeights = { bateria: 20, precio: 20, diseno_calidad: 15, funcionalidad: 15, dinamica: 15, tecnologia: 15 };
         
@@ -466,7 +466,7 @@
 
         function renderWeightsConfig() {
             const container = document.getElementById('weights-container');
-            const labels = { bateria: 'Batería y Eficiencia', precio: 'Precio (Incl. Tasación)', diseno_calidad: 'Diseño y Calidad', funcionalidad: 'Funcionalidad', dinamica: 'Dinámica', tecnologia: 'Tecnología' };
+            const labels = { bateria: 'Batería y Eficiencia', precio: 'Precio', diseno_calidad: 'Diseño y Calidad', funcionalidad: 'Funcionalidad', dinamica: 'Dinámica', tecnologia: 'Tecnología' };
             container.innerHTML = Object.keys(appWeights).map(key => `
                 <div class="weight-row">
                     <label>${labels[key]}</label>
@@ -480,7 +480,7 @@
             appWeights[key] = Number(value);
             localStorage.setItem('evcheck_weights', JSON.stringify(appWeights));
             updateTotalWeight();
-            renderDashboard(); // Recalcula las notas ocultas
+            renderDashboard();
         }
 
         function updateTotalWeight() {
@@ -504,7 +504,6 @@
             let batScore = Math.min(((car.tecnica.bateria / 80) * 5) + ((car.tecnica.wltp / 600) * 5), 10);
             score += batScore * (w.bateria / 10);
 
-            // CORRECCIÓN: Usamos el coste final descontando la tasación para premiar tasaciones altas
             let effectivePrices = car.ofertas.map(o => (o.precioAlContado || 40000) - (o.tasacionNissanQashqai || 0));
             let minPrice = effectivePrices.length ? Math.min(...effectivePrices) : 40000;
             let priceScore = Math.max(10 - ((minPrice - 20000) / 2500), 1);
@@ -552,10 +551,12 @@
             }).join('');
         }
 
+        // Extractor de Google Drive Mejorado
         function formatGoogleDriveUrl(url) {
             if (!url) return '';
             if (url.includes('drive.google.com')) {
-                const match = url.match(/\/(?:d|open\?id=)([a-zA-Z0-9_-]+)/);
+                // Captura el ID de 25+ caracteres independientemente del formato (file/d/, open?id=, id=)
+                const match = url.match(/(?:file\/d\/|id=|open\?id=)([a-zA-Z0-9_-]{25,})/);
                 if (match && match[1]) {
                     return `https://drive.google.com/file/d/${match[1]}/preview`;
                 }
@@ -603,6 +604,7 @@
             showView('detail-view');
         }
 
+        // Simplificado para guardar la URL en bruto y no corromperla
         function updateBaseData(key, val) {
             const car = appData.find(c => c.id === currentCarId);
             car[key] = val;
@@ -752,7 +754,6 @@
             }).join('');
         }
 
-        // CORRECCIÓN: Actualización en segundo plano sin destruir el DOM (evita pérdida de teclado)
         function updateOfferData(idx, key, val, type) {
             const car = appData.find(c => c.id === currentCarId);
             if (type === 'checkbox') car.ofertas[idx][key] = val;
@@ -767,7 +768,6 @@
             const vsContado = totalFinanciacion - (o.precioAlContado || 0);
             const aPagar = totalFinanciacion - (o.tasacionNissanQashqai || 0);
 
-            // Actualizamos solo los números por DOM directo
             const elTotalFin = document.getElementById(`total-fin-${idx}`);
             const elTasacion = document.getElementById(`tasacion-val-${idx}`);
             const elAPagar = document.getElementById(`a-pagar-${idx}`);
@@ -783,7 +783,6 @@
                 elVsContado.style.color = vsContado > 0 ? 'var(--score-red)' : 'var(--text-muted)';
             }
 
-            // Si cambiamos el tipo de financiación (Lineal/Flexible), sí recargamos la vista para mostrar/ocultar "Cuota Final"
             if (key === 'tipoFinanciacion') {
                 renderOffers(car);
             }
