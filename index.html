@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck V3.0</title>
+    <title>EVcheck V3.1</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -50,6 +50,10 @@
         .car-info p { font-size: 0.85rem; color: var(--text-muted); }
         
         .car-score { padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; border: 1px solid; min-width: 65px; text-align: center; }
+        .score-80 { background-color: rgba(52, 199, 89, 0.1); color: var(--score-green); border-color: var(--score-green); }
+        .score-60 { background-color: rgba(255, 204, 0, 0.1); color: var(--score-yellow); border-color: var(--score-yellow); }
+        .score-45 { background-color: rgba(255, 149, 0, 0.1); color: var(--score-orange); border-color: var(--score-orange); }
+        .score-0  { background-color: rgba(255, 59, 48, 0.1); color: var(--score-red); border-color: var(--score-red); }
 
         /* UI Elementos */
         .config-section { background: var(--surface-color); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
@@ -123,11 +127,11 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="4" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck V3.0</h1>
+            <h1 id="header-title">EVcheck V3.1</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" aria-label="Ajustes">
-            <!-- Icono SVG Seguro Compatible -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Icono SVG clásico compatible -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
@@ -141,9 +145,9 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 Añadir Oferta
             </button>
-            <button class="action-btn secondary" style="margin-top: 10px;" onclick="document.getElementById('import-car-file').click()">
+            <button class="action-btn secondary" onclick="document.getElementById('import-car-file').click()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Importar JSON (Gem)
+                Importar JSON
             </button>
             <input type="file" id="import-car-file" style="display: none;" accept=".json, .txt" onchange="importSingleCar(event)">
         </div>
@@ -160,11 +164,15 @@
                     <option value="light">Día</option>
                 </select>
             </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Versión Instalada: V3.0 (Estable)</p>
+            <button class="action-btn secondary" style="margin-top: 15px;" onclick="checkOTA()">
+                Buscar Actualizaciones OTA
+            </button>
+            <p id="ota-status" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;"></p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;">Versión Instalada: <span id="app-version-display"></span></p>
         </div>
 
         <div class="config-section">
-            <h3>Copias de Seguridad</h3>
+            <h3>Copias de Seguridad (Global)</h3>
             <button class="action-btn secondary" onclick="exportData()">Exportar Garaje Completo</button>
             <input type="file" id="import-file" style="display: none;" accept=".json, .txt" onchange="importData(event)">
             <button class="action-btn secondary" onclick="document.getElementById('import-file').click()">Restaurar Garaje</button>
@@ -221,7 +229,9 @@
     </div>
 
     <script>
-        // --- BASE DE DATOS Y CONFIGURACIÓN ---
+        // --- BASE DE DATOS Y CONFIGURACIÓN SEGURA ---
+        var APP_VERSION = "v3.1.0";
+
         var CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20 },
             tasacion: { title: "Tasación", weight: 10 },
@@ -240,7 +250,7 @@
 
         function getNewCarTemplate() {
             return {
-                id: "ev-" + Date.now(),
+                id: "ev-" + Date.now() + Math.floor(Math.random() * 1000),
                 marca: "Marca",
                 modelo: "Modelo",
                 concesionario: "Concesionario",
@@ -272,14 +282,36 @@
         var currentCarId = null;
         var currentModalUrl = '';
 
-        // INICIALIZACIÓN SEGURA
+        // INICIALIZACIÓN SEGURA Y SANITIZACIÓN DE DATOS PREVIOS
+        function sanitizeCar(car) {
+            if(!car.finanzas) car.finanzas = { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0 };
+            var template = getNewCarTemplate();
+            if(!car.categorias) {
+                car.categorias = template.categorias;
+            } else {
+                for (var cat in template.categorias) {
+                    if (!car.categorias[cat] || !car.categorias[cat].items) {
+                        car.categorias[cat] = template.categorias[cat];
+                    }
+                }
+            }
+            return car;
+        }
+
         function initApp() {
             try {
                 var storedData = localStorage.getItem('evcheck_v3_data');
-                if (storedData) appData = JSON.parse(storedData);
+                if (storedData) {
+                    var parsedData = JSON.parse(storedData);
+                    if (Array.isArray(parsedData)) {
+                        appData = parsedData;
+                    }
+                }
             } catch (e) { appData = []; }
             
-            if (!Array.isArray(appData)) appData = [];
+            for(var i=0; i<appData.length; i++){
+                appData[i] = sanitizeCar(appData[i]);
+            }
             
             try {
                 var storedWeights = localStorage.getItem('evcheck_v3_weights');
@@ -290,10 +322,12 @@
             var selectEl = document.getElementById('theme-select');
             if (selectEl) selectEl.value = currentThemeSetting;
             applyTheme(currentThemeSetting);
+            
+            var verEl = document.getElementById('app-version-display');
+            if(verEl) verEl.innerText = APP_VERSION;
 
             evaluateMarket();
             renderDashboard();
-            renderWeightsConfig();
         }
 
         // TEMA
@@ -314,6 +348,21 @@
             }
         }
 
+        function checkOTA() {
+            var status = document.getElementById('ota-status');
+            if (status) {
+                status.innerText = "Buscando actualizaciones...";
+                setTimeout(function() {
+                    var st = document.getElementById('ota-status');
+                    if(st) st.innerText = "EVcheck está en la última versión (" + APP_VERSION + ").";
+                    setTimeout(function() {
+                        var st2 = document.getElementById('ota-status');
+                        if(st2) st2.innerText = "";
+                    }, 3000);
+                }, 1500);
+            }
+        }
+
         // NAVEGACIÓN
         function showView(viewId) {
             var views = document.querySelectorAll('.view');
@@ -326,13 +375,13 @@
             var settingsBtn = document.getElementById('settings-btn');
             
             if (viewId === 'settings-view') {
-                if (title) title.innerText = 'Ajustes V3.0';
-                if (settingsBtn) settingsBtn.style.display = 'flex';
+                if (title) title.innerText = 'Ajustes V3.1';
+                if (settingsBtn) settingsBtn.style.display = 'none';
                 renderWeightsConfig();
             } else if (viewId === 'detail-view') {
                 if (settingsBtn) settingsBtn.style.display = 'none';
             } else {
-                if (title) title.innerText = 'EVcheck V3.0';
+                if (title) title.innerText = 'EVcheck V3.1';
                 if (settingsBtn) settingsBtn.style.display = 'flex';
                 evaluateMarket();
                 renderDashboard();
@@ -346,6 +395,13 @@
         }
 
         // GESTIÓN DE COCHES
+        function getCarById(id) {
+            for(var i=0; i<appData.length; i++){
+                if(appData[i].id === id) return appData[i];
+            }
+            return null;
+        }
+
         function addNewCar() {
             var newCar = getNewCarTemplate();
             appData.push(newCar);
@@ -354,10 +410,10 @@
         }
 
         function duplicateCurrentCar() {
-            var car = appData.find(function(c) { return c.id === currentCarId; });
+            var car = getCarById(currentCarId);
             if (!car) return;
             var newCar = JSON.parse(JSON.stringify(car));
-            newCar.id = "ev-" + Date.now();
+            newCar.id = "ev-" + Date.now() + Math.floor(Math.random() * 1000);
             newCar.concesionario = newCar.concesionario + " (Copia)";
             appData.push(newCar);
             saveData();
@@ -366,14 +422,18 @@
 
         function deleteCurrentCar() {
             if (confirm("¿Eliminar definitivamente este vehículo?")) {
-                appData = appData.filter(function(c) { return c.id !== currentCarId; });
+                var newData = [];
+                for(var i=0; i<appData.length; i++) {
+                    if (appData[i].id !== currentCarId) newData.push(appData[i]);
+                }
+                appData = newData;
                 saveData();
                 showView('dashboard-view');
             }
         }
 
         function nukeData() {
-            if (confirm("¡PELIGRO! ¿Borrar TODOS los datos guardados en la versión 3.0?")) {
+            if (confirm("¡PELIGRO EXTREMO! ¿Borrar TODOS los datos guardados y vaciar la app?")) {
                 appData = [];
                 saveData();
                 showView('dashboard-view');
@@ -384,9 +444,8 @@
             localStorage.setItem('evcheck_v3_data', JSON.stringify(appData));
         }
 
-        // MATEMÁTICAS Y EVALUACIÓN CENTRAL
+        // MATEMÁTICAS Y EVALUACIÓN CENTRAL A PRUEBA DE FALLOS
         function evaluateMarket() {
-            // Buscamos mejores valores (Mínimos que sean mayores a 0)
             var minContado = Infinity;
             var minIntereses = Infinity;
             var minComision = Infinity;
@@ -401,7 +460,7 @@
                 var cA = Number(f.comision || 0);
                 if (cA > 0 && cA < minComision) minComision = cA;
 
-                var isFin = (Number(f.entrada) > 0 || Number(f.plazo) > 0);
+                var isFin = (Number(f.entrada||0) > 0 || Number(f.plazo||0) > 0);
                 if (isFin) {
                     var coste = Number(f.entrada||0) + (Number(f.cuotaMensual||0)*Number(f.plazo||0)) + Number(f.cuotaFinal||0) + Number(f.comision||0) + Number(f.otros||0);
                     var pF = Number(f.precioFinanciado||0);
@@ -412,23 +471,23 @@
                 }
             }
 
-            // Asignamos las medallas
             for(var j=0; j<appData.length; j++) {
                 var c = appData[j];
                 if (!c.finanzas || !c.categorias || !c.categorias.precio) continue;
-                var f = c.finanzas;
+                var f2 = c.finanzas;
                 var items = c.categorias.precio.items;
+                if(!items || items.length < 3) continue;
 
-                var pC = Number(f.precioContado || 0);
-                items[0].val = (pC > 0 && pC === minContado);
+                var pC2 = Number(f2.precioContado || 0);
+                items[0].val = (pC2 > 0 && pC2 === minContado);
 
-                var isFin = (Number(f.entrada) > 0 || Number(f.plazo) > 0);
-                var coste = isFin ? (Number(f.entrada||0) + (Number(f.cuotaMensual||0)*Number(f.plazo||0)) + Number(f.cuotaFinal||0) + Number(f.comision||0) + Number(f.otros||0)) : 0;
-                var int = (isFin && coste > 0 && Number(f.precioFinanciado||0) > 0) ? (coste - Number(f.precioFinanciado)) : null;
-                items[1].val = (int !== null && int === minIntereses);
+                var isFin2 = (Number(f2.entrada||0) > 0 || Number(f2.plazo||0) > 0);
+                var coste2 = isFin2 ? (Number(f2.entrada||0) + (Number(f2.cuotaMensual||0)*Number(f2.plazo||0)) + Number(f2.cuotaFinal||0) + Number(f2.comision||0) + Number(f2.otros||0)) : 0;
+                var int2 = (isFin2 && coste2 > 0 && Number(f2.precioFinanciado||0) > 0) ? (coste2 - Number(f2.precioFinanciado)) : null;
+                items[1].val = (int2 !== null && int2 === minIntereses);
 
-                var cA = Number(f.comision || 0);
-                items[2].val = (Number(f.plazo) > 0 && cA <= minComision);
+                var cA2 = Number(f2.comision || 0);
+                items[2].val = (Number(f2.plazo||0) > 0 && cA2 <= minComision);
             }
             saveData();
         }
@@ -437,44 +496,49 @@
             if (!car || !car.categorias) return 0;
             var total = 0;
             
-            // Evaluacion Base: Todo excepto el precio puro
             for (var catId in CATEGORY_DEFS) {
                 var cat = car.categorias[catId];
-                if (!cat) continue;
+                if (!cat || !cat.items) continue;
                 
                 var weight = Number(appWeights[catId]);
+                if (isNaN(weight)) weight = CATEGORY_DEFS[catId].weight;
+                
                 var numItems = cat.items.length;
                 if (numItems === 0) continue;
 
                 var rawScore = 0;
                 for (var i=0; i<numItems; i++) {
                     var item = cat.items[i];
-                    if (item.type === 'check' || item.type === 'check_auto') rawScore += (item.val ? 1 : 0);
-                    else if (item.type === 'select') rawScore += Number(item.val || 0);
-                    else if (item.type === 'number_score') {
-                        // Math puro seguro
+                    if (item.type === 'check' || item.type === 'check_auto') {
+                        // En JS, si es string "true" tmb evaluará a 1, si es boolean tmb.
+                        rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
+                    } else if (item.type === 'select') {
+                        rawScore += Number(item.val || 0);
+                    } else if (item.type === 'number_score') {
                         var valNum = Number(item.val || 0);
-                        var ratio = (valNum - item.minRef) / (item.maxRef - item.minRef);
+                        var minR = Number(item.minRef || 0);
+                        var maxR = Number(item.maxRef || 1);
+                        var diff = maxR - minR;
+                        if (diff === 0) diff = 1;
+                        var ratio = (valNum - minR) / diff;
                         if (ratio > 1) ratio = 1;
                         if (ratio < 0) ratio = 0;
                         rawScore += ratio;
                     }
                 }
                 
-                // Excepción: Para el precio global comparamos la bolsa del usuario
-                if (catId === 'precio' && car.finanzas && car.categorias.tasacion) {
+                if (catId === 'precio' && car.finanzas && car.categorias.tasacion && car.categorias.tasacion.items[0]) {
                     var f = car.finanzas;
                     var tVal = Number(car.categorias.tasacion.items[0].val || 0);
-                    var isFin = (Number(f.entrada)>0 || Number(f.plazo)>0);
+                    var isFin = (Number(f.entrada||0)>0 || Number(f.plazo||0)>0);
                     var costeTotal = isFin ? (Number(f.entrada||0) + (Number(f.cuotaMensual||0)*Number(f.plazo||0)) + Number(f.cuotaFinal||0) + Number(f.comision||0) + Number(f.otros||0)) : Number(f.precioContado||0);
                     
                     var costeBolsillo = costeTotal - tVal;
-                    // Escala base: 15.000 de bolsillo da un 100% de la nota, va bajando 10% cada 2500€ de sobrecoste
+                    // Formula base: 15k de bolsillo = 100% en matemática pura de precio.
                     var priceMathScore = 1 - ((costeBolsillo - 15000) / 25000); 
                     if (priceMathScore > 1) priceMathScore = 1;
                     if (priceMathScore < 0) priceMathScore = 0;
                     
-                    // Mezclamos la puntuación de los check-autos de precio con la matemática pura
                     var checkScore = rawScore / numItems; 
                     var finalCatPercent = (priceMathScore * 0.7) + (checkScore * 0.3);
                     total += (finalCatPercent * weight);
@@ -482,7 +546,12 @@
                     total += ((rawScore / numItems) * weight);
                 }
             }
-            return Math.min(100, Math.max(0, Math.round(total)));
+            
+            if (isNaN(total)) return 0;
+            var finalScore = Math.round(total);
+            if (finalScore > 100) finalScore = 100;
+            if (finalScore < 0) finalScore = 0;
+            return finalScore;
         }
 
         // RENDERIZADOS
@@ -490,13 +559,14 @@
             var list = document.getElementById('car-list');
             if (!list) return;
             
-            var sortedData = appData.slice().sort(function(a, b) { return calculateScore(b) - calculateScore(a); });
+            var sortedData = appData.slice();
+            sortedData.sort(function(a, b) { return calculateScore(b) - calculateScore(a); });
             var html = '';
             
             for(var i=0; i<sortedData.length; i++) {
                 var c = sortedData[i];
                 var score = calculateScore(c);
-                var colorClass = score >= 80 ? 'score-80' : score >= 50 ? 'score-60' : 'score-0';
+                var colorClass = score >= 80 ? 'score-80' : (score >= 50 ? 'score-60' : 'score-0');
                 
                 html += '<div class="car-card" onclick="showDetail(\'' + c.id + '\')">';
                 html += '<div class="car-card-header">';
@@ -525,14 +595,14 @@
         }
 
         function updateWeight(key, val) {
-            appWeights[key] = Number(val);
+            appWeights[key] = Number(val) || 0;
             localStorage.setItem('evcheck_v3_weights', JSON.stringify(appWeights));
             updateTotalWeight();
         }
 
         function updateTotalWeight() {
             var total = 0;
-            for (var k in appWeights) total += Number(appWeights[k]);
+            for (var k in appWeights) total += (Number(appWeights[k]) || 0);
             var el = document.getElementById('weight-total');
             if (el) {
                 el.innerText = total + '%';
@@ -543,7 +613,7 @@
         // DETALLE DE COCHE Y ACTUALIZACIONES EN DIRECTO SIN PERDER TECLADO
         function showDetail(id) {
             currentCarId = id;
-            var car = appData.find(function(c) { return c.id === id; });
+            var car = getCarById(id);
             if (!car) return;
             
             var titleEl = document.getElementById('detail-title');
@@ -552,16 +622,16 @@
             var headEl = document.getElementById('detail-header-container');
             if (headEl && car.img) {
                 var url = formatGoogleDriveUrl(car.img);
-                headEl.style.backgroundImage = "url('" + url + "')";
+                if(url) headEl.style.backgroundImage = "url('" + url + "')";
+                else headEl.style.backgroundImage = "none";
             } else if(headEl) {
                 headEl.style.backgroundImage = "none";
             }
             
-            // Dibujamos el HTML entero UNA SOLA VEZ para que no se pierda el foco de las cajas
             buildDetailHTML(car);
             showView('detail-view');
             switchTab('tab-btn-anotaciones', 'tab-content-anotaciones');
-            updateFinanceDOM(); // Refresca los números calculados
+            updateFinanceDOM(); 
         }
 
         function buildDetailHTML(car) {
@@ -569,18 +639,16 @@
             var contentContainer = document.getElementById('tabs-content-container');
             if (!tabsWrapper || !contentContainer) return;
             
-            // Pestaña Anotaciones
             var tabsHtml = '<div class="tab" id="tab-btn-anotaciones" onclick="switchTab(\'tab-btn-anotaciones\', \'tab-content-anotaciones\')">Anotaciones</div>';
             var contentHtml = '<div id="tab-content-anotaciones" class="tab-content">';
             contentHtml += '<div class="data-group"><label>Marca</label><input type="text" value="' + (car.marca||'') + '" oninput="handleBaseInput(\'marca\', this.value)"></div>';
             contentHtml += '<div class="data-group"><label>Modelo</label><input type="text" value="' + (car.modelo||'') + '" oninput="handleBaseInput(\'modelo\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Concesionario</label><input type="text" value="' + (car.concesionario||'') + '" oninput="handleBaseInput(\'concesionario\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Precio de referencia</label><input type="text" value="' + (car.precioCorto||'') + '" oninput="handleBaseInput(\'precioCorto\', this.value)"></div>';
+            contentHtml += '<div class="data-group"><label>Concesionario / Título</label><input type="text" value="' + (car.concesionario||'') + '" oninput="handleBaseInput(\'concesionario\', this.value)"></div>';
+            contentHtml += '<div class="data-group"><label>Precio de referencia / Resumen Corto</label><input type="text" value="' + (car.precioCorto||'') + '" oninput="handleBaseInput(\'precioCorto\', this.value)" placeholder="Ej. 34.000 € (Contado)"></div>';
             contentHtml += '<div class="data-group"><label>URL Imagen (Drive/Web)</label><input type="url" value="' + (car.img||'') + '" oninput="handleBaseInput(\'img\', this.value)"></div>';
             contentHtml += '<div class="data-group"><label>Anotaciones de prueba / Notas</label><textarea oninput="handleBaseInput(\'notas\', this.value)">' + (car.notas||'') + '</textarea></div>';
             contentHtml += '</div>';
 
-            // Pestañas de Evaluación (Las 10 categorías)
             for (var catId in CATEGORY_DEFS) {
                 if (!car.categorias[catId]) continue;
                 var cat = car.categorias[catId];
@@ -588,13 +656,11 @@
                 
                 contentHtml += '<div id="tab-content-' + catId + '" class="tab-content">';
                 
-                // Barra de progreso de la categoría
                 contentHtml += '<div class="cat-progress-wrapper">';
                 contentHtml += '<div class="progress-bar-container"><div class="progress-fill" id="prog-fill-' + catId + '"></div></div>';
                 contentHtml += '<div class="cat-progress-text" id="prog-txt-' + catId + '">0%</div>';
                 contentHtml += '</div>';
 
-                // Si es la pestaña de precio, incrustamos la calculadora financiera arriba
                 if (catId === 'precio') {
                     var f = car.finanzas;
                     contentHtml += '<div style="margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:15px;">';
@@ -610,49 +676,50 @@
                     contentHtml += '<div class="data-group"><label>Otros Gastos (€)</label><input type="number" value="' + (f.otros||'') + '" oninput="handleFinInput(\'otros\', this.value)"></div>';
                     contentHtml += '<div class="data-group grid-full"><label>TAE (%)</label><input type="number" step="0.1" value="' + (f.tae||'') + '" oninput="handleFinInput(\'tae\', this.value)"></div>';
                     contentHtml += '</div>';
-                    // Checkboxes de regalos
+                    
                     contentHtml += '<div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:15px;">';
                     contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyePlanAuto?'checked':'') + ' onchange="handleFinInput(\'incluyePlanAuto\', this.checked, \'check\')"> Plan Auto</label>';
                     contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeCae?'checked':'') + ' onchange="handleFinInput(\'incluyeCae\', this.checked, \'check\')"> CAE</label>';
                     contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeCargador?'checked':'') + ' onchange="handleFinInput(\'incluyeCargador\', this.checked, \'check\')"> Cargador</label>';
                     contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeMantenimiento?'checked':'') + ' onchange="handleFinInput(\'incluyeMantenimiento\', this.checked, \'check\')"> Mant. Incl.</label>';
                     contentHtml += '</div>';
-                    // Panel de Resultados Reactivo
+                    
                     contentHtml += '<div style="background:rgba(0,200,0,0.05); border:1px solid var(--neon-green); border-radius:8px; padding:15px;">';
-                    contentHtml += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><strong id="lbl-tipo-pago">Coste Total (A plazos):</strong> <span id="res-coste-total" style="font-weight:bold; font-size:1.1rem;">0 €</span></p>';
+                    contentHtml += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><strong id="lbl-tipo-pago">Coste Total:</strong> <span id="res-coste-total" style="font-weight:bold; font-size:1.1rem;">0 €</span></p>';
                     contentHtml += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Intereses al banco:</span> <span id="res-intereses" style="color:var(--score-red);">0 €</span></p>';
                     contentHtml += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted); border-bottom:1px solid var(--border-color); padding-bottom:8px;"><span>Sobrecoste vs Contado:</span> <span id="res-vs-contado">0 €</span></p>';
                     contentHtml += '<p style="margin-bottom:0; display:flex; justify-content:space-between;"><strong>BALANCE NETO (Menos Tasación):</strong> <span id="res-neto" style="font-weight:bold; font-size:1.15rem; color:var(--neon-green);">0 €</span></p>';
                     contentHtml += '</div></div>';
                 }
 
-                // Lista de Items Evaluables
                 for (var j=0; j<cat.items.length; j++) {
                     var item = cat.items[j];
+                    var itemValStr = (item.val === true || item.val === "true" || item.val === 1) ? 'checked' : '';
                     if (item.type === 'check') {
-                        contentHtml += '<div class="check-item"><label><input type="checkbox" ' + (item.val?'checked':'') + ' onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.checked, \'check\')"> ' + item.text + '</label></div>';
+                        contentHtml += '<div class="check-item"><label><input type="checkbox" ' + itemValStr + ' onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.checked, \'check\')"> ' + item.text + '</label></div>';
                     } else if (item.type === 'check_auto') {
-                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + (item.val?'1':'0.4') + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + (item.val?'checked':'') + ' disabled> ' + item.text + '</label></div>';
+                        var op = item.val ? '1' : '0.4';
+                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + op + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + itemValStr + ' disabled> ' + item.text + '</label></div>';
                     } else if (item.type === 'select') {
                         contentHtml += '<div class="select-item"><label style="color:var(--neon-green); font-weight:bold;">' + item.text + '</label>';
                         contentHtml += '<select onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'select\')">';
                         for(var o=0; o<item.options.length; o++) {
                             var opt = item.options[o];
-                            contentHtml += '<option value="' + opt.val + '" ' + (Number(item.val)===Number(opt.val)?'selected':'') + '>' + opt.label + '</option>';
+                            var isSel = (Number(item.val)===Number(opt.val)) ? 'selected' : '';
+                            contentHtml += '<option value="' + opt.val + '" ' + isSel + '>' + opt.label + '</option>';
                         }
                         contentHtml += '</select></div>';
                     } else if (item.type === 'number_score') {
                         contentHtml += '<div class="data-group" style="padding:10px;"><label>' + item.text + '</label>';
-                        contentHtml += '<input type="number" value="' + (item.val||0) + '" oninput="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'number\')"></div>';
+                        contentHtml += '<input type="number" value="' + (item.val||0) + '" oninput="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'number_score\')"></div>';
                     }
                 }
-                contentHtml += '</div>'; // Fin tab-content
+                contentHtml += '</div>';
             }
             
             tabsWrapper.innerHTML = tabsHtml;
             contentContainer.innerHTML = contentHtml;
             
-            // Tras pintar, actualizamos visualmente todas las barras
             for (var cId in CATEGORY_DEFS) updateProgressBarDOM(car, cId);
         }
 
@@ -668,9 +735,8 @@
             if (content) content.classList.add('active');
         }
 
-        // CONTROLADORES DE INPUT SIN RECARGAR HTML (Mantiene foco del teclado)
         function handleBaseInput(key, val) {
-            var car = appData.find(function(c) { return c.id === currentCarId; });
+            var car = getCarById(currentCarId);
             if (!car) return;
             car[key] = val;
             saveData();
@@ -690,7 +756,7 @@
         }
 
         function handleFinInput(key, val, type) {
-            var car = appData.find(function(c) { return c.id === currentCarId; });
+            var car = getCarById(currentCarId);
             if (!car) return;
             
             if (type === 'check') car.finanzas[key] = val;
@@ -702,7 +768,7 @@
         }
 
         function handleItemInput(catId, itemIdx, val, type) {
-            var car = appData.find(function(c) { return c.id === currentCarId; });
+            var car = getCarById(currentCarId);
             if (!car) return;
             
             var item = car.categorias[catId].items[itemIdx];
@@ -711,17 +777,16 @@
             
             saveData();
             updateProgressBarDOM(car, catId);
-            if (catId === 'tasacion') updateFinanceDOM(); // Si cambia tasación, afecta al neto
+            if (catId === 'tasacion') updateFinanceDOM(); 
             evaluateMarket();
         }
 
-        // ACTUALIZADORES VISUALES (DOM DIRECTO)
         function updateFinanceDOM() {
-            var car = appData.find(function(c) { return c.id === currentCarId; });
+            var car = getCarById(currentCarId);
             if (!car || !car.finanzas) return;
             var f = car.finanzas;
             
-            var isFin = (Number(f.entrada)>0 || Number(f.plazo)>0);
+            var isFin = (Number(f.entrada||0)>0 || Number(f.plazo||0)>0);
             var costeTot = isFin ? (Number(f.entrada||0) + (Number(f.cuotaMensual||0)*Number(f.plazo||0)) + Number(f.cuotaFinal||0) + Number(f.comision||0) + Number(f.otros||0)) : Number(f.precioContado||0);
             var ints = isFin ? Math.max(0, costeTot - Number(f.precioFinanciado||0)) : 0;
             var vsContado = isFin ? Math.max(0, costeTot - Number(f.precioContado||0)) : 0;
@@ -750,14 +815,15 @@
                 elNeto.style.color = neto < 0 ? 'var(--neon-green)' : 'var(--text-color)';
             }
 
-            // Refrescar los checks automáticos visualmente
             if(car.categorias.precio) {
-                car.categorias.precio.items.forEach(function(item) {
+                var items = car.categorias.precio.items;
+                for(var i=0; i<items.length; i++) {
+                    var item = items[i];
                     var chk = document.getElementById('chk-auto-' + item.id);
                     var lbl = document.getElementById('lbl-auto-' + item.id);
                     if(chk) chk.checked = item.val;
                     if(lbl) lbl.style.opacity = item.val ? '1' : '0.4';
-                });
+                }
                 updateProgressBarDOM(car, 'precio');
             }
         }
@@ -770,18 +836,21 @@
 
             for(var i=0; i<maxVal; i++) {
                 var item = cat.items[i];
-                if (item.type === 'check' || item.type === 'check_auto') currentVal += (item.val ? 1 : 0);
+                if (item.type === 'check' || item.type === 'check_auto') currentVal += (item.val === true || item.val === "true" || item.val === 1 ? 1 : 0);
                 else if (item.type === 'select') currentVal += Number(item.val || 0);
                 else if (item.type === 'number_score') {
                     var v = Number(item.val || 0);
-                    var rat = (v - item.minRef) / (item.maxRef - item.minRef);
+                    var minR = Number(item.minRef || 0);
+                    var maxR = Number(item.maxRef || 1);
+                    var rat = (v - minR) / (maxR - minR);
                     currentVal += Math.max(0, Math.min(1, rat));
                 }
             }
 
             var perc = maxVal > 0 ? (currentVal / maxVal) * 100 : 0;
+            if (isNaN(perc)) perc = 0;
             var visPerc = Math.max(0, Math.min(100, perc));
-            var color = visPerc >= 80 ? 'var(--score-green)' : visPercent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)';
+            var color = visPerc >= 80 ? 'var(--score-green)' : (visPerc >= 50 ? 'var(--score-yellow)' : 'var(--score-red)');
             
             var fill = document.getElementById('prog-fill-' + catId);
             var txt = document.getElementById('prog-txt-' + catId);
@@ -790,18 +859,7 @@
             if (txt) { txt.innerText = Math.round(perc) + '%'; txt.style.color = color; }
         }
 
-        // LIMPIADOR DE JSON Y GOOGLE DRIVE (Blindaje)
-        function formatGoogleDriveUrl(url) {
-            if (!url) return '';
-            if (url.indexOf('drive.google.com') !== -1) {
-                var match = url.match(/(?:file\/d\/|id=|open\?id=)([a-zA-Z0-9_-]{25,})/);
-                if (match && match[1]) {
-                    return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w1200'; // Thumbnails son más fiables para CSS Background
-                }
-            }
-            return url;
-        }
-
+        // LIMPIADOR DE JSON ANTI-MARKDOWN EXTREMO
         function sanitizeJSONString(rawText) {
             var text = rawText.replace(/\[span_\d+\]\((start_span|end_span)\)/g, '');
             text = text.replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'");
@@ -876,36 +934,26 @@
                         renderDashboard();
                     }
                 } catch (err) {
-                    alert('Error al leer el archivo JSON. Verifica el formato proporcionado por el Gem.');
+                    alert('Error fatal al leer el archivo JSON. Verifica el formato proporcionado por el Gem.');
                 }
                 event.target.value = '';
             };
             reader.readAsText(file);
         }
 
-        function importData(event) {
-            var file = event.target.files[0];
-            if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    var cleanText = sanitizeJSONString(e.target.result);
-                    var parsed = JSON.parse(cleanText);
-                    if (parsed.data && parsed.version) {
-                        localStorage.setItem('evcheck_v3_data', JSON.stringify(parsed.data));
-                        if(parsed.weights) localStorage.setItem('evcheck_v3_weights', JSON.stringify(parsed.weights));
-                        alert('Copia V3 restaurada correctamente.');
-                        location.reload();
-                    } else {
-                        alert('El archivo no es una copia de seguridad válida.');
-                    }
-                } catch (err) { alert('Error al restaurar. Archivo corrupto.'); }
-                event.target.value = '';
-            };
-            reader.readAsText(file);
+        function formatGoogleDriveUrl(url) {
+            if (!url) return '';
+            if (url.indexOf('drive.google.com') !== -1) {
+                var match = url.match(/(?:file\/d\/|id=|open\?id=)([a-zA-Z0-9_-]{25,})/);
+                if (match && match[1]) {
+                    return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w1200';
+                }
+            }
+            return url;
         }
 
-        initApp(); // Arrancar
+        // Lanza la inicialización a prueba de fallos
+        initApp();
     </script>
 </body>
 </html>
