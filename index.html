@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck V3.1</title>
+    <title>EVcheck V4.0</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -93,6 +93,12 @@
         .grid-2 .data-group { padding: 10px; margin: 0; }
         .grid-full { grid-column: 1 / -1; }
 
+        /* Segmented Control de Finanzas */
+        .segmented-control { display: flex; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
+        .seg-btn { flex: 1; text-align: center; padding: 10px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-muted); border: none; border-right: 1px solid var(--border-color); font-weight: bold; }
+        .seg-btn:last-child { border-right: none; }
+        .seg-btn.active { background: var(--neon-green); color: #000; }
+
         /* Listas de Evaluación */
         .check-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .check-item:last-child { border-bottom: none; }
@@ -127,10 +133,9 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="4" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck V3.1</h1>
+            <h1 id="header-title">EVcheck V4.0</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" aria-label="Ajustes">
-            <!-- Icono SVG clásico compatible -->
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -164,10 +169,6 @@
                     <option value="light">Día</option>
                 </select>
             </div>
-            <button class="action-btn secondary" style="margin-top: 15px;" onclick="checkOTA()">
-                Buscar Actualizaciones OTA
-            </button>
-            <p id="ota-status" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;"></p>
             <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;">Versión Instalada: <span id="app-version-display"></span></p>
         </div>
 
@@ -229,8 +230,8 @@
     </div>
 
     <script>
-        // --- BASE DE DATOS Y CONFIGURACIÓN SEGURA ---
-        var APP_VERSION = "v3.1.0";
+        // --- BASE DE DATOS Y CONFIGURACIÓN ---
+        var APP_VERSION = "V4.0.0";
 
         var CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20 },
@@ -257,12 +258,13 @@
                 precioCorto: "",
                 img: "",
                 notas: "",
-                finanzas: { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false, tipoFinanciacion: "flexible" },
+                // Nuevo modelo financiero V4
+                finanzas: { tipoCompra: "contado", precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false },
                 categorias: {
                     precio: { items: [
-                        { id: "p_contado", text: "Mejor precio al contado (Auto)", type: "check_auto", val: false }, 
-                        { id: "p_intereses", text: "Menores intereses pagados (Auto)", type: "check_auto", val: false }, 
-                        { id: "p_comision", text: "Menor comisión apertura (Auto)", type: "check_auto", val: false }
+                        { id: "p_coste", text: "🏆 Mejor coste total neto de operación (Auto)", type: "check_auto", val: false }, 
+                        { id: "p_intereses", text: "📉 Menores intereses pagados (Auto)", type: "check_auto", val: false }, 
+                        { id: "p_comision", text: "💸 Menores comisiones o gastos extra (Auto)", type: "check_auto", val: false }
                     ]},
                     tasacion: { items: [{ id: "t1", text: "Tasación del Vehículo Usado (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }]},
                     bateria: { items: [{ id: "b1", text: "Capacidad de la batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+60 kWh", val: 1 }, { label: "+50 kWh", val: 0.5 }, { label: "-50 kWh", val: -0.5 }], val: 0 }, { id: "b2", text: "Autonomía WLTP", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+450 km", val: 1 }, { label: "+400 km", val: 0.5 }, { label: "-400 km", val: -0.5 }], val: 0 }, { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+100 kW", val: 1 }, { label: "-100 kW", val: -0.5 }], val: 0 }] },
@@ -282,9 +284,11 @@
         var currentCarId = null;
         var currentModalUrl = '';
 
-        // INICIALIZACIÓN SEGURA Y SANITIZACIÓN DE DATOS PREVIOS
+        // INICIALIZACIÓN SEGURA Y MIGRACIÓN V4
         function sanitizeCar(car) {
-            if(!car.finanzas) car.finanzas = { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0 };
+            if(!car.finanzas) car.finanzas = { tipoCompra: "contado", precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false };
+            if(!car.finanzas.tipoCompra) car.finanzas.tipoCompra = "contado"; // Default legacy
+            
             var template = getNewCarTemplate();
             if(!car.categorias) {
                 car.categorias = template.categorias;
@@ -294,18 +298,22 @@
                         car.categorias[cat] = template.categorias[cat];
                     }
                 }
+                // Update legacy price items
+                if(car.categorias.precio && car.categorias.precio.items.length > 0) {
+                    if(car.categorias.precio.items[0].id === 'p_contado') {
+                        car.categorias.precio.items = template.categorias.precio.items;
+                    }
+                }
             }
             return car;
         }
 
         function initApp() {
             try {
-                var storedData = localStorage.getItem('evcheck_v3_data');
+                var storedData = localStorage.getItem('evcheck_v4_data') || localStorage.getItem('evcheck_v3_data');
                 if (storedData) {
                     var parsedData = JSON.parse(storedData);
-                    if (Array.isArray(parsedData)) {
-                        appData = parsedData;
-                    }
+                    if (Array.isArray(parsedData)) appData = parsedData;
                 }
             } catch (e) { appData = []; }
             
@@ -314,7 +322,7 @@
             }
             
             try {
-                var storedWeights = localStorage.getItem('evcheck_v3_weights');
+                var storedWeights = localStorage.getItem('evcheck_v4_weights') || localStorage.getItem('evcheck_v3_weights');
                 if (storedWeights) appWeights = JSON.parse(storedWeights);
             } catch (e) {}
 
@@ -348,21 +356,6 @@
             }
         }
 
-        function checkOTA() {
-            var status = document.getElementById('ota-status');
-            if (status) {
-                status.innerText = "Buscando actualizaciones...";
-                setTimeout(function() {
-                    var st = document.getElementById('ota-status');
-                    if(st) st.innerText = "EVcheck está en la última versión (" + APP_VERSION + ").";
-                    setTimeout(function() {
-                        var st2 = document.getElementById('ota-status');
-                        if(st2) st2.innerText = "";
-                    }, 3000);
-                }, 1500);
-            }
-        }
-
         // NAVEGACIÓN
         function showView(viewId) {
             var views = document.querySelectorAll('.view');
@@ -375,13 +368,13 @@
             var settingsBtn = document.getElementById('settings-btn');
             
             if (viewId === 'settings-view') {
-                if (title) title.innerText = 'Ajustes V3.1';
+                if (title) title.innerText = 'Ajustes V4.0';
                 if (settingsBtn) settingsBtn.style.display = 'none';
                 renderWeightsConfig();
             } else if (viewId === 'detail-view') {
                 if (settingsBtn) settingsBtn.style.display = 'none';
             } else {
-                if (title) title.innerText = 'EVcheck V3.1';
+                if (title) title.innerText = 'EVcheck V4.0';
                 if (settingsBtn) settingsBtn.style.display = 'flex';
                 evaluateMarket();
                 renderDashboard();
@@ -441,53 +434,77 @@
         }
 
         function saveData() {
-            localStorage.setItem('evcheck_v3_data', JSON.stringify(appData));
+            localStorage.setItem('evcheck_v4_data', JSON.stringify(appData));
         }
 
-        // MATEMÁTICAS Y EVALUACIÓN CENTRAL A PRUEBA DE FALLOS
+        // --- MATEMÁTICAS V4 (MÁXIMA INFORMACIÓN) ---
+        function calculateFinanceTotals(car) {
+            var f = car.finanzas;
+            var tasacion = (car.categorias && car.categorias.tasacion && car.categorias.tasacion.items[0]) ? Number(car.categorias.tasacion.items[0].val || 0) : 0;
+            
+            var res = { costeTotal: 0, intereses: 0, capitalFinanciar: 0, balanceNeto: 0, sobrecoste: 0 };
+            
+            if (f.tipoCompra === 'contado') {
+                res.costeTotal = Number(f.precioContado||0) + Number(f.otros||0);
+                res.balanceNeto = res.costeTotal - tasacion;
+            } else {
+                // Lineal o Flexible
+                res.capitalFinanciar = Number(f.precioFinanciado||0) - Number(f.entrada||0);
+                var cuotasTotales = Number(f.cuotaMensual||0) * Number(f.plazo||0);
+                var cuotaF = f.tipoCompra === 'flexible' ? Number(f.cuotaFinal||0) : 0;
+                
+                res.costeTotal = Number(f.entrada||0) + cuotasTotales + cuotaF + Number(f.comision||0) + Number(f.otros||0);
+                if (res.capitalFinanciar > 0 && res.costeTotal > 0 && Number(f.precioFinanciado||0) > 0) {
+                    res.intereses = res.costeTotal - Number(f.precioFinanciado||0);
+                }
+                res.sobrecoste = res.costeTotal - Number(f.precioContado||0);
+                res.balanceNeto = res.costeTotal - tasacion;
+            }
+            return res;
+        }
+
         function evaluateMarket() {
-            var minContado = Infinity;
+            var minCosteTotal = Infinity;
             var minIntereses = Infinity;
             var minComision = Infinity;
 
+            // Encontrar los mínimos reales basados en la modalidad elegida por el usuario
             for(var i=0; i<appData.length; i++) {
-                var f = appData[i].finanzas;
+                var c = appData[i];
+                var totals = calculateFinanceTotals(c);
+                var f = c.finanzas;
                 if (!f) continue;
                 
-                var pC = Number(f.precioContado || 0);
-                if (pC > 0 && pC < minContado) minContado = pC;
-
-                var cA = Number(f.comision || 0);
-                if (cA > 0 && cA < minComision) minComision = cA;
-
-                var isFin = (Number(f.entrada||0) > 0 || Number(f.plazo||0) > 0);
-                if (isFin) {
-                    var coste = Number(f.entrada||0) + (Number(f.cuotaMensual||0)*Number(f.plazo||0)) + Number(f.cuotaFinal||0) + Number(f.comision||0) + Number(f.otros||0);
-                    var pF = Number(f.precioFinanciado||0);
-                    if (coste > 0 && pF > 0) {
-                        var int = coste - pF;
-                        if (int >= 0 && int < minIntereses) minIntereses = int;
-                    }
+                if (totals.balanceNeto > 0 && totals.balanceNeto < minCosteTotal) {
+                    minCosteTotal = totals.balanceNeto;
+                }
+                if (f.tipoCompra !== 'contado' && totals.intereses >= 0 && totals.intereses < minIntereses) {
+                    minIntereses = totals.intereses;
+                }
+                var comYOtros = Number(f.comision||0) + Number(f.otros||0);
+                if (comYOtros >= 0 && comYOtros < minComision) {
+                    minComision = comYOtros;
                 }
             }
 
+            // Asignar medallas (Check Auto)
             for(var j=0; j<appData.length; j++) {
-                var c = appData[j];
-                if (!c.finanzas || !c.categorias || !c.categorias.precio) continue;
-                var f2 = c.finanzas;
-                var items = c.categorias.precio.items;
+                var c2 = appData[j];
+                if (!c2.finanzas || !c2.categorias || !c2.categorias.precio) continue;
+                var t2 = calculateFinanceTotals(c2);
+                var f2 = c2.finanzas;
+                var items = c2.categorias.precio.items;
                 if(!items || items.length < 3) continue;
 
-                var pC2 = Number(f2.precioContado || 0);
-                items[0].val = (pC2 > 0 && pC2 === minContado);
+                // 1. Mejor coste total (Impacto real bolsillo)
+                items[0].val = (t2.balanceNeto > 0 && t2.balanceNeto === minCosteTotal);
 
-                var isFin2 = (Number(f2.entrada||0) > 0 || Number(f2.plazo||0) > 0);
-                var coste2 = isFin2 ? (Number(f2.entrada||0) + (Number(f2.cuotaMensual||0)*Number(f2.plazo||0)) + Number(f2.cuotaFinal||0) + Number(f2.comision||0) + Number(f2.otros||0)) : 0;
-                var int2 = (isFin2 && coste2 > 0 && Number(f2.precioFinanciado||0) > 0) ? (coste2 - Number(f2.precioFinanciado)) : null;
-                items[1].val = (int2 !== null && int2 === minIntereses);
+                // 2. Menores intereses
+                items[1].val = (f2.tipoCompra !== 'contado' && t2.intereses === minIntereses);
 
-                var cA2 = Number(f2.comision || 0);
-                items[2].val = (Number(f2.plazo||0) > 0 && cA2 <= minComision);
+                // 3. Menores comisiones/gastos
+                var comYOtros2 = Number(f2.comision||0) + Number(f2.otros||0);
+                items[2].val = (comYOtros2 === minComision);
             }
             saveData();
         }
@@ -495,10 +512,11 @@
         function calculateScore(car) {
             if (!car || !car.categorias) return 0;
             var total = 0;
+            var totals = calculateFinanceTotals(car);
             
             for (var catId in CATEGORY_DEFS) {
                 var cat = car.categorias[catId];
-                if (!cat || !cat.items) continue;
+                if (!cat) continue;
                 
                 var weight = Number(appWeights[catId]);
                 if (isNaN(weight)) weight = CATEGORY_DEFS[catId].weight;
@@ -509,35 +527,24 @@
                 var rawScore = 0;
                 for (var i=0; i<numItems; i++) {
                     var item = cat.items[i];
-                    if (item.type === 'check' || item.type === 'check_auto') {
-                        // En JS, si es string "true" tmb evaluará a 1, si es boolean tmb.
-                        rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
-                    } else if (item.type === 'select') {
-                        rawScore += Number(item.val || 0);
-                    } else if (item.type === 'number_score') {
+                    if (item.type === 'check' || item.type === 'check_auto') rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
+                    else if (item.type === 'select') rawScore += Number(item.val || 0);
+                    else if (item.type === 'number_score') {
                         var valNum = Number(item.val || 0);
                         var minR = Number(item.minRef || 0);
                         var maxR = Number(item.maxRef || 1);
                         var diff = maxR - minR;
                         if (diff === 0) diff = 1;
                         var ratio = (valNum - minR) / diff;
-                        if (ratio > 1) ratio = 1;
-                        if (ratio < 0) ratio = 0;
-                        rawScore += ratio;
+                        rawScore += Math.max(0, Math.min(1, ratio));
                     }
                 }
                 
-                if (catId === 'precio' && car.finanzas && car.categorias.tasacion && car.categorias.tasacion.items[0]) {
-                    var f = car.finanzas;
-                    var tVal = Number(car.categorias.tasacion.items[0].val || 0);
-                    var isFin = (Number(f.entrada||0)>0 || Number(f.plazo||0)>0);
-                    var costeTotal = isFin ? (Number(f.entrada||0) + (Number(f.cuotaMensual||0)*Number(f.plazo||0)) + Number(f.cuotaFinal||0) + Number(f.comision||0) + Number(f.otros||0)) : Number(f.precioContado||0);
-                    
-                    var costeBolsillo = costeTotal - tVal;
-                    // Formula base: 15k de bolsillo = 100% en matemática pura de precio.
+                if (catId === 'precio' && car.finanzas && car.categorias.tasacion) {
+                    var costeBolsillo = totals.balanceNeto;
+                    // Escala base: 15.000€ neto da un 100% de la nota, bajando hasta 40.000€
                     var priceMathScore = 1 - ((costeBolsillo - 15000) / 25000); 
-                    if (priceMathScore > 1) priceMathScore = 1;
-                    if (priceMathScore < 0) priceMathScore = 0;
+                    priceMathScore = Math.max(0, Math.min(1, priceMathScore));
                     
                     var checkScore = rawScore / numItems; 
                     var finalCatPercent = (priceMathScore * 0.7) + (checkScore * 0.3);
@@ -548,10 +555,7 @@
             }
             
             if (isNaN(total)) return 0;
-            var finalScore = Math.round(total);
-            if (finalScore > 100) finalScore = 100;
-            if (finalScore < 0) finalScore = 0;
-            return finalScore;
+            return Math.min(100, Math.max(0, Math.round(total)));
         }
 
         // RENDERIZADOS
@@ -559,8 +563,7 @@
             var list = document.getElementById('car-list');
             if (!list) return;
             
-            var sortedData = appData.slice();
-            sortedData.sort(function(a, b) { return calculateScore(b) - calculateScore(a); });
+            var sortedData = appData.slice().sort(function(a, b) { return calculateScore(b) - calculateScore(a); });
             var html = '';
             
             for(var i=0; i<sortedData.length; i++) {
@@ -596,7 +599,7 @@
 
         function updateWeight(key, val) {
             appWeights[key] = Number(val) || 0;
-            localStorage.setItem('evcheck_v3_weights', JSON.stringify(appWeights));
+            localStorage.setItem('evcheck_v4_weights', JSON.stringify(appWeights));
             updateTotalWeight();
         }
 
@@ -610,7 +613,7 @@
             }
         }
 
-        // DETALLE DE COCHE Y ACTUALIZACIONES EN DIRECTO SIN PERDER TECLADO
+        // DETALLE DE COCHE
         function showDetail(id) {
             currentCarId = id;
             var car = getCarById(id);
@@ -622,8 +625,7 @@
             var headEl = document.getElementById('detail-header-container');
             if (headEl && car.img) {
                 var url = formatGoogleDriveUrl(car.img);
-                if(url) headEl.style.backgroundImage = "url('" + url + "')";
-                else headEl.style.backgroundImage = "none";
+                headEl.style.backgroundImage = "url('" + url + "')";
             } else if(headEl) {
                 headEl.style.backgroundImage = "none";
             }
@@ -639,14 +641,15 @@
             var contentContainer = document.getElementById('tabs-content-container');
             if (!tabsWrapper || !contentContainer) return;
             
+            // Pestaña Anotaciones
             var tabsHtml = '<div class="tab" id="tab-btn-anotaciones" onclick="switchTab(\'tab-btn-anotaciones\', \'tab-content-anotaciones\')">Anotaciones</div>';
             var contentHtml = '<div id="tab-content-anotaciones" class="tab-content">';
             contentHtml += '<div class="data-group"><label>Marca</label><input type="text" value="' + (car.marca||'') + '" oninput="handleBaseInput(\'marca\', this.value)"></div>';
             contentHtml += '<div class="data-group"><label>Modelo</label><input type="text" value="' + (car.modelo||'') + '" oninput="handleBaseInput(\'modelo\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Concesionario / Título</label><input type="text" value="' + (car.concesionario||'') + '" oninput="handleBaseInput(\'concesionario\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Precio de referencia / Resumen Corto</label><input type="text" value="' + (car.precioCorto||'') + '" oninput="handleBaseInput(\'precioCorto\', this.value)" placeholder="Ej. 34.000 € (Contado)"></div>';
+            contentHtml += '<div class="data-group"><label>Concesionario</label><input type="text" value="' + (car.concesionario||'') + '" oninput="handleBaseInput(\'concesionario\', this.value)"></div>';
+            contentHtml += '<div class="data-group"><label>Precio de referencia</label><input type="text" value="' + (car.precioCorto||'') + '" oninput="handleBaseInput(\'precioCorto\', this.value)"></div>';
             contentHtml += '<div class="data-group"><label>URL Imagen (Drive/Web)</label><input type="url" value="' + (car.img||'') + '" oninput="handleBaseInput(\'img\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Anotaciones de prueba / Notas</label><textarea oninput="handleBaseInput(\'notas\', this.value)">' + (car.notas||'') + '</textarea></div>';
+            contentHtml += '<div class="data-group"><label>Notas</label><textarea oninput="handleBaseInput(\'notas\', this.value)">' + (car.notas||'') + '</textarea></div>';
             contentHtml += '</div>';
 
             for (var catId in CATEGORY_DEFS) {
@@ -663,55 +666,51 @@
 
                 if (catId === 'precio') {
                     var f = car.finanzas;
+                    
+                    // Modos de Compra
+                    contentHtml += '<div class="segmented-control">';
+                    contentHtml += '<button id="seg-contado" class="seg-btn" onclick="setTipoCompra(\'contado\')">Contado</button>';
+                    contentHtml += '<button id="seg-lineal" class="seg-btn" onclick="setTipoCompra(\'lineal\')">Lineal</button>';
+                    contentHtml += '<button id="seg-flexible" class="seg-btn" onclick="setTipoCompra(\'flexible\')">Flexible</button>';
+                    contentHtml += '</div>';
+
                     contentHtml += '<div style="margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:15px;">';
-                    contentHtml += '<h4 style="color:var(--neon-green); margin-bottom:15px;">Calculadora Financiera</h4>';
-                    contentHtml += '<div class="grid-2">';
-                    contentHtml += '<div class="data-group"><label>Al Contado (€)</label><input type="number" value="' + (f.precioContado||'') + '" oninput="handleFinInput(\'precioContado\', this.value)"></div>';
-                    contentHtml += '<div class="data-group"><label>Financiado Base (€)</label><input type="number" value="' + (f.precioFinanciado||'') + '" oninput="handleFinInput(\'precioFinanciado\', this.value)"></div>';
-                    contentHtml += '<div class="data-group"><label>Entrada (€)</label><input type="number" value="' + (f.entrada||'') + '" oninput="handleFinInput(\'entrada\', this.value)"></div>';
-                    contentHtml += '<div class="data-group"><label>Plazo (Meses)</label><input type="number" value="' + (f.plazo||'') + '" oninput="handleFinInput(\'plazo\', this.value)"></div>';
-                    contentHtml += '<div class="data-group"><label>Cuota Mensual (€)</label><input type="number" step="0.01" value="' + (f.cuotaMensual||'') + '" oninput="handleFinInput(\'cuotaMensual\', this.value)"></div>';
-                    contentHtml += '<div class="data-group"><label>Cuota Final (€)</label><input type="number" value="' + (f.cuotaFinal||'') + '" oninput="handleFinInput(\'cuotaFinal\', this.value)"></div>';
-                    contentHtml += '<div class="data-group"><label>Comisión Apertura (€)</label><input type="number" value="' + (f.comision||'') + '" oninput="handleFinInput(\'comision\', this.value)"></div>';
-                    contentHtml += '<div class="data-group"><label>Otros Gastos (€)</label><input type="number" value="' + (f.otros||'') + '" oninput="handleFinInput(\'otros\', this.value)"></div>';
-                    contentHtml += '<div class="data-group grid-full"><label>TAE (%)</label><input type="number" step="0.1" value="' + (f.tae||'') + '" oninput="handleFinInput(\'tae\', this.value)"></div>';
-                    contentHtml += '</div>';
+                    contentHtml += '<div class="grid-2" id="finance-grid">';
                     
-                    contentHtml += '<div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:15px;">';
-                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyePlanAuto?'checked':'') + ' onchange="handleFinInput(\'incluyePlanAuto\', this.checked, \'check\')"> Plan Auto</label>';
-                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeCae?'checked':'') + ' onchange="handleFinInput(\'incluyeCae\', this.checked, \'check\')"> CAE</label>';
-                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeCargador?'checked':'') + ' onchange="handleFinInput(\'incluyeCargador\', this.checked, \'check\')"> Cargador</label>';
-                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeMantenimiento?'checked':'') + ' onchange="handleFinInput(\'incluyeMantenimiento\', this.checked, \'check\')"> Mant. Incl.</label>';
+                    contentHtml += '<div class="data-group" id="wrap-precioContado"><label>Al Contado (€)</label><input type="number" value="' + (f.precioContado||'') + '" oninput="handleFinInput(\'precioContado\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-precioFinanciado"><label>Financiado Base (€)</label><input type="number" value="' + (f.precioFinanciado||'') + '" oninput="handleFinInput(\'precioFinanciado\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-entrada"><label>Entrada (€)</label><input type="number" value="' + (f.entrada||'') + '" oninput="handleFinInput(\'entrada\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-plazo"><label>Plazo (Meses)</label><input type="number" value="' + (f.plazo||'') + '" oninput="handleFinInput(\'plazo\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-cuotaMensual"><label>Cuota Mensual (€)</label><input type="number" step="0.01" value="' + (f.cuotaMensual||'') + '" oninput="handleFinInput(\'cuotaMensual\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-cuotaFinal"><label>Cuota Final (€)</label><input type="number" value="' + (f.cuotaFinal||'') + '" oninput="handleFinInput(\'cuotaFinal\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-comision"><label>Comisión Apertura (€)</label><input type="number" value="' + (f.comision||'') + '" oninput="handleFinInput(\'comision\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-tae"><label>TAE (%)</label><input type="number" step="0.1" value="' + (f.tae||'') + '" oninput="handleFinInput(\'tae\', this.value)"></div>';
+                    contentHtml += '<div class="data-group" id="wrap-otros" style="grid-column: 1/-1;"><label>Otros Gastos (€)</label><input type="number" value="' + (f.otros||'') + '" oninput="handleFinInput(\'otros\', this.value)"></div>';
                     contentHtml += '</div>';
-                    
-                    contentHtml += '<div style="background:rgba(0,200,0,0.05); border:1px solid var(--neon-green); border-radius:8px; padding:15px;">';
-                    contentHtml += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><strong id="lbl-tipo-pago">Coste Total:</strong> <span id="res-coste-total" style="font-weight:bold; font-size:1.1rem;">0 €</span></p>';
-                    contentHtml += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Intereses al banco:</span> <span id="res-intereses" style="color:var(--score-red);">0 €</span></p>';
-                    contentHtml += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted); border-bottom:1px solid var(--border-color); padding-bottom:8px;"><span>Sobrecoste vs Contado:</span> <span id="res-vs-contado">0 €</span></p>';
-                    contentHtml += '<p style="margin-bottom:0; display:flex; justify-content:space-between;"><strong>BALANCE NETO (Menos Tasación):</strong> <span id="res-neto" style="font-weight:bold; font-size:1.15rem; color:var(--neon-green);">0 €</span></p>';
+
+                    // Resumen Interactivo
+                    contentHtml += '<div id="resumen-box" style="background:rgba(0,200,0,0.05); border:1px solid var(--neon-green); border-radius:8px; padding:15px; font-size:0.95rem;">';
+                    // Se rellenará via JS en updateFinanceDOM
                     contentHtml += '</div></div>';
                 }
 
                 for (var j=0; j<cat.items.length; j++) {
                     var item = cat.items[j];
-                    var itemValStr = (item.val === true || item.val === "true" || item.val === 1) ? 'checked' : '';
                     if (item.type === 'check') {
-                        contentHtml += '<div class="check-item"><label><input type="checkbox" ' + itemValStr + ' onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.checked, \'check\')"> ' + item.text + '</label></div>';
+                        contentHtml += '<div class="check-item"><label><input type="checkbox" ' + (item.val?'checked':'') + ' onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.checked, \'check\')"> ' + item.text + '</label></div>';
                     } else if (item.type === 'check_auto') {
-                        var op = item.val ? '1' : '0.4';
-                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + op + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + itemValStr + ' disabled> ' + item.text + '</label></div>';
+                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + (item.val?'1':'0.4') + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + (item.val?'checked':'') + ' disabled> ' + item.text + '</label></div>';
                     } else if (item.type === 'select') {
                         contentHtml += '<div class="select-item"><label style="color:var(--neon-green); font-weight:bold;">' + item.text + '</label>';
                         contentHtml += '<select onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'select\')">';
                         for(var o=0; o<item.options.length; o++) {
                             var opt = item.options[o];
-                            var isSel = (Number(item.val)===Number(opt.val)) ? 'selected' : '';
-                            contentHtml += '<option value="' + opt.val + '" ' + isSel + '>' + opt.label + '</option>';
+                            contentHtml += '<option value="' + opt.val + '" ' + (Number(item.val)===Number(opt.val)?'selected':'') + '>' + opt.label + '</option>';
                         }
                         contentHtml += '</select></div>';
                     } else if (item.type === 'number_score') {
                         contentHtml += '<div class="data-group" style="padding:10px;"><label>' + item.text + '</label>';
-                        contentHtml += '<input type="number" value="' + (item.val||0) + '" oninput="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'number_score\')"></div>';
+                        contentHtml += '<input type="number" value="' + (item.val||0) + '" oninput="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'number\')"></div>';
                     }
                 }
                 contentHtml += '</div>';
@@ -733,6 +732,17 @@
             var content = document.getElementById(contentId);
             if (btn) btn.classList.add('active');
             if (content) content.classList.add('active');
+        }
+
+        // CONTROLADORES DE INPUT UI V4
+        function setTipoCompra(tipo) {
+            var car = getCarById(currentCarId);
+            if (!car) return;
+            car.finanzas.tipoCompra = tipo;
+            saveData();
+            updateFinanceDOM();
+            evaluateMarket();
+            renderDashboard(); // Porque la nota global cambia
         }
 
         function handleBaseInput(key, val) {
@@ -777,42 +787,85 @@
             
             saveData();
             updateProgressBarDOM(car, catId);
-            if (catId === 'tasacion') updateFinanceDOM(); 
-            evaluateMarket();
+            if (catId === 'tasacion') { updateFinanceDOM(); evaluateMarket(); renderDashboard(); }
+            else { evaluateMarket(); }
         }
 
+        // ACTUALIZADORES VISUALES (MAGIA FINANCIERA V4)
         function updateFinanceDOM() {
             var car = getCarById(currentCarId);
             if (!car || !car.finanzas) return;
             var f = car.finanzas;
-            
-            var isFin = (Number(f.entrada||0)>0 || Number(f.plazo||0)>0);
-            var costeTot = isFin ? (Number(f.entrada||0) + (Number(f.cuotaMensual||0)*Number(f.plazo||0)) + Number(f.cuotaFinal||0) + Number(f.comision||0) + Number(f.otros||0)) : Number(f.precioContado||0);
-            var ints = isFin ? Math.max(0, costeTot - Number(f.precioFinanciado||0)) : 0;
-            var vsContado = isFin ? Math.max(0, costeTot - Number(f.precioContado||0)) : 0;
-            
-            var tasacion = 0;
-            if (car.categorias.tasacion && car.categorias.tasacion.items[0]) {
-                tasacion = Number(car.categorias.tasacion.items[0].val || 0);
-            }
-            var neto = costeTot - tasacion;
+            var t = f.tipoCompra || 'contado';
 
-            var elLbl = document.getElementById('lbl-tipo-pago');
-            var elTot = document.getElementById('res-coste-total');
-            var elInt = document.getElementById('res-intereses');
-            var elVs = document.getElementById('res-vs-contado');
-            var elNeto = document.getElementById('res-neto');
-
-            if (elLbl) elLbl.innerText = isFin ? 'Coste Total (A plazos):' : 'Coste Total (Al Contado):';
-            if (elTot) elTot.innerText = costeTot.toLocaleString('es-ES') + ' €';
-            if (elInt) elInt.innerText = '+' + ints.toLocaleString('es-ES') + ' €';
-            if (elVs) {
-                elVs.innerText = '+' + vsContado.toLocaleString('es-ES') + ' €';
-                elVs.style.color = vsContado > 0 ? 'var(--score-red)' : 'var(--text-muted)';
+            // Actualizar botones segmentados
+            var btns = ['contado', 'lineal', 'flexible'];
+            for(var i=0; i<btns.length; i++) {
+                var b = document.getElementById('seg-' + btns[i]);
+                if (b) {
+                    if (btns[i] === t) b.classList.add('active');
+                    else b.classList.remove('active');
+                }
             }
-            if (elNeto) {
-                elNeto.innerText = neto.toLocaleString('es-ES') + ' €';
-                elNeto.style.color = neto < 0 ? 'var(--neon-green)' : 'var(--text-color)';
+
+            // Mostrar/Ocultar campos inteligentemente
+            var wCon = document.getElementById('wrap-precioContado');
+            var wFin = document.getElementById('wrap-precioFinanciado');
+            var wEnt = document.getElementById('wrap-entrada');
+            var wPla = document.getElementById('wrap-plazo');
+            var wCMe = document.getElementById('wrap-cuotaMensual');
+            var wCFi = document.getElementById('wrap-cuotaFinal');
+            var wCom = document.getElementById('wrap-comision');
+            var wTae = document.getElementById('wrap-tae');
+            
+            if (t === 'contado') {
+                if(wCon) wCon.style.display = 'block';
+                if(wFin) wFin.style.display = 'none';
+                if(wEnt) wEnt.style.display = 'none';
+                if(wPla) wPla.style.display = 'none';
+                if(wCMe) wCMe.style.display = 'none';
+                if(wCFi) wCFi.style.display = 'none';
+                if(wCom) wCom.style.display = 'none';
+                if(wTae) wTae.style.display = 'none';
+            } else if (t === 'lineal') {
+                if(wCon) wCon.style.display = 'block'; // Lo dejamos para comparar
+                if(wFin) wFin.style.display = 'block';
+                if(wEnt) wEnt.style.display = 'block';
+                if(wPla) wPla.style.display = 'block';
+                if(wCMe) wCMe.style.display = 'block';
+                if(wCFi) wCFi.style.display = 'none';
+                if(wCom) wCom.style.display = 'block';
+                if(wTae) wTae.style.display = 'block';
+            } else if (t === 'flexible') {
+                if(wCon) wCon.style.display = 'block';
+                if(wFin) wFin.style.display = 'block';
+                if(wEnt) wEnt.style.display = 'block';
+                if(wPla) wPla.style.display = 'block';
+                if(wCMe) wCMe.style.display = 'block';
+                if(wCFi) wCFi.style.display = 'block';
+                if(wCom) wCom.style.display = 'block';
+                if(wTae) wTae.style.display = 'block';
+            }
+
+            // Cálculos del Resumen
+            var totals = calculateFinanceTotals(car);
+            var tasacion = (car.categorias && car.categorias.tasacion && car.categorias.tasacion.items[0]) ? Number(car.categorias.tasacion.items[0].val || 0) : 0;
+            var rBox = document.getElementById('resumen-box');
+            
+            if (rBox) {
+                var html = '';
+                if (t === 'contado') {
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><span>Pago al Contado + Otros:</span> <strong>' + totals.costeTotal.toLocaleString('es-ES') + ' €</strong></p>';
+                } else {
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Capital a Financiar:</span> <span>' + totals.capitalFinanciar.toLocaleString('es-ES') + ' €</span></p>';
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Intereses pagados:</span> <span style="color:var(--score-red);">+' + totals.intereses.toLocaleString('es-ES') + ' €</span></p>';
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><strong>Coste Total de la Operación:</strong> <strong>' + totals.costeTotal.toLocaleString('es-ES') + ' €</strong></p>';
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted); border-bottom:1px solid var(--border-color); padding-bottom:8px;"><span>Sobrecoste vs Pago Contado:</span> <span>+' + totals.sobrecoste.toLocaleString('es-ES') + ' €</span></p>';
+                }
+                
+                html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; margin-top:10px;"><span>Tasación del Coche Usado:</span> <span style="color:var(--neon-green);">- ' + tasacion.toLocaleString('es-ES') + ' €</span></p>';
+                html += '<p style="margin-bottom:0; display:flex; justify-content:space-between;"><strong>BALANCE NETO REAL:</strong> <span style="font-size:1.15rem; font-weight:bold; color:' + (totals.balanceNeto < 0 ? 'var(--neon-green)' : 'var(--text-color)') + ';">' + totals.balanceNeto.toLocaleString('es-ES') + ' €</span></p>';
+                rBox.innerHTML = html;
             }
 
             if(car.categorias.precio) {
@@ -836,19 +889,16 @@
 
             for(var i=0; i<maxVal; i++) {
                 var item = cat.items[i];
-                if (item.type === 'check' || item.type === 'check_auto') currentVal += (item.val === true || item.val === "true" || item.val === 1 ? 1 : 0);
+                if (item.type === 'check' || item.type === 'check_auto') currentVal += (item.val ? 1 : 0);
                 else if (item.type === 'select') currentVal += Number(item.val || 0);
                 else if (item.type === 'number_score') {
                     var v = Number(item.val || 0);
-                    var minR = Number(item.minRef || 0);
-                    var maxR = Number(item.maxRef || 1);
-                    var rat = (v - minR) / (maxR - minR);
+                    var rat = (v - item.minRef) / (item.maxRef - item.minRef);
                     currentVal += Math.max(0, Math.min(1, rat));
                 }
             }
 
             var perc = maxVal > 0 ? (currentVal / maxVal) * 100 : 0;
-            if (isNaN(perc)) perc = 0;
             var visPerc = Math.max(0, Math.min(100, perc));
             var color = visPerc >= 80 ? 'var(--score-green)' : (visPerc >= 50 ? 'var(--score-yellow)' : 'var(--score-red)');
             
@@ -857,6 +907,36 @@
             
             if (fill) { fill.style.width = visPerc + '%'; fill.style.backgroundColor = color; }
             if (txt) { txt.innerText = Math.round(perc) + '%'; txt.style.color = color; }
+        }
+
+        // DESCARGAS A PRUEBA DE iPHONE
+        function exportData() {
+            try {
+                var backup = { data: appData, weights: appWeights, version: APP_VERSION };
+                var dataStr = JSON.stringify(backup, null, 2);
+                var blob = new Blob([dataStr], { type: "application/json" });
+                var url = window.URL.createObjectURL(blob);
+                
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                
+                var date = new Date();
+                var ds = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+                a.download = "EVcheck_V4_backup_" + ds + ".json";
+                
+                // ESENCIAL EN iOS: Añadir el botón al DOM antes de hacer clic
+                document.body.appendChild(a);
+                a.click();
+                
+                // Limpiar
+                setTimeout(function() {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 100);
+            } catch (e) {
+                alert("Error al exportar: " + e.message);
+            }
         }
 
         // LIMPIADOR DE JSON ANTI-MARKDOWN EXTREMO
@@ -881,6 +961,28 @@
                 return text.substring(first, last + 1);
             }
             return text.trim();
+        }
+
+        function importData(event) {
+            var file = event.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var cleanText = sanitizeJSONString(e.target.result);
+                    var parsed = JSON.parse(cleanText);
+                    if (parsed.data && parsed.version) {
+                        localStorage.setItem('evcheck_v4_data', JSON.stringify(parsed.data));
+                        if(parsed.weights) localStorage.setItem('evcheck_v4_weights', JSON.stringify(parsed.weights));
+                        alert('Copia restaurada correctamente.');
+                        location.reload();
+                    } else {
+                        alert('El archivo no es una copia de seguridad válida.');
+                    }
+                } catch (err) { alert('Error al restaurar. Archivo corrupto.'); }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
         }
 
         function importSingleCar(event) {
@@ -934,7 +1036,7 @@
                         renderDashboard();
                     }
                 } catch (err) {
-                    alert('Error fatal al leer el archivo JSON. Verifica el formato proporcionado por el Gem.');
+                    alert('Error al leer el archivo JSON.');
                 }
                 event.target.value = '';
             };
@@ -952,8 +1054,7 @@
             return url;
         }
 
-        // Lanza la inicialización a prueba de fallos
-        initApp();
+        initApp(); 
     </script>
 </body>
 </html>
