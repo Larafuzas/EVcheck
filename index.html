@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck v2.0</title>
+    <title>EVcheck v2.1</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -48,7 +48,6 @@
         .view { display: none; padding: 20px; }
         .view.active { display: block; }
 
-        /* Tarjetas del Inicio */
         .car-card { background-color: var(--surface-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; gap: 12px; }
         .car-card-header { display: flex; justify-content: space-between; align-items: center; }
         .car-info h2 { font-size: 1.15rem; margin-bottom: 4px; color: var(--neon-green); }
@@ -61,7 +60,6 @@
         .score-45 { background-color: rgba(255, 149, 0, 0.1); color: var(--score-orange); border-color: var(--score-orange); }
         .score-0  { background-color: rgba(255, 59, 48, 0.1); color: var(--score-red); border-color: var(--score-red); }
 
-        /* Barras de progreso */
         .progress-bar-container { width: 100%; background: var(--bg-color); height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); }
         .progress-fill { height: 100%; transition: width 0.4s ease, background-color 0.4s ease; }
         
@@ -86,9 +84,8 @@
         .view-image-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 10px; background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 12px; z-index: 5; box-shadow: var(--neon-glow); }
         .view-image-btn p { color: var(--neon-green); font-size: 0.8rem; font-weight: bold; margin-top: 8px; }
 
-        /* Pestañas Horizontales Scrolleables */
         .tabs-wrapper { display: flex; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--border-color); background: var(--surface-color); scroll-behavior: smooth; }
-        .tabs-wrapper::-webkit-scrollbar { display: none; } /* Ocultar scrollbar visual */
+        .tabs-wrapper::-webkit-scrollbar { display: none; }
         .tab { padding: 14px 15px; font-size: 0.85rem; flex-shrink: 0; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; }
         .tab.active { color: var(--neon-green); border-bottom-color: var(--neon-green); font-weight: bold; }
         .tab-content { display: none; padding: 20px; }
@@ -120,8 +117,7 @@
         button.action-btn.small { width: auto; padding: 10px 20px; margin-top: 0; }
         
         .version-tag { font-size: 0.75rem; color: var(--text-muted); background: var(--surface-color); padding: 4px 8px; border-radius: 12px; border: 1px solid var(--border-color); margin-left: 10px; }
-        .section-title { color: var(--neon-green); margin: 25px 0 10px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; font-size: 1.05rem; }
-
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
         .modal-content { position: relative; width: 100%; height: 85%; max-width: 800px; background: var(--surface-color); border-radius: 12px; overflow: hidden; border: 1px solid var(--neon-green); box-shadow: var(--neon-glow); }
@@ -144,12 +140,10 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="3" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck v2.0</h1>
+            <h1 id="header-title">EVcheck v2.1</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" id="settings-btn" aria-label="Ajustes">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </button>
     </header>
 
@@ -170,25 +164,29 @@
         </div>
 
         <div class="config-section">
-            <h3>Datos y Copias de Seguridad</h3>
-            <button class="action-btn secondary" onclick="exportData()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Exportar Datos de la App
-            </button>
-            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
-            <button class="action-btn secondary" onclick="document.getElementById('import-file').click()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Restaurar Datos
+            <h3>Importación Mágica</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Sube un archivo JSON generado por tu Gem y se convertirá en un coche nuevo en tu lista.</p>
+            <input type="file" id="import-car-file" style="display: none;" accept=".json" onchange="importSingleCar(event)">
+            <button class="action-btn" onclick="document.getElementById('import-car-file').click()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Importar Vehículo JSON (Gem)
             </button>
         </div>
 
         <div class="config-section">
+            <h3>Copias de Seguridad (Toda la App)</h3>
+            <button class="action-btn secondary" onclick="exportData()">Exportar Datos de la App</button>
+            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
+            <button class="action-btn secondary" onclick="document.getElementById('import-file').click()">Restaurar Datos Completos</button>
+        </div>
+
+        <div class="config-section">
             <h3>Pesos de las 10 Categorías (%)</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Según tu PDF la suma por defecto es 115%. El sistema de la app normaliza y recorta el total para que el máximo global siempre sea el 100% perfecto.</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Ajusta el peso de cada pestaña. La suma debería ser 100%.</p>
             <div id="weights-container"></div>
             <div class="weight-row" style="font-weight: bold; border-top: 1px solid var(--border-color); padding-top: 10px;">
-                <label>Puntuación Base Máxima:</label>
-                <span id="weight-total" style="color: var(--neon-green);">115%</span>
+                <label>Total Actual:</label>
+                <span id="weight-total" style="color: var(--neon-green);">100%</span>
             </div>
         </div>
 
@@ -196,7 +194,7 @@
             <h3>Peligro</h3>
             <button class="action-btn secondary" style="color: var(--score-red); border-color: var(--score-red);" onclick="nukeData()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                Borrar todos los datos de V2
+                Borrar todos los datos
             </button>
         </div>
     </div>
@@ -224,13 +222,8 @@
             </div>
         </div>
 
-        <div class="tabs-wrapper" id="tabs-container">
-            <!-- Pestañas generadas por JS -->
-        </div>
-
-        <div id="tabs-content-container">
-            <!-- Contenido generado por JS -->
-        </div>
+        <div class="tabs-wrapper" id="tabs-container"></div>
+        <div id="tabs-content-container"></div>
     </div>
 
     <!-- Modal de Imagen -->
@@ -244,9 +237,8 @@
     </div>
 
     <script>
-        const APP_VERSION = "v2.0.0";
+        const APP_VERSION = "v2.1.0";
         
-        // Estructura maestra basada en "Factores de evaluación EV.pdf"
         const CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20 },
             tasacion: { title: "Tasación", weight: 10 },
@@ -275,142 +267,20 @@
                 img: "",
                 notas: "",
                 categorias: {
-                    precio: {
-                        items: [
-                            { id: "p1", text: "Mejor precio al contado (igual a financiando)", type: "check", val: false },
-                            { id: "p2", text: "Menores intereses en financiación", type: "check", val: false },
-                            { id: "p3", text: "Menor comisión de apertura", type: "check", val: false }
-                        ]
-                    },
-                    tasacion: {
-                        items: [
-                            { id: "t1", text: "Tasación Nissan Qashqai", type: "select", options: [
-                                { label: "Sin tasar o indiferente", val: 0 },
-                                { label: "Mejor tasación (+15.000 €)", val: 1 },
-                                { label: "Tasación media (14k € - 15k €)", val: 0.5 },
-                                { label: "Peor tasación (-14.000 €)", val: -0.5 }
-                            ], val: 0 }
-                        ]
-                    },
-                    bateria: {
-                        items: [
-                            { id: "b1", text: "Capacidad de la batería", type: "select", options: [
-                                { label: "Pendiente", val: 0 },
-                                { label: "+60 kWh", val: 1 },
-                                { label: "+50 kWh", val: 0.5 },
-                                { label: "-50 kWh", val: -0.5 }
-                            ], val: 0 },
-                            { id: "b2", text: "Autonomía WLTP", type: "select", options: [
-                                { label: "Pendiente", val: 0 },
-                                { label: "+450 km", val: 1 },
-                                { label: "+400 km", val: 0.5 },
-                                { label: "-400 km", val: -0.5 }
-                            ], val: 0 },
-                            { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [
-                                { label: "Pendiente", val: 0 },
-                                { label: "+100 kW", val: 1 },
-                                { label: "-100 kW", val: -0.5 }
-                            ], val: 0 }
-                        ]
-                    },
-                    conectividad: {
-                        items: [
-                            { id: "c1", text: "CarPlay / Android Auto", type: "check", val: false },
-                            { id: "c2", text: "Cámara 360º o cámara trasera", type: "check", val: false },
-                            { id: "c3", text: "App apertura y climatización remota", type: "check", val: false },
-                            { id: "c4", text: "Mapa con búsqueda de puntos de carga", type: "check", val: false },
-                            { id: "c5", text: "Sistema fluido y moderno", type: "check", val: false },
-                            { id: "c6", text: "Asistencia de aparcamiento", type: "check", val: false },
-                            { id: "c7", text: "Perfiles de usuario", type: "check", val: false }
-                        ]
-                    },
-                    adas: {
-                        items: [
-                            { id: "a1", text: "Mantenimiento activo de carril", type: "check", val: false },
-                            { id: "a2", text: "Aviso de ángulo muerto", type: "check", val: false },
-                            { id: "a3", text: "Alerta anticolisión (frenada ayuda)", type: "check", val: false },
-                            { id: "a4", text: "Alerta antiatropello (frenada activa)", type: "check", val: false },
-                            { id: "a5", text: "Asistencia en atascos", type: "check", val: false },
-                            { id: "a6", text: "Conducción autónoma Nivel 2", type: "check", val: false },
-                            { id: "a7", text: "Alerta de tráfico cruzado", type: "check", val: false }
-                        ]
-                    },
-                    extras: {
-                        items: [
-                            { id: "ex1", text: "Barras de techo", type: "check", val: false },
-                            { id: "ex2", text: "Techo solar", type: "check", val: false },
-                            { id: "ex3", text: "Faros matriciales LED", type: "check", val: false },
-                            { id: "ex4", text: "Luces de cortesía", type: "check", val: false },
-                            { id: "ex5", text: "Head Up Display", type: "check", val: false }
-                        ]
-                    },
-                    exterior: {
-                        items: [
-                            { id: "ext1", text: "Diseño atractivo", type: "check", val: false },
-                            { id: "ext2", text: "Buenos materiales exteriores", type: "check", val: false },
-                            { id: "ext3", text: "Robustez general", type: "check", val: false },
-                            { id: "ext4", text: "Llantas y tamaño de rueda", type: "check", val: false },
-                            { id: "ext5", text: "Altura al suelo adecuada", type: "check", val: false },
-                            { id: "ext6", text: "Espejos plegables", type: "check", val: false }
-                        ]
-                    },
-                    interior: {
-                        items: [
-                            { id: "in1", text: "Asientos durables (tela preferente)", type: "check", val: false },
-                            { id: "in2", text: "Comodidad del habitáculo", type: "check", val: false },
-                            { id: "in3", text: "Climatizador bizona", type: "check", val: false },
-                            { id: "in4", text: "Climatizador 'Driver Only'", type: "check", val: false },
-                            { id: "in5", text: "Asientos con memoria", type: "check", val: false },
-                            { id: "in6", text: "Diseño interior atractivo", type: "check", val: false },
-                            { id: "in7", text: "Espacio de almacenamiento", type: "check", val: false },
-                            { id: "in8", text: "Capacidad del maletero", type: "select", options: [
-                                { label: "Pendiente", val: 0 },
-                                { label: "+500 L", val: 1 },
-                                { label: "+400 L", val: 0.5 },
-                                { label: "-400 L", val: -0.5 }
-                            ], val: 0 },
-                            { id: "in9", text: "Frunk (Maletero delantero)", type: "check", val: false },
-                            { id: "in10", text: "Distribución de las pantallas", type: "check", val: false },
-                            { id: "in11", text: "Visión del parabrisas (sin reflejos)", type: "check", val: false },
-                            { id: "in12", text: "Retrovisor electrocrómico", type: "check", val: false }
-                        ]
-                    },
-                    prueba: {
-                        items: [
-                            { id: "pr1", text: "Aceleración", type: "check", val: false },
-                            { id: "pr2", text: "Suspensión delantera y trasera", type: "check", val: false },
-                            { id: "pr3", text: "Aislamiento acústico", type: "check", val: false },
-                            { id: "pr4", text: "Dirección", type: "check", val: false },
-                            { id: "pr5", text: "Modos de conducción", type: "check", val: false },
-                            { id: "pr6", text: "One Pedal real", type: "check", val: false },
-                            { id: "pr7", text: "Modos de regeneración (levas)", type: "check", val: false }
-                        ]
-                    },
-                    garantia: {
-                        items: [
-                            { id: "ga1", text: "Garantía general", type: "select", options: [
-                                { label: "Pendiente", val: 0 },
-                                { label: "+7 años", val: 1 },
-                                { label: "+5 años", val: 0.5 },
-                                { label: "-5 años", val: -0.5 }
-                            ], val: 0 },
-                            { id: "ga2", text: "Garantía de la batería", type: "select", options: [
-                                { label: "Pendiente", val: 0 },
-                                { label: "+8 años", val: 1 },
-                                { label: "-8 años", val: -0.5 }
-                            ], val: 0 },
-                            { id: "ga3", text: "Mantenimiento", type: "select", options: [
-                                { label: "Pendiente", val: 0 },
-                                { label: "+ de 2 años / 30.000km", val: 1 },
-                                { label: "- de 2 años / 30.000km", val: -0.5 }
-                            ], val: 0 }
-                        ]
-                    }
+                    precio: { items: [{ id: "p1", text: "Mejor precio al contado (igual a financiando)", type: "check", val: false }, { id: "p2", text: "Menores intereses en financiación", type: "check", val: false }, { id: "p3", text: "Menor comisión de apertura", type: "check", val: false }] },
+                    tasacion: { items: [{ id: "t1", text: "Tasación Nissan Qashqai", type: "select", options: [{ label: "Sin tasar o indiferente", val: 0 }, { label: "Mejor tasación (+15.000 €)", val: 1 }, { label: "Tasación media (14k € - 15k €)", val: 0.5 }, { label: "Peor tasación (-14.000 €)", val: -0.5 }], val: 0 }] },
+                    bateria: { items: [{ id: "b1", text: "Capacidad de la batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+60 kWh", val: 1 }, { label: "+50 kWh", val: 0.5 }, { label: "-50 kWh", val: -0.5 }], val: 0 }, { id: "b2", text: "Autonomía WLTP", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+450 km", val: 1 }, { label: "+400 km", val: 0.5 }, { label: "-400 km", val: -0.5 }], val: 0 }, { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+100 kW", val: 1 }, { label: "-100 kW", val: -0.5 }], val: 0 }] },
+                    conectividad: { items: [{ id: "c1", text: "CarPlay / Android Auto", type: "check", val: false }, { id: "c2", text: "Cámara 360º o trasera", type: "check", val: false }, { id: "c3", text: "App remota", type: "check", val: false }, { id: "c4", text: "Mapa puntos de carga", type: "check", val: false }, { id: "c5", text: "Sistema fluido", type: "check", val: false }, { id: "c6", text: "Asist. aparcamiento", type: "check", val: false }, { id: "c7", text: "Perfiles usuario", type: "check", val: false }] },
+                    adas: { items: [{ id: "a1", text: "Mantenimiento carril", type: "check", val: false }, { id: "a2", text: "Ángulo muerto", type: "check", val: false }, { id: "a3", text: "Alerta colisión", type: "check", val: false }, { id: "a4", text: "Alerta atropello", type: "check", val: false }, { id: "a5", text: "Asist. atascos", type: "check", val: false }, { id: "a6", text: "Autonomía Nivel 2", type: "check", val: false }, { id: "a7", text: "Tráfico cruzado", type: "check", val: false }] },
+                    extras: { items: [{ id: "ex1", text: "Barras techo", type: "check", val: false }, { id: "ex2", text: "Techo solar", type: "check", val: false }, { id: "ex3", text: "Faros Matrix LED", type: "check", val: false }, { id: "ex4", text: "Luces cortesía", type: "check", val: false }, { id: "ex5", text: "Head Up Display", type: "check", val: false }] },
+                    exterior: { items: [{ id: "ext1", text: "Diseño atractivo", type: "check", val: false }, { id: "ext2", text: "Buenos materiales ext", type: "check", val: false }, { id: "ext3", text: "Robustez", type: "check", val: false }, { id: "ext4", text: "Llantas/Tamaño rueda", type: "check", val: false }, { id: "ext5", text: "Altura al suelo", type: "check", val: false }, { id: "ext6", text: "Espejos plegables", type: "check", val: false }] },
+                    interior: { items: [{ id: "in1", text: "Asientos tela durables", type: "check", val: false }, { id: "in2", text: "Comodidad", type: "check", val: false }, { id: "in3", text: "Clima bizona", type: "check", val: false }, { id: "in4", text: "Clima Driver Only", type: "check", val: false }, { id: "in5", text: "Asientos memoria", type: "check", val: false }, { id: "in6", text: "Diseño atractivo", type: "check", val: false }, { id: "in7", text: "Espacio almacen.", type: "check", val: false }, { id: "in8", text: "Maletero", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+500 L", val: 1 }, { label: "+400 L", val: 0.5 }, { label: "-400 L", val: -0.5 }], val: 0 }, { id: "in9", text: "Frunk", type: "check", val: false }, { id: "in10", text: "Distrib. pantallas", type: "check", val: false }, { id: "in11", text: "Visión parabrisas", type: "check", val: false }, { id: "in12", text: "Retrov. electrocrómico", type: "check", val: false }] },
+                    prueba: { items: [{ id: "pr1", text: "Aceleración", type: "check", val: false }, { id: "pr2", text: "Suspensión", type: "check", val: false }, { id: "pr3", text: "Aislamiento acúst.", type: "check", val: false }, { id: "pr4", text: "Dirección", type: "check", val: false }, { id: "pr5", text: "Modos conducción", type: "check", val: false }, { id: "pr6", text: "One Pedal real", type: "check", val: false }, { id: "pr7", text: "Regeneración (levas)", type: "check", val: false }] },
+                    garantia: { items: [{ id: "ga1", text: "Garantía general", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+7 años", val: 1 }, { label: "+5 años", val: 0.5 }, { label: "-5 años", val: -0.5 }], val: 0 }, { id: "ga2", text: "Garantía batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+8 años", val: 1 }, { label: "-8 años", val: -0.5 }], val: 0 }, { id: "ga3", text: "Mantenimiento", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+ de 2 años / 30.000km", val: 1 }, { label: "- de 2 años / 30.000km", val: -0.5 }], val: 0 }] }
                 }
             };
         }
 
-        // LIMPIEZA DE DATOS V1: Como el formato es radicalmente diferente, partimos de cero con nueva key de localStorage.
         let appData = JSON.parse(localStorage.getItem('evcheck_v2_data'));
         if (!appData || !Array.isArray(appData)) {
             appData = [];
@@ -458,7 +328,7 @@
             document.getElementById(viewId).classList.add('active');
             
             document.getElementById('settings-btn').style.display = viewId === 'detail-view' ? 'none' : 'flex';
-            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración V2' : 'EVcheck v2.0';
+            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración V2' : 'EVcheck v2.1';
             
             if (viewId === 'dashboard-view') renderDashboard();
         }
@@ -495,7 +365,7 @@
         }
 
         function nukeData() {
-            if (confirm("¿Peligro! ¿Estás seguro de que quieres borrar TODOS los coches guardados y empezar de cero?")) {
+            if (confirm("¡Peligro! ¿Estás seguro de que quieres borrar TODOS los coches guardados y empezar de cero?")) {
                 appData = [];
                 localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
                 showView('dashboard-view');
@@ -527,11 +397,62 @@
                         alert('Copia V2 restaurada correctamente.');
                         location.reload();
                     } else {
-                        alert('El archivo no tiene el formato V2 correcto. (Los archivos V1 ya no son compatibles).');
+                        alert('El archivo no tiene el formato V2 correcto.');
                     }
                 } catch (err) {
                     alert('Error al leer el archivo JSON.');
                 }
+            };
+            reader.readAsText(file);
+        }
+
+        // MOTOR DE IMPORTACIÓN JSON (GEM) V2
+        function importSingleCar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    const carsToAdd = Array.isArray(parsed) ? parsed : [parsed];
+                    let added = 0;
+
+                    carsToAdd.forEach(data => {
+                        let newCar = getNewCarTemplate(); // Partimos de un molde en blanco perfecto
+                        newCar.id = "ev-" + Date.now() + Math.floor(Math.random() * 1000);
+                        
+                        if(data.marca) newCar.marca = data.marca;
+                        if(data.modelo) newCar.modelo = data.modelo;
+                        if(data.concesionario) newCar.concesionario = data.concesionario;
+                        if(data.precioCorto) newCar.precioCorto = data.precioCorto;
+                        if(data.notas) newCar.notas = data.notas;
+                        if(data.img) newCar.img = data.img;
+
+                        // Mapeamos los arrays del JSON a los items exactos del molde
+                        if (data.valores) {
+                            for (let catKey in data.valores) {
+                                if (newCar.categorias[catKey]) {
+                                    data.valores[catKey].forEach((val, idx) => {
+                                        if (newCar.categorias[catKey].items[idx]) {
+                                            newCar.categorias[catKey].items[idx].val = val;
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        appData.push(newCar);
+                        added++;
+                    });
+
+                    if (added > 0) {
+                        localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
+                        alert(`Se han importado ${added} vehículo(s) correctamente.`);
+                        renderDashboard();
+                    }
+                } catch (err) {
+                    alert('Error al leer el JSON. Asegúrate de que el Gem generó la estructura de arrays correctamente.');
+                }
+                event.target.value = '';
             };
             reader.readAsText(file);
         }
@@ -566,7 +487,7 @@
             const total = Object.values(appWeights).reduce((a, b) => a + b, 0);
             const totalEl = document.getElementById('weight-total');
             totalEl.innerText = `${total}%`;
-            totalEl.style.color = 'var(--neon-green)';
+            totalEl.style.color = total > 100 ? 'var(--score-red)' : 'var(--neon-green)';
         }
 
         function getScoreColorClass(score) {
@@ -576,7 +497,6 @@
             return 'score-0';
         }
 
-        // --- EL NUEVO MOTOR MATEMÁTICO PERFECTO ---
         function calculateScore(car) {
             let totalContribution = 0;
             
@@ -588,20 +508,15 @@
                 
                 if (numItems === 0) continue;
 
-                // Sumamos el valor de cada elemento. (Checks aportan 1 o 0. Selects aportan su val que puede ser negativo)
                 let catRawScore = cat.items.reduce((acc, item) => {
                     let v = (item.type === 'check') ? (item.val ? 1 : 0) : Number(item.val || 0);
                     return acc + v;
                 }, 0);
 
-                // El porcentaje de esta categoría sobre su propio máximo posible
                 let catPercent = (catRawScore / numItems);
-                
-                // La contribución real a la nota global del coche
                 totalContribution += (catPercent * weight);
             }
 
-            // Limitamos que la nota final nunca sea menor a 0 ni mayor a 100
             return Math.min(100, Math.max(0, Math.round(totalContribution)));
         }
 
@@ -685,9 +600,8 @@
                 <div class="data-group"><label>Anotaciones de la prueba / Detalles de la oferta</label><textarea oninput="updateCarBaseData('notas', this.value)">${car.notas}</textarea></div>
             </div>`;
 
-            // Construir las 10 pestañas dinámicas
             for (let catId in CATEGORY_DEFS) {
-                if (!car.categorias[catId]) continue; // Por si hay datos corruptos
+                if (!car.categorias[catId]) continue; 
                 
                 tabsHtml += `<div class="tab" id="tab-btn-${catId}" onclick="switchTab('tab-btn-${catId}', 'tab-content-${catId}')">${CATEGORY_DEFS[catId].title}</div>`;
                 
@@ -774,7 +688,6 @@
             }
             localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
             
-            // Re-render specifically just this tab to update the progress bar inside it cleanly
             buildDynamicTabsAndContent(car);
             switchTab(`tab-btn-${catId}`, `tab-content-${catId}`);
         }
