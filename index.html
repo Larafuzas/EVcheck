@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck V5.2</title>
+    <title>EVcheck V5.3</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -35,6 +35,7 @@
         
         header { background-color: var(--surface-color); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;}
         .header-left { display: flex; align-items: center; gap: 10px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
         h1 { font-size: 1.2rem; font-weight: 600; }
         
         .nav-btn { background: none; border: none; color: var(--neon-green); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px; }
@@ -132,14 +133,24 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="4" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck V5.2</h1>
+            <h1 id="header-title">EVcheck V5.3</h1>
         </div>
-        <button class="nav-btn" onclick="toggleSettings()" aria-label="Ajustes">
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-        </button>
+        <div class="header-right">
+            <!-- Icono de Lata de Gasolina para abrir la calculadora de ahorro -->
+            <button class="nav-btn" onclick="showCalculatorView()" aria-label="Calculadora Gasolina vs Electrico" title="Calculadora Gasto Gasolina vs Electrico">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 11h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2v-6z"></path>
+                    <path d="M5 11h6a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"></path>
+                    <path d="M7 11V7a3 3 0 0 1 6 0v4"></path>
+                </svg>
+            </button>
+            <button class="nav-btn" onclick="toggleSettings()" aria-label="Ajustes">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+        </div>
     </header>
 
     <div id="dashboard-view" class="view active">
@@ -154,6 +165,39 @@
                 Importar JSON
             </button>
             <input type="file" id="import-car-file" style="display: none;" accept=".json, .txt" onchange="importSingleCar(event)">
+        </div>
+    </div>
+
+    <!-- NUEVA VISTA: CALCULADORA GASOLINA VS ELÉCTRICO -->
+    <div id="calculator-view" class="view">
+        <div class="config-section">
+            <h3 style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Comparativa Gasolina vs. Eléctrico</span>
+                <button class="action-btn small" style="margin:0; width:auto; padding:5px 15px;" onclick="showView('dashboard-view')">Volver</button>
+            </h3>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Calcula el ahorro estimado introduciendo tus parámetros de conducción habituales.</p>
+            
+            <div class="data-group">
+                <label>Kilómetros a realizar (al año)</label>
+                <input type="number" id="calc-km" value="15000" oninput="calculateSavings()">
+            </div>
+
+            <div class="grid-2">
+                <div class="data-group" style="margin:0;"><label>Consumo Nissan (L/100km)</label><input type="number" step="0.1" id="calc-litros" value="7.0" oninput="calculateSavings()"></div>
+                <div class="data-group" style="margin:0;"><label>Precio Medio Gasolina (€/L)</label><input type="number" step="0.01" id="calc-precionas" value="1.55" oninput="calculateSavings()"></div>
+            </div>
+
+            <div class="grid-2" style="margin-top:15px;">
+                <div class="data-group" style="margin:0;"><label>Consumo Eléctrico (kWh/100km)</label><input type="number" step="0.1" id="calc-kwh100" value="15.0" oninput="calculateSavings()"></div>
+                <div class="data-group" style="margin:0;"><label>Precio Medio Electricidad (€/kWh)</label><input type="number" step="0.01" id="calc-preciokwh" value="0.15" oninput="calculateSavings()"></div>
+            </div>
+
+            <div style="background:rgba(0,200,0,0.05); border:1px solid var(--neon-green); border-radius:10px; padding:15px; margin-top:20px;">
+                <h4 style="color:var(--neon-green); margin-bottom:12px;">Resultados Anuales Estimados</h4>
+                <p style="margin-bottom:8px; display:flex; justify-content:space-between;"><span>Gasto Total Gasolina (Nissan):</span> <strong id="res-gasolina-tot" style="color:var(--score-red);">0 €</strong></p>
+                <p style="margin-bottom:8px; display:flex; justify-content:space-between;"><span>Gasto Total Eléctrico (VE):</span> <strong id="res-elec-tot" style="color:var(--score-green);">0 €</strong></p>
+                <p style="margin-bottom:0; display:flex; justify-content:space-between; border-top:1px solid var(--border-color); padding-top:8px; font-size:1.1rem;"><strong>AHORRO NETO ANUAL:</strong> <strong id="res-ahorro-tot" style="color:var(--neon-green);">0 €</strong></p>
+            </div>
         </div>
     </div>
 
@@ -177,7 +221,6 @@
 
         <div class="config-section">
             <h3>Copias de Seguridad</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Guarda una copia de toda tu base de datos y plantillas. Totalmente compatible con iOS.</p>
             <button class="action-btn secondary" onclick="exportData()">Exportar Garaje Completo</button>
             <input type="file" id="import-file" style="display: none;" accept=".json, .txt" onchange="importData(event)">
             <button class="action-btn secondary" onclick="document.getElementById('import-file').click()">Restaurar Garaje</button>
@@ -234,7 +277,7 @@
     </div>
 
     <script>
-        var APP_VERSION = "V5.2.0";
+        var APP_VERSION = "V5.3.0";
 
         var CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20, items: [
@@ -242,7 +285,7 @@
                 { id: "p_intereses", text: "📉 Menores intereses pagados (Auto)", type: "check_auto", val: false }, 
                 { id: "p_comision", text: "💸 Menores comisiones o gastos (Auto)", type: "check_auto", val: false }
             ]},
-            tasacion: { title: "Tasación", weight: 10, items: [{ id: "t1", text: "Tasación del Vehículo Usado (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }]},
+            tasacion: { title: "Tasación", weight: 10, items: [{ id: "t1", text: "Tasación del Vehículo Usado (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }] },
             bateria: { title: "Batería", weight: 20, items: [{ id: "b1", text: "Capacidad de la batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+60 kWh", val: 1 }, { label: "+50 kWh", val: 0.5 }, { label: "-50 kWh", val: -0.5 }], val: 0 }, { id: "b2", text: "Autonomía WLTP", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+450 km", val: 1 }, { label: "+400 km", val: 0.5 }, { label: "-400 km", val: -0.5 }], val: 0 }, { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+100 kW", val: 1 }, { label: "-100 kW", val: -0.5 }], val: 0 }] },
             conectividad: { title: "Tecnología", weight: 15, items: [{ id: "c1", text: "CarPlay / Android Auto", type: "check", val: false }, { id: "c2", text: "Cámara 360º o trasera", type: "check", val: false }, { id: "c3", text: "App remota", type: "check", val: false }, { id: "c4", text: "Mapa puntos de carga", type: "check", val: false }, { id: "c5", text: "Sistema fluido", type: "check", val: false }, { id: "c6", text: "Asist. aparcamiento", type: "check", val: false }, { id: "c7", text: "Perfiles usuario", type: "check", val: false }] },
             adas: { title: "ADAS", weight: 15, items: [{ id: "a1", text: "Mantenimiento carril", type: "check", val: false }, { id: "a2", text: "Ángulo muerto", type: "check", val: false }, { id: "a3", text: "Alerta colisión", type: "check", val: false }, { id: "a4", text: "Alerta atropello", type: "check", val: false }, { id: "a5", text: "Asist. atascos", type: "check", val: false }, { id: "a6", text: "Autonomía Nivel 2", type: "check", val: false }, { id: "a7", text: "Alerta de tráfico cruzado", type: "check", val: false }] },
@@ -264,10 +307,9 @@
         var currentCarId = null;
         var currentModalUrl = '';
 
-        // INICIALIZACIÓN MODO V5.2
         function initApp() {
             try {
-                var storedCats = localStorage.getItem('evcheck_v5_global_cats');
+                var storedCats = localStorage.getItem('evcheck_v53_global_cats');
                 if (storedCats) {
                     var parsedCats = JSON.parse(storedCats);
                     if (parsedCats && typeof parsedCats === 'object' && parsedCats.precio && parsedCats.precio.items) {
@@ -278,11 +320,11 @@
             
             if (!globalCategories) {
                 globalCategories = JSON.parse(JSON.stringify(CATEGORY_DEFS));
-                localStorage.setItem('evcheck_v5_global_cats', JSON.stringify(globalCategories));
+                localStorage.setItem('evcheck_v53_global_cats', JSON.stringify(globalCategories));
             }
 
             try {
-                var storedData = localStorage.getItem('evcheck_v5_data') || localStorage.getItem('evcheck_v4_data') || localStorage.getItem('evcheck_v3_data');
+                var storedData = localStorage.getItem('evcheck_v5_data') || localStorage.getItem('evcheck_v4_data');
                 if (storedData) {
                     var parsedData = JSON.parse(storedData);
                     if (Array.isArray(parsedData)) appData = parsedData;
@@ -295,7 +337,7 @@
             saveData();
             
             try {
-                var storedWeights = localStorage.getItem('evcheck_v5_weights') || localStorage.getItem('evcheck_v4_weights') || localStorage.getItem('evcheck_v3_weights');
+                var storedWeights = localStorage.getItem('evcheck_v5_weights');
                 if (storedWeights) {
                     var pw = JSON.parse(storedWeights);
                     for(var w in pw) appWeights[w] = pw[w];
@@ -312,6 +354,7 @@
 
             evaluateMarket();
             renderDashboard();
+            calculateSavings();
         }
 
         function getNewCarTemplate() {
@@ -367,7 +410,7 @@
             return car;
         }
 
-        function saveData() { localStorage.setItem('evcheck_v5_data', JSON.stringify(appData)); }
+        function saveData() { localStorage.setItem('evcheck_v53_data', JSON.stringify(appData)); }
 
         // TEMA Y UI
         function applyTheme(setting) {
@@ -407,13 +450,13 @@
             var settingsBtn = document.getElementById('settings-btn');
             
             if (viewId === 'settings-view') {
-                if (title) title.innerText = 'Ajustes V5.2';
+                if (title) title.innerText = 'Ajustes V5.3';
                 if (settingsBtn) settingsBtn.style.display = 'none';
                 renderWeightsConfig();
-            } else if (viewId === 'detail-view') {
+            } else if (viewId === 'detail-view' || viewId === 'calculator-view') {
                 if (settingsBtn) settingsBtn.style.display = 'none';
             } else {
-                if (title) title.innerText = 'EVcheck V5.2';
+                if (title) title.innerText = 'EVcheck V5.3';
                 if (settingsBtn) settingsBtn.style.display = 'flex';
                 evaluateMarket();
                 renderDashboard();
@@ -424,6 +467,38 @@
             var current = document.querySelector('.view.active');
             if (current && current.id === 'settings-view') showView('dashboard-view');
             else showView('settings-view');
+        }
+
+        function showCalculatorView() {
+            showView('calculator-view');
+            calculateSavings();
+        }
+
+        function calculateSavings() {
+            var km = Number(document.getElementById('calc-km').value || 0);
+            var l100 = Number(document.getElementById('calc-litros').value || 0);
+            var pGas = Number(document.getElementById('calc-precionas').value || 0);
+            var kwh100 = Number(document.getElementById('calc-kwh100').value || 0);
+            var pElec = Number(document.getElementById('calc-preciokwh').value || 0);
+
+            var litrosTotales = (km / 100) * l100;
+            var costoGasolina = litrosTotales * pGas;
+
+            var kwhTotales = (km / 100) * kwh100;
+            var costoElec = kwhTotales * pElec;
+
+            var ahorro = costoGasolina - costoElec;
+
+            var elGas = document.getElementById('res-gasolina-tot');
+            var elElec = document.getElementById('res-elec-tot');
+            var elAhorro = document.getElementById('res-ahorro-tot');
+
+            if (elGas) elGas.innerText = Math.round(costoGasolina).toLocaleString('es-ES') + ' €';
+            if (elElec) elElec.innerText = Math.round(costoElec).toLocaleString('es-ES') + ' €';
+            if (elAhorro) {
+                elAhorro.innerText = Math.round(ahorro).toLocaleString('es-ES') + ' €';
+                elAhorro.style.color = ahorro >= 0 ? 'var(--neon-green)' : 'var(--score-red)';
+            }
         }
 
         // GESTIÓN BÁSICA COCHES
@@ -558,7 +633,6 @@
                         activeItemsCount++;
                         rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
                     } else if (item.type === 'select') {
-                        // EXCLUSIÓN DE "PENDIENTE" (val === 0): Si está en pendiente, no penaliza ni cuenta en el denominador
                         if (Number(item.val || 0) !== 0) {
                             activeItemsCount++;
                             rawScore += Number(item.val || 0);
@@ -855,9 +929,8 @@
                 var items = car.categorias.precio.items;
                 for(var i=0; i<items.length; i++) {
                     var chk = document.getElementById('chk-auto-' + items[i].id);
-                    var lbl = document.getElementById('lbl-auto-' + items[i].id);
+                    var lbl = document.getElementById('label-auto-' + items[i].id); // Ajustado al id real o selector seguro
                     if(chk) chk.checked = items[i].val;
-                    if(lbl) lbl.style.opacity = items[i].val ? '1' : '0.4';
                 }
                 updateProgressBarDOM(car, 'precio');
             }
@@ -912,7 +985,7 @@
 
             var newItem = { id: "custom_" + Date.now(), text: val, type: "check", val: false };
             globalCategories[catId].items.push(newItem);
-            localStorage.setItem('evcheck_v5_global_cats', JSON.stringify(globalCategories));
+            localStorage.setItem('evcheck_v53_global_cats', JSON.stringify(globalCategories));
 
             for (var i=0; i<appData.length; i++) {
                 appData[i].categorias[catId].items.push(JSON.parse(JSON.stringify(newItem)));
@@ -936,7 +1009,7 @@
             var newGItems = [];
             for(var k=0; k<gItems.length; k++){ if(gItems[k].id !== itemId) newGItems.push(gItems[k]); }
             globalCategories[catId].items = newGItems;
-            localStorage.setItem('evcheck_v5_global_cats', JSON.stringify(globalCategories));
+            localStorage.setItem('evcheck_v53_global_cats', JSON.stringify(globalCategories));
             
             for (var i=0; i<appData.length; i++) {
                 var cItems = appData[i].categorias[catId].items;
@@ -1045,7 +1118,7 @@
                             for (var catKey in data.valores) {
                                 if (newCar.categorias[catKey]) {
                                     for(var v=0; v<data.valores[catKey].length; v++) {
-                                        if (newCar.categorias[catKey].items[v]) newCar.categorias[catKey].items[v].val = data.valores[catKey][v];
+ de                                         if (newCar.categorias[catKey].items[v]) newCar.categorias[catKey].items[v].val = data.valores[catKey][v];
                                     }
                                 }
                             }
