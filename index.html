@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck v2.1</title>
+    <title>EVcheck v2.2</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -97,6 +97,9 @@
         .data-group input:focus, .data-group select:focus, .data-group textarea:focus { outline: none; border-color: var(--neon-green); }
         .data-group textarea { resize: vertical; min-height: 100px; }
         
+        .offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .offer-grid .data-group { padding: 8px; margin: 0; background: var(--surface-color); border: 1px solid var(--border-color); }
+        
         .check-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .check-item:last-child { border-bottom: none; }
         .check-item label { flex: 1; font-size: 0.95rem; display: flex; align-items: center; cursor: pointer; gap: 12px; }
@@ -140,10 +143,12 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="3" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck v2.1</h1>
+            <h1 id="header-title">EVcheck v2.2</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" id="settings-btn" aria-label="Ajustes">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
         </button>
     </header>
 
@@ -152,8 +157,13 @@
         <div style="display: flex; gap: 10px; margin-top: 20px;">
             <button class="action-btn" onclick="addNewCar()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Añadir Evaluación
+                Añadir Oferta
             </button>
+            <button class="action-btn secondary" style="margin-top: 10px;" onclick="document.getElementById('import-car-file').click()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Importar JSON (Gem)
+            </button>
+            <input type="file" id="import-car-file" style="display: none;" accept=".json" onchange="importSingleCar(event)">
         </div>
     </div>
 
@@ -161,16 +171,6 @@
         <div class="config-section" style="display: flex; justify-content: space-between; align-items: center;">
             <h3 style="margin: 0; border: none; padding: 0;">Acerca de EVcheck</h3>
             <span class="version-tag" id="app-version-display"></span>
-        </div>
-
-        <div class="config-section">
-            <h3>Importación Mágica</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Sube un archivo JSON generado por tu Gem y se convertirá en un coche nuevo en tu lista.</p>
-            <input type="file" id="import-car-file" style="display: none;" accept=".json" onchange="importSingleCar(event)">
-            <button class="action-btn" onclick="document.getElementById('import-car-file').click()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Importar Vehículo JSON (Gem)
-            </button>
         </div>
 
         <div class="config-section">
@@ -182,7 +182,6 @@
 
         <div class="config-section">
             <h3>Pesos de las 10 Categorías (%)</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Ajusta el peso de cada pestaña. La suma debería ser 100%.</p>
             <div id="weights-container"></div>
             <div class="weight-row" style="font-weight: bold; border-top: 1px solid var(--border-color); padding-top: 10px;">
                 <label>Total Actual:</label>
@@ -193,7 +192,6 @@
         <div class="config-section">
             <h3>Peligro</h3>
             <button class="action-btn secondary" style="color: var(--score-red); border-color: var(--score-red);" onclick="nukeData()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 Borrar todos los datos
             </button>
         </div>
@@ -237,7 +235,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v2.1.0";
+        const APP_VERSION = "v2.2.0";
         
         const CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20 },
@@ -266,9 +264,16 @@
                 precioCorto: "0 €",
                 img: "",
                 notas: "",
+                finanzas: { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0 },
                 categorias: {
-                    precio: { items: [{ id: "p1", text: "Mejor precio al contado (igual a financiando)", type: "check", val: false }, { id: "p2", text: "Menores intereses en financiación", type: "check", val: false }, { id: "p3", text: "Menor comisión de apertura", type: "check", val: false }] },
-                    tasacion: { items: [{ id: "t1", text: "Tasación Nissan Qashqai", type: "select", options: [{ label: "Sin tasar o indiferente", val: 0 }, { label: "Mejor tasación (+15.000 €)", val: 1 }, { label: "Tasación media (14k € - 15k €)", val: 0.5 }, { label: "Peor tasación (-14.000 €)", val: -0.5 }], val: 0 }] },
+                    precio: { items: [
+                        { id: "p_contado", text: "🏆 Mejor precio al contado (Auto-calculado)", type: "check_auto", val: false }, 
+                        { id: "p_intereses", text: "📉 Menores intereses en financiación (Auto-calculado)", type: "check_auto", val: false }, 
+                        { id: "p_comision", text: "💸 Menor comisión de apertura (Auto-calculado)", type: "check_auto", val: false }
+                    ]},
+                    tasacion: { items: [
+                        { id: "t1", text: "Tasación Real del Vehículo (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }
+                    ]},
                     bateria: { items: [{ id: "b1", text: "Capacidad de la batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+60 kWh", val: 1 }, { label: "+50 kWh", val: 0.5 }, { label: "-50 kWh", val: -0.5 }], val: 0 }, { id: "b2", text: "Autonomía WLTP", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+450 km", val: 1 }, { label: "+400 km", val: 0.5 }, { label: "-400 km", val: -0.5 }], val: 0 }, { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+100 kW", val: 1 }, { label: "-100 kW", val: -0.5 }], val: 0 }] },
                     conectividad: { items: [{ id: "c1", text: "CarPlay / Android Auto", type: "check", val: false }, { id: "c2", text: "Cámara 360º o trasera", type: "check", val: false }, { id: "c3", text: "App remota", type: "check", val: false }, { id: "c4", text: "Mapa puntos de carga", type: "check", val: false }, { id: "c5", text: "Sistema fluido", type: "check", val: false }, { id: "c6", text: "Asist. aparcamiento", type: "check", val: false }, { id: "c7", text: "Perfiles usuario", type: "check", val: false }] },
                     adas: { items: [{ id: "a1", text: "Mantenimiento carril", type: "check", val: false }, { id: "a2", text: "Ángulo muerto", type: "check", val: false }, { id: "a3", text: "Alerta colisión", type: "check", val: false }, { id: "a4", text: "Alerta atropello", type: "check", val: false }, { id: "a5", text: "Asist. atascos", type: "check", val: false }, { id: "a6", text: "Autonomía Nivel 2", type: "check", val: false }, { id: "a7", text: "Tráfico cruzado", type: "check", val: false }] },
@@ -284,6 +289,28 @@
         let appData = JSON.parse(localStorage.getItem('evcheck_v2_data'));
         if (!appData || !Array.isArray(appData)) {
             appData = [];
+            localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
+        } else {
+            // MIGRACIÓN v2.1 -> v2.2
+            appData.forEach(car => {
+                if(!car.finanzas) car.finanzas = { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0 };
+                
+                // Migrar items de precio a formato check_auto
+                if(car.categorias.precio && car.categorias.precio.items.length > 0 && car.categorias.precio.items[0].type === 'check') {
+                    car.categorias.precio.items = [
+                        { id: "p_contado", text: "🏆 Mejor precio al contado (Auto-calculado)", type: "check_auto", val: false }, 
+                        { id: "p_intereses", text: "📉 Menores intereses en financiación (Auto-calculado)", type: "check_auto", val: false }, 
+                        { id: "p_comision", text: "💸 Menor comisión de apertura (Auto-calculado)", type: "check_auto", val: false }
+                    ];
+                }
+                
+                // Migrar items de tasacion a formato number_score
+                if(car.categorias.tasacion && car.categorias.tasacion.items.length > 0 && car.categorias.tasacion.items[0].type === 'select') {
+                    car.categorias.tasacion.items = [
+                        { id: "t1", text: "Tasación Real del Vehículo (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }
+                    ];
+                }
+            });
             localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
         }
 
@@ -319,6 +346,7 @@
             document.getElementById('app-version-display').innerText = APP_VERSION;
             document.getElementById('theme-select').value = currentThemeSetting;
             applyTheme(currentThemeSetting);
+            evaluateMarket(); 
             renderDashboard();
             renderWeightsConfig();
         };
@@ -328,7 +356,7 @@
             document.getElementById(viewId).classList.add('active');
             
             document.getElementById('settings-btn').style.display = viewId === 'detail-view' ? 'none' : 'flex';
-            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración V2' : 'EVcheck v2.1';
+            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración' : 'EVcheck v2.2';
             
             if (viewId === 'dashboard-view') renderDashboard();
         }
@@ -406,7 +434,6 @@
             reader.readAsText(file);
         }
 
-        // MOTOR DE IMPORTACIÓN JSON (GEM) V2
         function importSingleCar(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -418,7 +445,7 @@
                     let added = 0;
 
                     carsToAdd.forEach(data => {
-                        let newCar = getNewCarTemplate(); // Partimos de un molde en blanco perfecto
+                        let newCar = getNewCarTemplate(); 
                         newCar.id = "ev-" + Date.now() + Math.floor(Math.random() * 1000);
                         
                         if(data.marca) newCar.marca = data.marca;
@@ -427,8 +454,8 @@
                         if(data.precioCorto) newCar.precioCorto = data.precioCorto;
                         if(data.notas) newCar.notas = data.notas;
                         if(data.img) newCar.img = data.img;
+                        if(data.finanzas) newCar.finanzas = {...newCar.finanzas, ...data.finanzas};
 
-                        // Mapeamos los arrays del JSON a los items exactos del molde
                         if (data.valores) {
                             for (let catKey in data.valores) {
                                 if (newCar.categorias[catKey]) {
@@ -447,23 +474,15 @@
                     if (added > 0) {
                         localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
                         alert(`Se han importado ${added} vehículo(s) correctamente.`);
+                        evaluateMarket(); 
                         renderDashboard();
                     }
                 } catch (err) {
-                    alert('Error al leer el JSON. Asegúrate de que el Gem generó la estructura de arrays correctamente.');
+                    alert('Error al leer el JSON. Asegúrate de que el Gem generó la estructura correctamente.');
                 }
                 event.target.value = '';
             };
             reader.readAsText(file);
-        }
-
-        function checkOTA() {
-            const status = document.getElementById('ota-status');
-            status.innerText = "Buscando actualizaciones...";
-            setTimeout(() => {
-                status.innerText = `EVcheck está en la última versión (${APP_VERSION}).`;
-                setTimeout(() => status.innerText = "", 3000);
-            }, 1500);
         }
 
         function renderWeightsConfig() {
@@ -497,6 +516,48 @@
             return 'score-0';
         }
 
+        // AUTO-EVALUACIÓN DE OFERTAS: La magia del sistema V2.2
+        function evaluateMarket() {
+            // Busca los mejores datos (mínimos) de entre todas las ofertas válidas guardadas
+            let validContados = appData.map(c => Number(c.finanzas?.precioContado || 0)).filter(v => v > 0);
+            let minContado = validContados.length > 0 ? Math.min(...validContados) : null;
+
+            let validIntereses = appData.map(c => {
+                let f = c.finanzas;
+                if(!f) return null;
+                let coste = Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0);
+                return coste > 0 && Number(f.precioFinanciado) > 0 ? (coste - Number(f.precioFinanciado)) : null;
+            }).filter(v => v !== null && v >= 0);
+            let minIntereses = validIntereses.length > 0 ? Math.min(...validIntereses) : null;
+
+            let validComision = appData.map(c => Number(c.finanzas?.comision || 0)).filter(v => v > 0); // Consideramos comisión > 0 para premiar si hay empate en 0
+            let minComision = validComision.length > 0 ? Math.min(...validComision) : 0; 
+
+            // Aplica las medallas auto-calculadas a los checks
+            appData.forEach(car => {
+                let f = car.finanzas;
+                let items = car.categorias.precio.items;
+                if(!f || !items) return;
+                
+                let p1 = items.find(i => i.id === 'p_contado');
+                let p2 = items.find(i => i.id === 'p_intereses');
+                let p3 = items.find(i => i.id === 'p_comision');
+
+                // 1. Mejor precio al contado
+                if(p1) p1.val = (Number(f.precioContado) > 0 && Number(f.precioContado) === minContado);
+                
+                // 2. Menores intereses
+                let coste = Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0);
+                let int = coste > 0 && Number(f.precioFinanciado) > 0 ? (coste - Number(f.precioFinanciado)) : null;
+                if(p2) p2.val = (int !== null && int === minIntereses);
+
+                // 3. Menor comisión
+                if(p3) p3.val = (Number(f.plazo) > 0 && Number(f.comision) <= minComision); 
+            });
+
+            localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
+        }
+
         function calculateScore(car) {
             let totalContribution = 0;
             
@@ -509,7 +570,16 @@
                 if (numItems === 0) continue;
 
                 let catRawScore = cat.items.reduce((acc, item) => {
-                    let v = (item.type === 'check') ? (item.val ? 1 : 0) : Number(item.val || 0);
+                    let v = 0;
+                    if (item.type === 'check' || item.type === 'check_auto') {
+                        v = item.val ? 1 : 0;
+                    } else if (item.type === 'select') {
+                        v = Number(item.val || 0);
+                    } else if (item.type === 'number_score') {
+                        let valNum = Number(item.val || 0);
+                        // Fórmula proporcional acotada: (val - min) / (max - min)
+                        v = Math.max(0, Math.min(1, (valNum - item.minRef) / (item.maxRef - item.minRef)));
+                    }
                     return acc + v;
                 }, 0);
 
@@ -594,7 +664,7 @@
             <div id="tab-content-anotaciones" class="tab-content">
                 <div class="data-group"><label>Marca</label><input type="text" value="${car.marca}" oninput="updateCarBaseData('marca', this.value)"></div>
                 <div class="data-group"><label>Modelo</label><input type="text" value="${car.modelo}" oninput="updateCarBaseData('modelo', this.value)"></div>
-                <div class="data-group"><label>Concesionario</label><input type="text" value="${car.concesionario}" oninput="updateCarBaseData('concesionario', this.value)"></div>
+                <div class="data-group"><label>Concesionario / Título</label><input type="text" value="${car.concesionario}" oninput="updateCarBaseData('concesionario', this.value)"></div>
                 <div class="data-group"><label>Precio de referencia / Resumen Corto</label><input type="text" value="${car.precioCorto}" oninput="updateCarBaseData('precioCorto', this.value)" placeholder="Ej. 34.000 € (Contado)"></div>
                 <div class="data-group"><label>URL Imagen (Drive/Web)</label><input type="url" value="${car.img}" oninput="updateCarBaseData('img', this.value)"></div>
                 <div class="data-group"><label>Anotaciones de la prueba / Detalles de la oferta</label><textarea oninput="updateCarBaseData('notas', this.value)">${car.notas}</textarea></div>
@@ -607,9 +677,49 @@
                 
                 let cat = car.categorias[catId];
                 let maxVal = cat.items.length;
-                let currentVal = cat.items.reduce((acc, item) => acc + (item.type === 'check' ? (item.val ? 1 : 0) : Number(item.val)), 0);
+                let currentVal = cat.items.reduce((acc, item) => {
+                    let v = 0;
+                    if (item.type === 'check' || item.type === 'check_auto') v = item.val ? 1 : 0;
+                    else if (item.type === 'select') v = Number(item.val || 0);
+                    else if (item.type === 'number_score') v = Math.max(0, Math.min(1, (Number(item.val || 0) - item.minRef) / (item.maxRef - item.minRef)));
+                    return acc + v;
+                }, 0);
+                
                 let percentage = maxVal > 0 ? (currentVal / maxVal) * 100 : 0;
                 let visPercent = Math.max(0, Math.min(100, percentage));
+
+                let finanzasHtml = '';
+                if (catId === 'precio') {
+                    const f = car.finanzas;
+                    const costeTotal = Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0);
+                    const intereses = Math.max(0, costeTotal - Number(f.precioFinanciado || 0));
+
+                    finanzasHtml = `
+                        <div style="margin-bottom: 25px; border-bottom: 1px dashed var(--border-color); padding-bottom: 15px;">
+                            <h4 style="color: var(--neon-green); margin-bottom: 15px;">Datos de Financiación</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Al Contado (€)</label><input type="number" value="${f.precioContado}" oninput="updateFinanzas('precioContado', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Financiado (Base) (€)</label><input type="number" value="${f.precioFinanciado}" oninput="updateFinanzas('precioFinanciado', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Entrada (€)</label><input type="number" value="${f.entrada}" oninput="updateFinanzas('entrada', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Plazo (Meses)</label><input type="number" value="${f.plazo}" oninput="updateFinanzas('plazo', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Cuota Mensual (€)</label><input type="number" value="${f.cuotaMensual}" oninput="updateFinanzas('cuotaMensual', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Cuota Final (€)</label><input type="number" value="${f.cuotaFinal}" oninput="updateFinanzas('cuotaFinal', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Comisión Apertura (€)</label><input type="number" value="${f.comision}" oninput="updateFinanzas('comision', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>TAE (%)</label><input type="number" step="0.1" value="${f.tae}" oninput="updateFinanzas('tae', this.value)"></div>
+                            </div>
+                            <div style="background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 8px; padding: 15px; font-size: 0.95rem;">
+                                <p style="margin-bottom: 8px; display: flex; justify-content: space-between;">
+                                    <strong>Coste Total a Plazos:</strong> 
+                                    <span style="color:var(--text-color); font-weight: bold;">${costeTotal > 0 ? costeTotal.toLocaleString('es-ES') + ' €' : '0 €'}</span>
+                                </p>
+                                <p style="margin-bottom: 0; display: flex; justify-content: space-between;">
+                                    <span>Intereses al banco:</span> 
+                                    <span style="color:var(--score-red);">${intereses > 0 ? '+' + intereses.toLocaleString('es-ES') + ' €' : '0 €'}</span>
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
 
                 contentHtml += `
                 <div id="tab-content-${catId}" class="tab-content">
@@ -619,6 +729,9 @@
                         </div>
                         <div class="cat-progress-text" style="color: ${visPercent >= 80 ? 'var(--score-green)' : visPercent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)'}">${Math.round(percentage)}%</div>
                     </div>
+                    
+                    ${finanzasHtml}
+
                     <div id="items-list-${catId}">
                         ${cat.items.map((item, idx) => {
                             if (item.type === 'check') {
@@ -630,6 +743,14 @@
                                     </label>
                                     <button class="remove-btn" onclick="removeItem('${catId}',${idx})"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                                 </div>`;
+                            } else if (item.type === 'check_auto') {
+                                return `
+                                <div class="check-item" style="background: rgba(0, 200, 0, 0.05); padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px dashed var(--neon-green);">
+                                    <label style="color: var(--neon-green); opacity: ${item.val ? '1' : '0.4'};">
+                                        <input type="checkbox" ${item.val ? 'checked' : ''} disabled>
+                                        ${item.text}
+                                    </label>
+                                </div>`;
                             } else if (item.type === 'select') {
                                 return `
                                 <div class="select-item">
@@ -640,6 +761,17 @@
                                     <select onchange="updateItemVal('${catId}',${idx}, this.value, 'select')">
                                         ${item.options.map(opt => `<option value="${opt.val}" ${Number(item.val) === Number(opt.val) ? 'selected' : ''}>${opt.label}</option>`).join('')}
                                     </select>
+                                </div>`;
+                            } else if (item.type === 'number_score') {
+                                return `
+                                <div class="data-group" style="margin-bottom: 10px; border-color: var(--neon-green);">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                                        <label style="color:var(--neon-green); font-weight:bold; margin:0;">${item.text}</label>
+                                    </div>
+                                    <div style="display:flex; gap: 10px; align-items:center;">
+                                        <input type="number" value="${item.val}" oninput="updateItemVal('${catId}',${idx}, this.value, 'number_score')">
+                                        <span style="font-size:0.75rem; color:var(--text-muted); min-width: 90px; text-align:right;">Rango<br>${item.minRef.toLocaleString('es-ES')} -${item.maxRef.toLocaleString('es-ES')}</span>
+                                    </div>
                                 </div>`;
                             }
                         }).join('')}
@@ -673,21 +805,38 @@
             
             if (key === 'marca' || key === 'modelo') {
                 document.getElementById('detail-title').innerText = `${car.marca} ${car.modelo}`;
+                renderDashboard();
+            }
+            if (key === 'concesionario' || key === 'precioCorto') {
+                renderDashboard();
             }
             if (key === 'img') {
                 updateHeaderImageBtn(val);
             }
         }
 
+        function updateFinances(key, val) {
+            const car = appData.find(c => c.id === currentCarId);
+            car.finanzas[key] = val === '' ? 0 : Number(val);
+            
+            evaluateMarket(); 
+            buildDynamicTabsAndContent(car);
+            switchTab('tab-btn-precio', 'tab-content-precio');
+        }
+
         function updateItemVal(catId, itemIdx, val, type) {
             const car = appData.find(c => c.id === currentCarId);
             if (type === 'check') {
                 car.categorias[catId].items[itemIdx].val = val;
-            } else if (type === 'select') {
+            } else if (type === 'select' || type === 'number_score') {
                 car.categorias[catId].items[itemIdx].val = Number(val);
             }
-            localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
             
+            if (type === 'number_score' && catId === 'tasacion') {
+                 // Nothing special, math works out
+            }
+            
+            localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
             buildDynamicTabsAndContent(car);
             switchTab(`tab-btn-${catId}`, `tab-content-${catId}`);
         }
