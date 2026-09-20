@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck v2.2</title>
+    <title>EVcheck v2.3</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -97,9 +97,6 @@
         .data-group input:focus, .data-group select:focus, .data-group textarea:focus { outline: none; border-color: var(--neon-green); }
         .data-group textarea { resize: vertical; min-height: 100px; }
         
-        .offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .offer-grid .data-group { padding: 8px; margin: 0; background: var(--surface-color); border: 1px solid var(--border-color); }
-        
         .check-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .check-item:last-child { border-bottom: none; }
         .check-item label { flex: 1; font-size: 0.95rem; display: flex; align-items: center; cursor: pointer; gap: 12px; }
@@ -143,12 +140,10 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="3" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck v2.2</h1>
+            <h1 id="header-title">EVcheck v2.3</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" id="settings-btn" aria-label="Ajustes">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </button>
     </header>
 
@@ -235,7 +230,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v2.2.0";
+        const APP_VERSION = "v2.3.0";
         
         const CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20 },
@@ -264,7 +259,7 @@
                 precioCorto: "0 €",
                 img: "",
                 notas: "",
-                finanzas: { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0 },
+                finanzas: { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0 },
                 categorias: {
                     precio: { items: [
                         { id: "p_contado", text: "🏆 Mejor precio al contado (Auto-calculado)", type: "check_auto", val: false }, 
@@ -286,30 +281,63 @@
             };
         }
 
+        const aliasMap = {
+            "asientos calefactables": "Asientos delanteros y traseros calefactables",
+            "asientos delanteros calefactables": "Asientos delanteros y traseros calefactables",
+            "asientos delanteros ventilados": "Asientos ventilados",
+            "apertura eléctrica del maletero": "Portón del maletero con apertura eléctrica y función manos libres",
+            "techo panorámico / solar": "Techo de cristal panorámico",
+            "techo panorámico": "Techo de cristal panorámico",
+            "v2l (carga de dispositivos externos)": "Sistema V2L (Vehicle-to-Load)",
+            "cargador embarcado de 22 kw": "Cargador embarcado de 22 kW (CA)",
+            "conducción one pedal": "Función de conducción One-Pedal",
+            "conducción one pedal real": "Función de conducción One-Pedal",
+            "levas de regeneración en volante": "Levas en el volante para regeneración",
+            "preacondicionamiento de batería (nav/manual)": "Preacondicionamiento de batería",
+            "control de crucero adaptativo (acc)": "Control de crucero adaptativo inteligente",
+            "faros matrix led adaptativos": "Faros Matrix LED o Full LED adaptativos",
+            "climatización remota": "Aplicación móvil para control remoto (carga, clima, apertura)",
+            "cargador de móvil inalámbrico": "Cargador inalámbrico para smartphones"
+        };
+
+        function deduplicateEquip(equipList) {
+            const unique = [];
+            const seen = new Set();
+            for (let eq of equipList) {
+                let lowerName = eq.nombre.trim().toLowerCase();
+                if (aliasMap[lowerName]) {
+                    eq.nombre = aliasMap[lowerName];
+                    lowerName = eq.nombre.toLowerCase();
+                }
+                if (!seen.has(lowerName)) {
+                    seen.add(lowerName);
+                    unique.push(eq);
+                } else if (eq.marcado) {
+                    const existing = unique.find(e => e.nombre.trim().toLowerCase() === lowerName);
+                    if (existing) existing.marcado = true;
+                }
+            }
+            return unique;
+        }
+
+        let globalEquipList = JSON.parse(localStorage.getItem('evcheck_global_equip')) || [];
+        defaultEquip.forEach(defaultEq => {
+            if (!globalEquipList.some(eq => eq.nombre === defaultEq.nombre)) {
+                globalEquipList.push({...defaultEq});
+            }
+        });
+        globalEquipList = deduplicateEquip(globalEquipList);
+        localStorage.setItem('evcheck_global_equip', JSON.stringify(globalEquipList));
+
         let appData = JSON.parse(localStorage.getItem('evcheck_v2_data'));
         if (!appData || !Array.isArray(appData)) {
             appData = [];
             localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
         } else {
-            // MIGRACIÓN v2.1 -> v2.2
+            // MIGRACIÓN de campos
             appData.forEach(car => {
-                if(!car.finanzas) car.finanzas = { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0 };
-                
-                // Migrar items de precio a formato check_auto
-                if(car.categorias.precio && car.categorias.precio.items.length > 0 && car.categorias.precio.items[0].type === 'check') {
-                    car.categorias.precio.items = [
-                        { id: "p_contado", text: "🏆 Mejor precio al contado (Auto-calculado)", type: "check_auto", val: false }, 
-                        { id: "p_intereses", text: "📉 Menores intereses en financiación (Auto-calculado)", type: "check_auto", val: false }, 
-                        { id: "p_comision", text: "💸 Menor comisión de apertura (Auto-calculado)", type: "check_auto", val: false }
-                    ];
-                }
-                
-                // Migrar items de tasacion a formato number_score
-                if(car.categorias.tasacion && car.categorias.tasacion.items.length > 0 && car.categorias.tasacion.items[0].type === 'select') {
-                    car.categorias.tasacion.items = [
-                        { id: "t1", text: "Tasación Real del Vehículo (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }
-                    ];
-                }
+                if(!car.finanzas) car.finanzas = { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0 };
+                if(car.finanzas.otros === undefined) car.finanzas.otros = 0;
             });
             localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
         }
@@ -356,7 +384,7 @@
             document.getElementById(viewId).classList.add('active');
             
             document.getElementById('settings-btn').style.display = viewId === 'detail-view' ? 'none' : 'flex';
-            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración' : 'EVcheck v2.2';
+            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración' : 'EVcheck v2.3';
             
             if (viewId === 'dashboard-view') renderDashboard();
         }
@@ -500,6 +528,7 @@
             appWeights[key] = Number(value);
             localStorage.setItem('evcheck_v2_weights', JSON.stringify(appWeights));
             updateTotalWeight();
+            renderDashboard();
         }
 
         function updateTotalWeight() {
@@ -516,24 +545,24 @@
             return 'score-0';
         }
 
-        // AUTO-EVALUACIÓN DE OFERTAS: La magia del sistema V2.2
+        // MOTOR CENTRAL AUTO-EVALUADOR
         function evaluateMarket() {
-            // Busca los mejores datos (mínimos) de entre todas las ofertas válidas guardadas
             let validContados = appData.map(c => Number(c.finanzas?.precioContado || 0)).filter(v => v > 0);
             let minContado = validContados.length > 0 ? Math.min(...validContados) : null;
 
             let validIntereses = appData.map(c => {
                 let f = c.finanzas;
                 if(!f) return null;
-                let coste = Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0);
-                return coste > 0 && Number(f.precioFinanciado) > 0 ? (coste - Number(f.precioFinanciado)) : null;
-            }).filter(v => v !== null && v >= 0);
+                let isFinanced = (Number(f.entrada) > 0 || Number(f.plazo) > 0);
+                if (!isFinanced) return null;
+                let costeTotal = Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0) + Number(f.otros || 0);
+                return (costeTotal > 0 && Number(f.precioFinanciado) > 0) ? Math.max(0, costeTotal - Number(f.precioFinanciado)) : null;
+            }).filter(v => v !== null);
             let minIntereses = validIntereses.length > 0 ? Math.min(...validIntereses) : null;
 
-            let validComision = appData.map(c => Number(c.finanzas?.comision || 0)).filter(v => v > 0); // Consideramos comisión > 0 para premiar si hay empate en 0
+            let validComision = appData.map(c => Number(c.finanzas?.comision || 0)).filter(v => v > 0); 
             let minComision = validComision.length > 0 ? Math.min(...validComision) : 0; 
 
-            // Aplica las medallas auto-calculadas a los checks
             appData.forEach(car => {
                 let f = car.finanzas;
                 let items = car.categorias.precio.items;
@@ -546,9 +575,10 @@
                 // 1. Mejor precio al contado
                 if(p1) p1.val = (Number(f.precioContado) > 0 && Number(f.precioContado) === minContado);
                 
-                // 2. Menores intereses
-                let coste = Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0);
-                let int = coste > 0 && Number(f.precioFinanciado) > 0 ? (coste - Number(f.precioFinanciado)) : null;
+                // 2. Menos intereses (compara contra el precio base financiado)
+                let isFinanced = (Number(f.entrada) > 0 || Number(f.plazo) > 0);
+                let costeTotal = isFinanced ? (Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0) + Number(f.otros || 0)) : 0;
+                let int = (isFinanced && costeTotal > 0 && Number(f.precioFinanciado) > 0) ? Math.max(0, costeTotal - Number(f.precioFinanciado)) : null;
                 if(p2) p2.val = (int !== null && int === minIntereses);
 
                 // 3. Menor comisión
@@ -571,15 +601,9 @@
 
                 let catRawScore = cat.items.reduce((acc, item) => {
                     let v = 0;
-                    if (item.type === 'check' || item.type === 'check_auto') {
-                        v = item.val ? 1 : 0;
-                    } else if (item.type === 'select') {
-                        v = Number(item.val || 0);
-                    } else if (item.type === 'number_score') {
-                        let valNum = Number(item.val || 0);
-                        // Fórmula proporcional acotada: (val - min) / (max - min)
-                        v = Math.max(0, Math.min(1, (valNum - item.minRef) / (item.maxRef - item.minRef)));
-                    }
+                    if (item.type === 'check' || item.type === 'check_auto') v = item.val ? 1 : 0;
+                    else if (item.type === 'select') v = Number(item.val || 0);
+                    else if (item.type === 'number_score') v = Math.max(0, Math.min(1, (Number(item.val || 0) - item.minRef) / (item.maxRef - item.minRef)));
                     return acc + v;
                 }, 0);
 
@@ -687,16 +711,18 @@
                 
                 let percentage = maxVal > 0 ? (currentVal / maxVal) * 100 : 0;
                 let visPercent = Math.max(0, Math.min(100, percentage));
+                let color = visPercent >= 80 ? 'var(--score-green)' : visPercent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)';
 
                 let finanzasHtml = '';
                 if (catId === 'precio') {
                     const f = car.finanzas;
-                    const costeTotal = Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0);
-                    const intereses = Math.max(0, costeTotal - Number(f.precioFinanciado || 0));
+                    const isFinanced = (Number(f.entrada) > 0 || Number(f.plazo) > 0);
+                    const costeTotal = isFinanced ? (Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0) + Number(f.otros || 0)) : Number(f.precioContado || 0);
+                    const intereses = isFinanced ? Math.max(0, costeTotal - Number(f.precioFinanciado || 0)) : 0;
 
                     finanzasHtml = `
                         <div style="margin-bottom: 25px; border-bottom: 1px dashed var(--border-color); padding-bottom: 15px;">
-                            <h4 style="color: var(--neon-green); margin-bottom: 15px;">Datos de Financiación</h4>
+                            <h4 style="color: var(--neon-green); margin-bottom: 15px;">Datos de Financiación (Cálculos Mágicos)</h4>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                                 <div class="data-group" style="margin:0; padding:8px;"><label>Al Contado (€)</label><input type="number" value="${f.precioContado}" oninput="updateFinanzas('precioContado', this.value)"></div>
                                 <div class="data-group" style="margin:0; padding:8px;"><label>Financiado (Base) (€)</label><input type="number" value="${f.precioFinanciado}" oninput="updateFinanzas('precioFinanciado', this.value)"></div>
@@ -705,16 +731,17 @@
                                 <div class="data-group" style="margin:0; padding:8px;"><label>Cuota Mensual (€)</label><input type="number" value="${f.cuotaMensual}" oninput="updateFinanzas('cuotaMensual', this.value)"></div>
                                 <div class="data-group" style="margin:0; padding:8px;"><label>Cuota Final (€)</label><input type="number" value="${f.cuotaFinal}" oninput="updateFinanzas('cuotaFinal', this.value)"></div>
                                 <div class="data-group" style="margin:0; padding:8px;"><label>Comisión Apertura (€)</label><input type="number" value="${f.comision}" oninput="updateFinanzas('comision', this.value)"></div>
-                                <div class="data-group" style="margin:0; padding:8px;"><label>TAE (%)</label><input type="number" step="0.1" value="${f.tae}" oninput="updateFinanzas('tae', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px;"><label>Otros Gastos (€)</label><input type="number" value="${f.otros || 0}" oninput="updateFinanzas('otros', this.value)"></div>
+                                <div class="data-group" style="margin:0; padding:8px; grid-column: 1 / -1;"><label>TAE (%)</label><input type="number" step="0.1" value="${f.tae}" oninput="updateFinanzas('tae', this.value)"></div>
                             </div>
                             <div style="background: rgba(0, 200, 0, 0.05); border: 1px solid var(--neon-green); border-radius: 8px; padding: 15px; font-size: 0.95rem;">
                                 <p style="margin-bottom: 8px; display: flex; justify-content: space-between;">
                                     <strong>Coste Total a Plazos:</strong> 
-                                    <span style="color:var(--text-color); font-weight: bold;">${costeTotal > 0 ? costeTotal.toLocaleString('es-ES') + ' €' : '0 €'}</span>
+                                    <span id="finance-coste-total" style="color:var(--text-color); font-weight: bold; font-size: 1.1rem;">${costeTotal > 0 ? costeTotal.toLocaleString('es-ES') + ' €' : '0 €'}</span>
                                 </p>
                                 <p style="margin-bottom: 0; display: flex; justify-content: space-between;">
                                     <span>Intereses al banco:</span> 
-                                    <span style="color:var(--score-red);">${intereses > 0 ? '+' + intereses.toLocaleString('es-ES') + ' €' : '0 €'}</span>
+                                    <span id="finance-intereses" style="color:var(--score-red);">${intereses > 0 ? '+' + intereses.toLocaleString('es-ES') + ' €' : '0 €'}</span>
                                 </p>
                             </div>
                         </div>
@@ -725,9 +752,9 @@
                 <div id="tab-content-${catId}" class="tab-content">
                     <div class="cat-progress-wrapper">
                         <div class="progress-bar-container">
-                            <div class="progress-fill" style="width: ${visPercent}%; background-color: ${visPercent >= 80 ? 'var(--score-green)' : visPercent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)'};"></div>
+                            <div class="progress-fill" id="progress-fill-${catId}" style="width: ${visPercent}%; background-color: ${color};"></div>
                         </div>
-                        <div class="cat-progress-text" style="color: ${visPercent >= 80 ? 'var(--score-green)' : visPercent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)'}">${Math.round(percentage)}%</div>
+                        <div class="cat-progress-text" id="progress-text-${catId}" style="color: ${color}">${Math.round(percentage)}%</div>
                     </div>
                     
                     ${finanzasHtml}
@@ -746,8 +773,8 @@
                             } else if (item.type === 'check_auto') {
                                 return `
                                 <div class="check-item" style="background: rgba(0, 200, 0, 0.05); padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px dashed var(--neon-green);">
-                                    <label style="color: var(--neon-green); opacity: ${item.val ? '1' : '0.4'};">
-                                        <input type="checkbox" ${item.val ? 'checked' : ''} disabled>
+                                    <label id="label-auto-${item.id}" style="color: var(--neon-green); opacity: ${item.val ? '1' : '0.4'}; transition: opacity 0.3s;">
+                                        <input type="checkbox" id="check-auto-${item.id}" ${item.val ? 'checked' : ''} disabled>
                                         ${item.text}
                                     </label>
                                 </div>`;
@@ -770,7 +797,7 @@
                                     </div>
                                     <div style="display:flex; gap: 10px; align-items:center;">
                                         <input type="number" value="${item.val}" oninput="updateItemVal('${catId}',${idx}, this.value, 'number_score')">
-                                        <span style="font-size:0.75rem; color:var(--text-muted); min-width: 90px; text-align:right;">Rango<br>${item.minRef.toLocaleString('es-ES')} -${item.maxRef.toLocaleString('es-ES')}</span>
+                                        <span style="font-size:0.75rem; color:var(--text-muted); min-width: 90px; text-align:right;">Rango Máximo<br>${item.minRef.toLocaleString('es-ES')} -${item.maxRef.toLocaleString('es-ES')}</span>
                                     </div>
                                 </div>`;
                             }
@@ -815,30 +842,73 @@
             }
         }
 
-        function updateFinances(key, val) {
+        // ACTUALIZACIÓN DOM DIRIGIDA: Recalcula barra de progreso de una pestaña concreta sin reconstruirla entera
+        function updateCategoryProgressDOM(car, catId) {
+            let cat = car.categorias[catId];
+            if(!cat) return;
+            let maxVal = cat.items.length;
+            let currentVal = cat.items.reduce((acc, item) => {
+                let v = 0;
+                if (item.type === 'check' || item.type === 'check_auto') v = item.val ? 1 : 0;
+                else if (item.type === 'select') v = Number(item.val || 0);
+                else if (item.type === 'number_score') v = Math.max(0, Math.min(1, (Number(item.val || 0) - item.minRef) / (item.maxRef - item.minRef)));
+                return acc + v;
+            }, 0);
+            let percentage = maxVal > 0 ? (currentVal / maxVal) * 100 : 0;
+            let visPercent = Math.max(0, Math.min(100, percentage));
+            let color = visPercent >= 80 ? 'var(--score-green)' : visPercent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)';
+            
+            let fillEl = document.getElementById(`progress-fill-${catId}`);
+            let textEl = document.getElementById(`progress-text-${catId}`);
+            if (fillEl) { fillEl.style.width = visPercent + '%'; fillEl.style.backgroundColor = color; }
+            if (textEl) { textEl.innerText = Math.round(percentage) + '%'; textEl.style.color = color; }
+        }
+
+        // ACTUALIZACIÓN QUIRÚRGICA FINANZAS (Mantiene teclado abierto)
+        function updateFinanzas(key, val) {
             const car = appData.find(c => c.id === currentCarId);
             car.finanzas[key] = val === '' ? 0 : Number(val);
+            localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
             
+            const f = car.finanzas;
+            const isFinanced = (Number(f.entrada) > 0 || Number(f.plazo) > 0);
+            const costeTotal = isFinanced ? (Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0) + Number(f.otros || 0)) : Number(f.precioContado || 0);
+            const intereses = isFinanced ? Math.max(0, costeTotal - Number(f.precioFinanciado || 0)) : 0;
+
+            // Actualizamos los números impresos en la caja verde en tiempo real
+            const elCoste = document.getElementById('finance-coste-total');
+            const elIntereses = document.getElementById('finance-intereses');
+            if (elCoste) elCoste.innerText = costeTotal > 0 ? costeTotal.toLocaleString('es-ES') + ' €' : '0 €';
+            if (elIntereses) elIntereses.innerText = intereses > 0 ? '+' + intereses.toLocaleString('es-ES') + ' €' : '0 €';
+
+            // Re-evaluar el mercado para saber si esta oferta se ha vuelto la más barata (auto-check)
             evaluateMarket(); 
-            buildDynamicTabsAndContent(car);
-            switchTab('tab-btn-precio', 'tab-content-precio');
+            
+            // Actualizar visualmente los 3 checkboxes auto-calculados de la pestaña de precio
+            const p1 = car.categorias.precio.items.find(i => i.id === 'p_contado');
+            const p2 = car.categorias.precio.items.find(i => i.id === 'p_intereses');
+            const p3 = car.categorias.precio.items.find(i => i.id === 'p_comision');
+            const cb1 = document.getElementById('check-auto-p_contado');
+            const cb2 = document.getElementById('check-auto-p_intereses');
+            const cb3 = document.getElementById('check-auto-p_comision');
+            
+            if (cb1) { cb1.checked = p1.val; document.getElementById('label-auto-p_contado').style.opacity = p1.val ? '1' : '0.4'; }
+            if (cb2) { cb2.checked = p2.val; document.getElementById('label-auto-p_intereses').style.opacity = p2.val ? '1' : '0.4'; }
+            if (cb3) { cb3.checked = p3.val; document.getElementById('label-auto-p_comision').style.opacity = p3.val ? '1' : '0.4'; }
+
+            // Actualizar el progreso general y la nota del inicio (en segundo plano) sin tocar el teclado
+            updateCategoryProgressDOM(car, 'precio');
+            renderDashboard(); 
         }
 
         function updateItemVal(catId, itemIdx, val, type) {
             const car = appData.find(c => c.id === currentCarId);
-            if (type === 'check') {
-                car.categorias[catId].items[itemIdx].val = val;
-            } else if (type === 'select' || type === 'number_score') {
-                car.categorias[catId].items[itemIdx].val = Number(val);
-            }
-            
-            if (type === 'number_score' && catId === 'tasacion') {
-                 // Nothing special, math works out
-            }
+            if (type === 'check') car.categorias[catId].items[itemIdx].val = val;
+            else if (type === 'select' || type === 'number_score') car.categorias[catId].items[itemIdx].val = Number(val);
             
             localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
-            buildDynamicTabsAndContent(car);
-            switchTab(`tab-btn-${catId}`, `tab-content-${catId}`);
+            updateCategoryProgressDOM(car, catId);
+            renderDashboard();
         }
 
         function addNewItem(catId) {
