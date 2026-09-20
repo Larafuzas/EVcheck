@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck v2.3</title>
+    <title>EVcheck v2.4.1</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -140,7 +140,7 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="3" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck v2.3</h1>
+            <h1 id="header-title">EVcheck v2.4.1</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" id="settings-btn" aria-label="Ajustes">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.09a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -158,7 +158,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 Importar JSON (Gem)
             </button>
-            <input type="file" id="import-car-file" style="display: none;" accept=".json" onchange="importSingleCar(event)">
+            <input type="file" id="import-car-file" style="display: none;" accept=".json, .txt" onchange="importSingleCar(event)">
         </div>
     </div>
 
@@ -171,7 +171,7 @@
         <div class="config-section">
             <h3>Copias de Seguridad (Toda la App)</h3>
             <button class="action-btn secondary" onclick="exportData()">Exportar Datos de la App</button>
-            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
+            <input type="file" id="import-file" style="display: none;" accept=".json, .txt" onchange="importData(event)">
             <button class="action-btn secondary" onclick="document.getElementById('import-file').click()">Restaurar Datos Completos</button>
         </div>
 
@@ -230,7 +230,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "v2.3.0";
+        const APP_VERSION = "v2.4.1";
         
         const CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20 },
@@ -329,18 +329,25 @@
         globalEquipList = deduplicateEquip(globalEquipList);
         localStorage.setItem('evcheck_global_equip', JSON.stringify(globalEquipList));
 
-        let appData = JSON.parse(localStorage.getItem('evcheck_v2_data'));
-        if (!appData || !Array.isArray(appData)) {
-            appData = [];
-            localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
-        } else {
-            // MIGRACIÓN de campos
-            appData.forEach(car => {
-                if(!car.finanzas) car.finanzas = { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0 };
-                if(car.finanzas.otros === undefined) car.finanzas.otros = 0;
-            });
-            localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
+        // Inicializar datos previniendo sobreescritura accidental
+        let storedData = localStorage.getItem('evcheck_v2_data');
+        let appData = [];
+        if (storedData) {
+            try {
+                appData = JSON.parse(storedData);
+                if (!Array.isArray(appData)) appData = [];
+            } catch (e) {
+                console.error("Error cargando datos locales:", e);
+                appData = [];
+            }
         }
+
+        appData.forEach(car => {
+            if(!car.finanzas) car.finanzas = { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0 };
+            if(car.finanzas.otros === undefined) car.finanzas.otros = 0;
+            if(!car.categorias) car.categorias = getNewCarTemplate().categorias;
+        });
+        localStorage.setItem('evcheck_v2_data', JSON.stringify(appData));
 
         let appWeights = JSON.parse(localStorage.getItem('evcheck_v2_weights'));
         if (!appWeights || Object.keys(appWeights).length === 0) {
@@ -384,7 +391,7 @@
             document.getElementById(viewId).classList.add('active');
             
             document.getElementById('settings-btn').style.display = viewId === 'detail-view' ? 'none' : 'flex';
-            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración' : 'EVcheck v2.3';
+            document.getElementById('header-title').innerText = viewId === 'settings-view' ? 'Configuración' : 'EVcheck v2.4.1';
             
             if (viewId === 'dashboard-view') renderDashboard();
         }
@@ -440,24 +447,35 @@
             URL.revokeObjectURL(url);
         }
 
+        // LIMPIEZA DE MARKDOWN PARA JSON
+        function sanitizeJSONString(rawText) {
+            let cleanText = rawText.trim();
+            cleanText = cleanText.replace(/^```[a-z]*\s*/i, '');
+            cleanText = cleanText.replace(/```\s*$/i, '');
+            return cleanText.trim();
+        }
+
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
-                    const parsed = JSON.parse(e.target.result);
+                    let cleanText = sanitizeJSONString(e.target.result);
+                    const parsed = JSON.parse(cleanText);
+                    
                     if (parsed.data && parsed.version && parsed.version.includes("v2")) {
                         localStorage.setItem('evcheck_v2_data', JSON.stringify(parsed.data));
                         if(parsed.weights) localStorage.setItem('evcheck_v2_weights', JSON.stringify(parsed.weights));
-                        alert('Copia V2 restaurada correctamente.');
+                        alert('Copia restaurada correctamente.');
                         location.reload();
                     } else {
-                        alert('El archivo no tiene el formato V2 correcto.');
+                        alert('El archivo no tiene el formato correcto o es de una versión V1 incompatible.');
                     }
                 } catch (err) {
-                    alert('Error al leer el archivo JSON.');
+                    alert('Error al leer el archivo. Formato inválido.');
                 }
+                event.target.value = '';
             };
             reader.readAsText(file);
         }
@@ -468,7 +486,9 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
-                    const parsed = JSON.parse(e.target.result);
+                    let cleanText = sanitizeJSONString(e.target.result);
+                    const parsed = JSON.parse(cleanText);
+                    
                     const carsToAdd = Array.isArray(parsed) ? parsed : [parsed];
                     let added = 0;
 
@@ -506,7 +526,7 @@
                         renderDashboard();
                     }
                 } catch (err) {
-                    alert('Error al leer el JSON. Asegúrate de que el Gem generó la estructura correctamente.');
+                    alert('Error al leer el JSON. Asegúrate de que copiaste todo el bloque generado por el Gem sin texto alrededor.');
                 }
                 event.target.value = '';
             };
@@ -545,7 +565,6 @@
             return 'score-0';
         }
 
-        // MOTOR CENTRAL AUTO-EVALUADOR
         function evaluateMarket() {
             let validContados = appData.map(c => Number(c.finanzas?.precioContado || 0)).filter(v => v > 0);
             let minContado = validContados.length > 0 ? Math.min(...validContados) : null;
@@ -572,16 +591,13 @@
                 let p2 = items.find(i => i.id === 'p_intereses');
                 let p3 = items.find(i => i.id === 'p_comision');
 
-                // 1. Mejor precio al contado
                 if(p1) p1.val = (Number(f.precioContado) > 0 && Number(f.precioContado) === minContado);
                 
-                // 2. Menos intereses (compara contra el precio base financiado)
                 let isFinanced = (Number(f.entrada) > 0 || Number(f.plazo) > 0);
                 let costeTotal = isFinanced ? (Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0) + Number(f.otros || 0)) : 0;
                 let int = (isFinanced && costeTotal > 0 && Number(f.precioFinanciado) > 0) ? Math.max(0, costeTotal - Number(f.precioFinanciado)) : null;
                 if(p2) p2.val = (int !== null && int === minIntereses);
 
-                // 3. Menor comisión
                 if(p3) p3.val = (Number(f.plazo) > 0 && Number(f.comision) <= minComision); 
             });
 
@@ -842,7 +858,6 @@
             }
         }
 
-        // ACTUALIZACIÓN DOM DIRIGIDA: Recalcula barra de progreso de una pestaña concreta sin reconstruirla entera
         function updateCategoryProgressDOM(car, catId) {
             let cat = car.categorias[catId];
             if(!cat) return;
@@ -864,7 +879,6 @@
             if (textEl) { textEl.innerText = Math.round(percentage) + '%'; textEl.style.color = color; }
         }
 
-        // ACTUALIZACIÓN QUIRÚRGICA FINANZAS (Mantiene teclado abierto)
         function updateFinanzas(key, val) {
             const car = appData.find(c => c.id === currentCarId);
             car.finanzas[key] = val === '' ? 0 : Number(val);
@@ -875,16 +889,13 @@
             const costeTotal = isFinanced ? (Number(f.entrada || 0) + (Number(f.cuotaMensual || 0) * Number(f.plazo || 0)) + Number(f.cuotaFinal || 0) + Number(f.comision || 0) + Number(f.otros || 0)) : Number(f.precioContado || 0);
             const intereses = isFinanced ? Math.max(0, costeTotal - Number(f.precioFinanciado || 0)) : 0;
 
-            // Actualizamos los números impresos en la caja verde en tiempo real
             const elCoste = document.getElementById('finance-coste-total');
             const elIntereses = document.getElementById('finance-intereses');
             if (elCoste) elCoste.innerText = costeTotal > 0 ? costeTotal.toLocaleString('es-ES') + ' €' : '0 €';
             if (elIntereses) elIntereses.innerText = intereses > 0 ? '+' + intereses.toLocaleString('es-ES') + ' €' : '0 €';
 
-            // Re-evaluar el mercado para saber si esta oferta se ha vuelto la más barata (auto-check)
             evaluateMarket(); 
             
-            // Actualizar visualmente los 3 checkboxes auto-calculados de la pestaña de precio
             const p1 = car.categorias.precio.items.find(i => i.id === 'p_contado');
             const p2 = car.categorias.precio.items.find(i => i.id === 'p_intereses');
             const p3 = car.categorias.precio.items.find(i => i.id === 'p_comision');
@@ -896,7 +907,6 @@
             if (cb2) { cb2.checked = p2.val; document.getElementById('label-auto-p_intereses').style.opacity = p2.val ? '1' : '0.4'; }
             if (cb3) { cb3.checked = p3.val; document.getElementById('label-auto-p_comision').style.opacity = p3.val ? '1' : '0.4'; }
 
-            // Actualizar el progreso general y la nota del inicio (en segundo plano) sin tocar el teclado
             updateCategoryProgressDOM(car, 'precio');
             renderDashboard(); 
         }
