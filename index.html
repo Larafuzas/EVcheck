@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck V5.1</title>
+    <title>EVcheck V5.2</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -42,7 +42,6 @@
         .view { display: none; padding: 20px; }
         .view.active { display: block; }
 
-        /* Tarjetas Dashboard */
         .car-card { background-color: var(--surface-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; gap: 12px; }
         .car-card-header { display: flex; justify-content: space-between; align-items: center; }
         .car-info h2 { font-size: 1.15rem; margin-bottom: 4px; color: var(--neon-green); }
@@ -55,7 +54,6 @@
         .score-45 { background-color: rgba(255, 149, 0, 0.1); color: var(--score-orange); border-color: var(--score-orange); }
         .score-0  { background-color: rgba(255, 59, 48, 0.1); color: var(--score-red); border-color: var(--score-red); }
 
-        /* UI Elementos */
         .config-section { background: var(--surface-color); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
         .config-section h3 { margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-weight: 600; }
         .weight-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -63,7 +61,6 @@
         .weight-row input, .theme-select { width: 60px; padding: 5px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
         .theme-select { width: 150px; font-size: 0.9rem; padding: 8px; }
 
-        /* Cabecera Coche */
         #detail-view { padding: 0; }
         .detail-header { position: relative; height: 180px; background-color: var(--surface-color); border-bottom: 1px solid var(--border-color); overflow: hidden; background-size: cover; background-position: center;}
         .detail-header-overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(transparent, var(--bg-color)); }
@@ -74,7 +71,6 @@
         .view-image-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--neon-green); border-radius: 12px; z-index: 5; backdrop-filter: blur(4px);}
         .view-image-btn p { color: var(--neon-green); font-size: 0.8rem; font-weight: bold; margin-top: 8px; }
 
-        /* Pestañas */
         .tabs-wrapper { display: flex; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--border-color); background: var(--surface-color); scroll-behavior: smooth; }
         .tabs-wrapper::-webkit-scrollbar { display: none; }
         .tab { padding: 14px 15px; font-size: 0.85rem; flex-shrink: 0; color: var(--text-muted); cursor: pointer; border-bottom: 2px transparent solid; }
@@ -82,7 +78,6 @@
         .tab-content { display: none; padding: 20px; }
         .tab-content.active { display: block; }
 
-        /* Formularios y Grupos */
         .data-group { margin-bottom: 15px; background: var(--surface-color); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); }
         .data-group label { display: block; font-size: 0.85rem; color: var(--neon-green); margin-bottom: 8px; font-weight: bold; }
         .data-group input, .data-group select, .data-group textarea { width: 100%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px; border-radius: 6px; font-size: 1rem; }
@@ -93,13 +88,11 @@
         .grid-2 .data-group { padding: 10px; margin: 0; }
         .grid-full { grid-column: 1 / -1; }
 
-        /* Segmented Control de Finanzas */
         .segmented-control { display: flex; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
         .seg-btn { flex: 1; text-align: center; padding: 12px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-muted); border: none; border-right: 1px solid var(--border-color); font-weight: bold; }
         .seg-btn:last-child { border-right: none; }
         .seg-btn.active { background: var(--neon-green); color: #000; }
 
-        /* Listas de Evaluación */
         .check-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .check-item:last-child { border-bottom: none; }
         .check-item label { flex: 1; font-size: 0.95rem; display: flex; align-items: center; cursor: pointer; gap: 12px; }
@@ -122,7 +115,6 @@
         .add-equip-row input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
         .add-equip-row button { margin-top: 0; width: auto; padding: 10px 20px; }
         
-        /* Modal de Imagen */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
         .modal-content { position: relative; width: 100%; height: 85%; max-width: 800px; background: var(--surface-color); border-radius: 12px; overflow: hidden; border: 1px solid var(--neon-green); }
@@ -140,12 +132,12 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="4" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck V5.1</h1>
+            <h1 id="header-title">EVcheck V5.2</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" aria-label="Ajustes">
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
         </button>
     </header>
@@ -242,7 +234,7 @@
     </div>
 
     <script>
-        var APP_VERSION = "V5.1.0";
+        var APP_VERSION = "V5.2.0";
 
         var CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20, items: [
@@ -253,7 +245,7 @@
             tasacion: { title: "Tasación", weight: 10, items: [{ id: "t1", text: "Tasación del Vehículo Usado (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }]},
             bateria: { title: "Batería", weight: 20, items: [{ id: "b1", text: "Capacidad de la batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+60 kWh", val: 1 }, { label: "+50 kWh", val: 0.5 }, { label: "-50 kWh", val: -0.5 }], val: 0 }, { id: "b2", text: "Autonomía WLTP", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+450 km", val: 1 }, { label: "+400 km", val: 0.5 }, { label: "-400 km", val: -0.5 }], val: 0 }, { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+100 kW", val: 1 }, { label: "-100 kW", val: -0.5 }], val: 0 }] },
             conectividad: { title: "Tecnología", weight: 15, items: [{ id: "c1", text: "CarPlay / Android Auto", type: "check", val: false }, { id: "c2", text: "Cámara 360º o trasera", type: "check", val: false }, { id: "c3", text: "App remota", type: "check", val: false }, { id: "c4", text: "Mapa puntos de carga", type: "check", val: false }, { id: "c5", text: "Sistema fluido", type: "check", val: false }, { id: "c6", text: "Asist. aparcamiento", type: "check", val: false }, { id: "c7", text: "Perfiles usuario", type: "check", val: false }] },
-            adas: { title: "ADAS", weight: 15, items: [{ id: "a1", text: "Mantenimiento carril", type: "check", val: false }, { id: "a2", text: "Ángulo muerto", type: "check", val: false }, { id: "a3", text: "Alerta colisión", type: "check", val: false }, { id: "a4", text: "Alerta atropello", type: "check", val: false }, { id: "a5", text: "Asist. atascos", type: "check", val: false }, { id: "a6", text: "Autonomía Nivel 2", type: "check", val: false }, { id: "a7", text: "Tráfico cruzado", type: "check", val: false }] },
+            adas: { title: "ADAS", weight: 15, items: [{ id: "a1", text: "Mantenimiento carril", type: "check", val: false }, { id: "a2", text: "Ángulo muerto", type: "check", val: false }, { id: "a3", text: "Alerta colisión", type: "check", val: false }, { id: "a4", text: "Alerta atropello", type: "check", val: false }, { id: "a5", text: "Asist. atascos", type: "check", val: false }, { id: "a6", text: "Autonomía Nivel 2", type: "check", val: false }, { id: "a7", text: "Alerta de tráfico cruzado", type: "check", val: false }] },
             extras: { title: "Extras", weight: 3, items: [{ id: "ex1", text: "Barras techo", type: "check", val: false }, { id: "ex2", text: "Techo solar", type: "check", val: false }, { id: "ex3", text: "Faros Matrix LED", type: "check", val: false }, { id: "ex4", text: "Luces cortesía", type: "check", val: false }, { id: "ex5", text: "Head Up Display", type: "check", val: false }] },
             exterior: { title: "Exterior", weight: 4, items: [{ id: "ext1", text: "Diseño atractivo", type: "check", val: false }, { id: "ext2", text: "Buenos materiales ext", type: "check", val: false }, { id: "ext3", text: "Robustez", type: "check", val: false }, { id: "ext4", text: "Llantas/Tamaño rueda", type: "check", val: false }, { id: "ext5", text: "Altura al suelo", type: "check", val: false }, { id: "ext6", text: "Espejos plegables", type: "check", val: false }] },
             interior: { title: "Interior", weight: 8, items: [{ id: "in1", text: "Asientos tela durables", type: "check", val: false }, { id: "in2", text: "Comodidad", type: "check", val: false }, { id: "in3", text: "Clima bizona", type: "check", val: false }, { id: "in4", text: "Clima Driver Only", type: "check", val: false }, { id: "in5", text: "Asientos memoria", type: "check", val: false }, { id: "in6", text: "Diseño atractivo", type: "check", val: false }, { id: "in7", text: "Espacio almacen.", type: "check", val: false }, { id: "in8", text: "Maletero", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+500 L", val: 1 }, { label: "+400 L", val: 0.5 }, { label: "-400 L", val: -0.5 }], val: 0 }, { id: "in9", text: "Frunk", type: "check", val: false }, { id: "in10", text: "Distrib. pantallas", type: "check", val: false }, { id: "in11", text: "Visión parabrisas", type: "check", val: false }, { id: "in12", text: "Retrov. electrocrómico", type: "check", val: false }] },
@@ -272,12 +264,18 @@
         var currentCarId = null;
         var currentModalUrl = '';
 
-        // INICIALIZACIÓN MODO V5.1 (Pura Compatibilidad ES5)
+        // INICIALIZACIÓN MODO V5.2
         function initApp() {
             try {
                 var storedCats = localStorage.getItem('evcheck_v5_global_cats');
-                if (storedCats) globalCategories = JSON.parse(storedCats);
+                if (storedCats) {
+                    var parsedCats = JSON.parse(storedCats);
+                    if (parsedCats && typeof parsedCats === 'object' && parsedCats.precio && parsedCats.precio.items) {
+                        globalCategories = parsedCats;
+                    }
+                }
             } catch(e){}
+            
             if (!globalCategories) {
                 globalCategories = JSON.parse(JSON.stringify(CATEGORY_DEFS));
                 localStorage.setItem('evcheck_v5_global_cats', JSON.stringify(globalCategories));
@@ -409,13 +407,13 @@
             var settingsBtn = document.getElementById('settings-btn');
             
             if (viewId === 'settings-view') {
-                if (title) title.innerText = 'Ajustes V5.1';
+                if (title) title.innerText = 'Ajustes V5.2';
                 if (settingsBtn) settingsBtn.style.display = 'none';
                 renderWeightsConfig();
             } else if (viewId === 'detail-view') {
                 if (settingsBtn) settingsBtn.style.display = 'none';
             } else {
-                if (title) title.innerText = 'EVcheck V5.1';
+                if (title) title.innerText = 'EVcheck V5.2';
                 if (settingsBtn) settingsBtn.style.display = 'flex';
                 evaluateMarket();
                 renderDashboard();
@@ -519,7 +517,6 @@
                 var t2 = calculateFinanceTotals(c2);
                 var f2 = c2.finanzas[c2.finanzas.activo];
                 
-                // Función helper segura ES5
                 var getP = function(idName) {
                     for(var k=0; k<items.length; k++){
                         if(items[k].id === idName) return items[k];
@@ -546,21 +543,28 @@
             
             for (var catId in CATEGORY_DEFS) {
                 var cat = car.categorias[catId];
-                if (!cat || !cat.items) continue;
+                if (!cat || !cat.items || cat.items.length === 0) continue;
                 
                 var weight = Number(appWeights[catId]);
                 if (isNaN(weight)) weight = CATEGORY_DEFS[catId].weight;
                 var numItems = cat.items.length;
-                if (numItems === 0) continue;
 
                 var rawScore = 0;
+                var activeItemsCount = 0;
+
                 for (var i=0; i<numItems; i++) {
                     var item = cat.items[i];
                     if (item.type === 'check' || item.type === 'check_auto') {
+                        activeItemsCount++;
                         rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
                     } else if (item.type === 'select') {
-                        rawScore += Number(item.val || 0);
+                        // EXCLUSIÓN DE "PENDIENTE" (val === 0): Si está en pendiente, no penaliza ni cuenta en el denominador
+                        if (Number(item.val || 0) !== 0) {
+                            activeItemsCount++;
+                            rawScore += Number(item.val || 0);
+                        }
                     } else if (item.type === 'number_score') {
+                        activeItemsCount++;
                         var valNum = Number(item.val || 0);
                         var minR = Number(item.minRef || 0);
                         var maxR = Number(item.maxRef || 1);
@@ -571,14 +575,15 @@
                     }
                 }
                 
+                var catPercent = activeItemsCount > 0 ? (rawScore / activeItemsCount) : 0;
+
                 if (catId === 'precio' && car.finanzas && car.categorias.tasacion) {
                     var net = totals.balanceNeto;
                     var priceMathScore = 1 - ((net - 15000) / 25000); 
                     if (priceMathScore > 1) priceMathScore = 1; if (priceMathScore < 0) priceMathScore = 0;
-                    var checkScore = rawScore / numItems; 
-                    total += ((priceMathScore * 0.7) + (checkScore * 0.3)) * weight;
+                    total += ((priceMathScore * 0.7) + (catPercent * 0.3)) * weight;
                 } else {
-                    total += ((rawScore / numItems) * weight);
+                    total += (catPercent * weight);
                 }
             }
             
@@ -725,7 +730,8 @@
                     if (item.type === 'check') {
                         contentHtml += '<div class="check-item"><label><input type="checkbox" ' + (item.val?'checked':'') + ' onchange="handleItemInput(\'' + catId + '\', \'' + item.id + '\', this.checked, \'check\')"> ' + item.text + '</label><button class="remove-btn" onclick="removeItemGlobal(\'' + catId + '\', \'' + item.id + '\')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
                     } else if (item.type === 'check_auto') {
-                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + (item.val?'1':'0.4') + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + (item.val?'checked':'') + ' disabled> ' + item.text + '</label></div>';
+                        var op = item.val ? '1' : '0.4';
+                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + op + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + (item.val?'checked':'') + ' disabled> ' + item.text + '</label></div>';
                     } else if (item.type === 'select') {
                         contentHtml += '<div class="select-item"><div style="display:flex; justify-content:space-between; align-items:center;"><label style="color:var(--neon-green); font-weight:bold;">' + item.text + '</label><button class="remove-btn" onclick="removeItemGlobal(\'' + catId + '\', \'' + item.id + '\')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
                         contentHtml += '<select onchange="handleItemInput(\'' + catId + '\', \'' + item.id + '\', this.value, \'select\')">';
@@ -760,7 +766,7 @@
             if (content) content.classList.add('active');
         }
 
-        // CONTROLADORES DE INPUT UI V5
+        // CONTROLADORES DE INPUT UI V5.2
         function setTipoCompra(tipo) {
             var car = getCarById(currentCarId);
             if (!car) return;
@@ -823,7 +829,10 @@
             if (!car) return;
             var act = car.finanzas.activo;
             var tTotals = calculateFinanceTotals(car);
-            var tasacion = (car.categorias && car.categorias.tasacion && car.categorias.tasacion.items[0]) ? Number(car.categorias.tasacion.items[0].val || 0) : 0;
+            var tasacion = 0;
+            if(car.categorias && car.categorias.tasacion && car.categorias.tasacion.items.length > 0) {
+                tasacion = Number(car.categorias.tasacion.items[0].val || 0);
+            }
 
             var box = document.getElementById('resumen-box');
             if (box) {
@@ -857,22 +866,33 @@
 
         function updateProgressBarDOM(car, catId) {
             var cat = car.categorias[catId];
-            if (!cat) return;
-            var maxVal = cat.items.length;
-            var currentVal = 0;
+            if (!cat || !cat.items) return;
+            var numItems = cat.items.length;
+            var rawScore = 0;
+            var activeItemsCount = 0;
 
-            for(var i=0; i<maxVal; i++) {
+            for(var i=0; i<numItems; i++) {
                 var item = cat.items[i];
-                if (item.type === 'check' || item.type === 'check_auto') currentVal += (item.val === true || item.val === "true" || item.val === 1 ? 1 : 0);
-                else if (item.type === 'select') currentVal += Number(item.val || 0);
-                else if (item.type === 'number_score') {
+                if (item.type === 'check' || item.type === 'check_auto') {
+                    activeItemsCount++;
+                    rawScore += (item.val === true || item.val === "true" || item.val === 1 ? 1 : 0);
+                } else if (item.type === 'select') {
+                    if (Number(item.val || 0) !== 0) {
+                        activeItemsCount++;
+                        rawScore += Number(item.val || 0);
+                    }
+                } else if (item.type === 'number_score') {
+                    activeItemsCount++;
                     var v = Number(item.val || 0);
-                    var rat = (v - item.minRef) / (item.maxRef - item.minRef);
-                    currentVal += Math.max(0, Math.min(1, rat));
+                    var minR = Number(item.minRef || 0);
+                    var maxR = Number(item.maxRef || 1);
+                    var diff = maxR - minR; if(diff===0) diff=1;
+                    var rat = (v - minR) / diff;
+                    rawScore += Math.max(0, Math.min(1, rat));
                 }
             }
 
-            var perc = maxVal > 0 ? (currentVal / maxVal) * 100 : 0;
+            var perc = activeItemsCount > 0 ? (rawScore / activeItemsCount) * 100 : 0;
             if (isNaN(perc)) perc = 0;
             var visPerc = Math.max(0, Math.min(100, perc));
             var color = visPerc >= 80 ? 'var(--score-green)' : (visPerc >= 50 ? 'var(--score-yellow)' : 'var(--score-red)');
