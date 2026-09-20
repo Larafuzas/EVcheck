@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck V4.0</title>
+    <title>EVcheck V5.0</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -42,7 +42,6 @@
         .view { display: none; padding: 20px; }
         .view.active { display: block; }
 
-        /* Tarjetas Dashboard */
         .car-card { background-color: var(--surface-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-color); cursor: pointer; display: flex; flex-direction: column; gap: 12px; }
         .car-card-header { display: flex; justify-content: space-between; align-items: center; }
         .car-info h2 { font-size: 1.15rem; margin-bottom: 4px; color: var(--neon-green); }
@@ -55,7 +54,6 @@
         .score-45 { background-color: rgba(255, 149, 0, 0.1); color: var(--score-orange); border-color: var(--score-orange); }
         .score-0  { background-color: rgba(255, 59, 48, 0.1); color: var(--score-red); border-color: var(--score-red); }
 
-        /* UI Elementos */
         .config-section { background: var(--surface-color); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
         .config-section h3 { margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-weight: 600; }
         .weight-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -63,7 +61,6 @@
         .weight-row input, .theme-select { width: 60px; padding: 5px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
         .theme-select { width: 150px; font-size: 0.9rem; padding: 8px; }
 
-        /* Cabecera Coche */
         #detail-view { padding: 0; }
         .detail-header { position: relative; height: 180px; background-color: var(--surface-color); border-bottom: 1px solid var(--border-color); overflow: hidden; background-size: cover; background-position: center;}
         .detail-header-overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(transparent, var(--bg-color)); }
@@ -74,15 +71,13 @@
         .view-image-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--neon-green); border-radius: 12px; z-index: 5; backdrop-filter: blur(4px);}
         .view-image-btn p { color: var(--neon-green); font-size: 0.8rem; font-weight: bold; margin-top: 8px; }
 
-        /* Pestañas */
         .tabs-wrapper { display: flex; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--border-color); background: var(--surface-color); scroll-behavior: smooth; }
         .tabs-wrapper::-webkit-scrollbar { display: none; }
-        .tab { padding: 14px 15px; font-size: 0.85rem; flex-shrink: 0; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; }
+        .tab { padding: 14px 15px; font-size: 0.85rem; flex-shrink: 0; color: var(--text-muted); cursor: pointer; border-bottom: 2px transparent solid; }
         .tab.active { color: var(--neon-green); border-bottom-color: var(--neon-green); font-weight: bold; }
         .tab-content { display: none; padding: 20px; }
         .tab-content.active { display: block; }
 
-        /* Formularios y Grupos */
         .data-group { margin-bottom: 15px; background: var(--surface-color); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); }
         .data-group label { display: block; font-size: 0.85rem; color: var(--neon-green); margin-bottom: 8px; font-weight: bold; }
         .data-group input, .data-group select, .data-group textarea { width: 100%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px; border-radius: 6px; font-size: 1rem; }
@@ -93,13 +88,11 @@
         .grid-2 .data-group { padding: 10px; margin: 0; }
         .grid-full { grid-column: 1 / -1; }
 
-        /* Segmented Control de Finanzas */
         .segmented-control { display: flex; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
-        .seg-btn { flex: 1; text-align: center; padding: 10px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-muted); border: none; border-right: 1px solid var(--border-color); font-weight: bold; }
+        .seg-btn { flex: 1; text-align: center; padding: 12px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-muted); border: none; border-right: 1px solid var(--border-color); font-weight: bold; }
         .seg-btn:last-child { border-right: none; }
         .seg-btn.active { background: var(--neon-green); color: #000; }
 
-        /* Listas de Evaluación */
         .check-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .check-item:last-child { border-bottom: none; }
         .check-item label { flex: 1; font-size: 0.95rem; display: flex; align-items: center; cursor: pointer; gap: 12px; }
@@ -111,11 +104,17 @@
 
         .progress-bar-container { width: 100%; background: var(--bg-color); height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 20px;}
         .progress-fill { height: 100%; width: 0%; transition: width 0.3s ease, background-color 0.3s ease; }
+        .cat-progress-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .cat-progress-text { font-size: 0.9rem; font-weight: bold; min-width: 50px; text-align: right; }
         
         button.action-btn { background: var(--neon-green); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         button.action-btn.secondary { background: transparent; color: var(--text-color); border: 1px solid var(--border-color); margin-bottom: 10px; }
         
-        /* Modal de Imagen */
+        .remove-btn { background: none; border: none; color: var(--score-red); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; margin-left: 10px; }
+        .add-equip-row { display: flex; gap: 10px; margin-top: 20px; }
+        .add-equip-row input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
+        .add-equip-row button { margin-top: 0; width: auto; padding: 10px 20px; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
         .modal-content { position: relative; width: 100%; height: 85%; max-width: 800px; background: var(--surface-color); border-radius: 12px; overflow: hidden; border: 1px solid var(--neon-green); }
@@ -133,10 +132,11 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="4" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck V4.0</h1>
+            <h1 id="header-title">EVcheck V5.0</h1>
         </div>
         <button class="nav-btn" onclick="toggleSettings()" aria-label="Ajustes">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Icono SVG clásico 100% compatible -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
@@ -169,11 +169,16 @@
                     <option value="light">Día</option>
                 </select>
             </div>
+            <button class="action-btn secondary" style="margin-top: 15px;" onclick="checkOTA()">
+                Buscar Actualizaciones OTA
+            </button>
+            <p id="ota-status" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;"></p>
             <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; text-align: center;">Versión Instalada: <span id="app-version-display"></span></p>
         </div>
 
         <div class="config-section">
-            <h3>Copias de Seguridad (Global)</h3>
+            <h3>Copias de Seguridad</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Guarda una copia de toda tu base de datos y plantillas. Totalmente compatible con iOS.</p>
             <button class="action-btn secondary" onclick="exportData()">Exportar Garaje Completo</button>
             <input type="file" id="import-file" style="display: none;" accept=".json, .txt" onchange="importData(event)">
             <button class="action-btn secondary" onclick="document.getElementById('import-file').click()">Restaurar Garaje</button>
@@ -231,86 +236,49 @@
 
     <script>
         // --- BASE DE DATOS Y CONFIGURACIÓN ---
-        var APP_VERSION = "V4.0.0";
+        var APP_VERSION = "V5.0.0";
 
-        var CATEGORY_DEFS = {
-            precio: { title: "Precio", weight: 20 },
-            tasacion: { title: "Tasación", weight: 10 },
-            bateria: { title: "Batería", weight: 20 },
-            conectividad: { title: "Tecnología", weight: 15 },
-            adas: { title: "ADAS", weight: 15 },
-            extras: { title: "Extras", weight: 3 },
-            exterior: { title: "Exterior", weight: 4 },
-            interior: { title: "Interior", weight: 8 },
-            prueba: { title: "Prueba", weight: 15 },
-            garantia: { title: "Garantía", weight: 5 }
+        var BASE_CATEGORIES = {
+            precio: { title: "Precio", weight: 20, items: [
+                { id: "p_coste", text: "🏆 Mejor coste neto de operación (Auto)", type: "check_auto", val: false }, 
+                { id: "p_intereses", text: "📉 Menores intereses pagados (Auto)", type: "check_auto", val: false }, 
+                { id: "p_comision", text: "💸 Menores comisiones o gastos (Auto)", type: "check_auto", val: false }
+            ]},
+            tasacion: { title: "Tasación", weight: 10, items: [{ id: "t1", text: "Tasación del Vehículo Usado (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }]},
+            bateria: { title: "Batería", weight: 20, items: [{ id: "b1", text: "Capacidad de la batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+60 kWh", val: 1 }, { label: "+50 kWh", val: 0.5 }, { label: "-50 kWh", val: -0.5 }], val: 0 }, { id: "b2", text: "Autonomía WLTP", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+450 km", val: 1 }, { label: "+400 km", val: 0.5 }, { label: "-400 km", val: -0.5 }], val: 0 }, { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+100 kW", val: 1 }, { label: "-100 kW", val: -0.5 }], val: 0 }] },
+            conectividad: { title: "Tecnología", weight: 15, items: [{ id: "c1", text: "CarPlay / Android Auto", type: "check", val: false }, { id: "c2", text: "Cámara 360º o trasera", type: "check", val: false }, { id: "c3", text: "App remota", type: "check", val: false }, { id: "c4", text: "Mapa puntos de carga", type: "check", val: false }, { id: "c5", text: "Sistema fluido", type: "check", val: false }, { id: "c6", text: "Asist. aparcamiento", type: "check", val: false }, { id: "c7", text: "Perfiles usuario", type: "check", val: false }] },
+            adas: { title: "ADAS", weight: 15, items: [{ id: "a1", text: "Mantenimiento carril", type: "check", val: false }, { id: "a2", text: "Ángulo muerto", type: "check", val: false }, { id: "a3", text: "Alerta colisión", type: "check", val: false }, { id: "a4", text: "Alerta atropello", type: "check", val: false }, { id: "a5", text: "Asist. atascos", type: "check", val: false }, { id: "a6", text: "Autonomía Nivel 2", type: "check", val: false }, { id: "a7", text: "Tráfico cruzado", type: "check", val: false }] },
+            extras: { title: "Extras", weight: 3, items: [{ id: "ex1", text: "Barras techo", type: "check", val: false }, { id: "ex2", text: "Techo solar", type: "check", val: false }, { id: "ex3", text: "Faros Matrix LED", type: "check", val: false }, { id: "ex4", text: "Luces cortesía", type: "check", val: false }, { id: "ex5", text: "Head Up Display", type: "check", val: false }] },
+            exterior: { title: "Exterior", weight: 4, items: [{ id: "ext1", text: "Diseño atractivo", type: "check", val: false }, { id: "ext2", text: "Buenos materiales ext", type: "check", val: false }, { id: "ext3", text: "Robustez", type: "check", val: false }, { id: "ext4", text: "Llantas/Tamaño rueda", type: "check", val: false }, { id: "ext5", text: "Altura al suelo", type: "check", val: false }, { id: "ext6", text: "Espejos plegables", type: "check", val: false }] },
+            interior: { title: "Interior", weight: 8, items: [{ id: "in1", text: "Asientos tela durables", type: "check", val: false }, { id: "in2", text: "Comodidad", type: "check", val: false }, { id: "in3", text: "Clima bizona", type: "check", val: false }, { id: "in4", text: "Clima Driver Only", type: "check", val: false }, { id: "in5", text: "Asientos memoria", type: "check", val: false }, { id: "in6", text: "Diseño atractivo", type: "check", val: false }, { id: "in7", text: "Espacio almacen.", type: "check", val: false }, { id: "in8", text: "Maletero", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+500 L", val: 1 }, { label: "+400 L", val: 0.5 }, { label: "-400 L", val: -0.5 }], val: 0 }, { id: "in9", text: "Frunk", type: "check", val: false }, { id: "in10", text: "Distrib. pantallas", type: "check", val: false }, { id: "in11", text: "Visión parabrisas", type: "check", val: false }, { id: "in12", text: "Retrov. electrocrómico", type: "check", val: false }] },
+            prueba: { title: "Prueba", weight: 15, items: [{ id: "pr1", text: "Aceleración", type: "check", val: false }, { id: "pr2", text: "Suspensión", type: "check", val: false }, { id: "pr3", text: "Aislamiento acúst.", type: "check", val: false }, { id: "pr4", text: "Dirección", type: "check", val: false }, { id: "pr5", text: "Modos conducción", type: "check", val: false }, { id: "pr6", text: "One Pedal real", type: "check", val: false }, { id: "pr7", text: "Regeneración (levas)", type: "check", val: false }] },
+            garantia: { title: "Garantía", weight: 5, items: [{ id: "ga1", text: "Garantía general", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+7 años", val: 1 }, { label: "+5 años", val: 0.5 }, { label: "-5 años", val: -0.5 }], val: 0 }, { id: "ga2", text: "Garantía batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+8 años", val: 1 }, { label: "-8 años", val: -0.5 }], val: 0 }, { id: "ga3", text: "Mantenimiento", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+ de 2 años / 30.000km", val: 1 }, { label: "- de 2 años / 30.000km", val: -0.5 }], val: 0 }] }
         };
 
         var DEFAULT_WEIGHTS = {};
-        for (var key in CATEGORY_DEFS) { DEFAULT_WEIGHTS[key] = CATEGORY_DEFS[key].weight; }
-
-        function getNewCarTemplate() {
-            return {
-                id: "ev-" + Date.now() + Math.floor(Math.random() * 1000),
-                marca: "Marca",
-                modelo: "Modelo",
-                concesionario: "Concesionario",
-                precioCorto: "",
-                img: "",
-                notas: "",
-                // Nuevo modelo financiero V4
-                finanzas: { tipoCompra: "contado", precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false },
-                categorias: {
-                    precio: { items: [
-                        { id: "p_coste", text: "🏆 Mejor coste total neto de operación (Auto)", type: "check_auto", val: false }, 
-                        { id: "p_intereses", text: "📉 Menores intereses pagados (Auto)", type: "check_auto", val: false }, 
-                        { id: "p_comision", text: "💸 Menores comisiones o gastos extra (Auto)", type: "check_auto", val: false }
-                    ]},
-                    tasacion: { items: [{ id: "t1", text: "Tasación del Vehículo Usado (€)", type: "number_score", val: 0, minRef: 12000, maxRef: 16000 }]},
-                    bateria: { items: [{ id: "b1", text: "Capacidad de la batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+60 kWh", val: 1 }, { label: "+50 kWh", val: 0.5 }, { label: "-50 kWh", val: -0.5 }], val: 0 }, { id: "b2", text: "Autonomía WLTP", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+450 km", val: 1 }, { label: "+400 km", val: 0.5 }, { label: "-400 km", val: -0.5 }], val: 0 }, { id: "b3", text: "Carga rápida (Pico CC)", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+100 kW", val: 1 }, { label: "-100 kW", val: -0.5 }], val: 0 }] },
-                    conectividad: { items: [{ id: "c1", text: "CarPlay / Android Auto", type: "check", val: false }, { id: "c2", text: "Cámara 360º o trasera", type: "check", val: false }, { id: "c3", text: "App remota", type: "check", val: false }, { id: "c4", text: "Mapa puntos de carga", type: "check", val: false }, { id: "c5", text: "Sistema fluido", type: "check", val: false }, { id: "c6", text: "Asist. aparcamiento", type: "check", val: false }, { id: "c7", text: "Perfiles usuario", type: "check", val: false }] },
-                    adas: { items: [{ id: "a1", text: "Mantenimiento carril", type: "check", val: false }, { id: "a2", text: "Ángulo muerto", type: "check", val: false }, { id: "a3", text: "Alerta colisión", type: "check", val: false }, { id: "a4", text: "Alerta atropello", type: "check", val: false }, { id: "a5", text: "Asist. atascos", type: "check", val: false }, { id: "a6", text: "Autonomía Nivel 2", type: "check", val: false }, { id: "a7", text: "Tráfico cruzado", type: "check", val: false }] },
-                    extras: { items: [{ id: "ex1", text: "Barras techo", type: "check", val: false }, { id: "ex2", text: "Techo solar", type: "check", val: false }, { id: "ex3", text: "Faros Matrix LED", type: "check", val: false }, { id: "ex4", text: "Luces cortesía", type: "check", val: false }, { id: "ex5", text: "Head Up Display", type: "check", val: false }] },
-                    exterior: { items: [{ id: "ext1", text: "Diseño atractivo", type: "check", val: false }, { id: "ext2", text: "Buenos materiales ext", type: "check", val: false }, { id: "ext3", text: "Robustez", type: "check", val: false }, { id: "ext4", text: "Llantas/Tamaño rueda", type: "check", val: false }, { id: "ext5", text: "Altura al suelo", type: "check", val: false }, { id: "ext6", text: "Espejos plegables", type: "check", val: false }] },
-                    interior: { items: [{ id: "in1", text: "Asientos tela durables", type: "check", val: false }, { id: "in2", text: "Comodidad", type: "check", val: false }, { id: "in3", text: "Clima bizona", type: "check", val: false }, { id: "in4", text: "Clima Driver Only", type: "check", val: false }, { id: "in5", text: "Asientos memoria", type: "check", val: false }, { id: "in6", text: "Diseño atractivo", type: "check", val: false }, { id: "in7", text: "Espacio almacen.", type: "check", val: false }, { id: "in8", text: "Maletero", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+500 L", val: 1 }, { label: "+400 L", val: 0.5 }, { label: "-400 L", val: -0.5 }], val: 0 }, { id: "in9", text: "Frunk", type: "check", val: false }, { id: "in10", text: "Distrib. pantallas", type: "check", val: false }, { id: "in11", text: "Visión parabrisas", type: "check", val: false }, { id: "in12", text: "Retrov. electrocrómico", type: "check", val: false }] },
-                    prueba: { items: [{ id: "pr1", text: "Aceleración", type: "check", val: false }, { id: "pr2", text: "Suspensión", type: "check", val: false }, { id: "pr3", text: "Aislamiento acúst.", type: "check", val: false }, { id: "pr4", text: "Dirección", type: "check", val: false }, { id: "pr5", text: "Modos conducción", type: "check", val: false }, { id: "pr6", text: "One Pedal real", type: "check", val: false }, { id: "pr7", text: "Regeneración (levas)", type: "check", val: false }] },
-                    garantia: { items: [{ id: "ga1", text: "Garantía general", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+7 años", val: 1 }, { label: "+5 años", val: 0.5 }, { label: "-5 años", val: -0.5 }], val: 0 }, { id: "ga2", text: "Garantía batería", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+8 años", val: 1 }, { label: "-8 años", val: -0.5 }], val: 0 }, { id: "ga3", text: "Mantenimiento", type: "select", options: [{ label: "Pendiente", val: 0 }, { label: "+ de 2 años / 30.000km", val: 1 }, { label: "- de 2 años / 30.000km", val: -0.5 }], val: 0 }] }
-                }
-            };
-        }
+        for (var key in BASE_CATEGORIES) { DEFAULT_WEIGHTS[key] = BASE_CATEGORIES[key].weight; }
 
         var appData = [];
-        var appWeights = DEFAULT_WEIGHTS;
+        var globalCategories = null;
+        var appWeights = {};
+        for (var wKey in BASE_CATEGORIES) { appWeights[wKey] = BASE_CATEGORIES[wKey].weight; }
+        
         var currentCarId = null;
         var currentModalUrl = '';
 
-        // INICIALIZACIÓN SEGURA Y MIGRACIÓN V4
-        function sanitizeCar(car) {
-            if(!car.finanzas) car.finanzas = { tipoCompra: "contado", precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, tae: 0, comision: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false };
-            if(!car.finanzas.tipoCompra) car.finanzas.tipoCompra = "contado"; // Default legacy
-            
-            var template = getNewCarTemplate();
-            if(!car.categorias) {
-                car.categorias = template.categorias;
-            } else {
-                for (var cat in template.categorias) {
-                    if (!car.categorias[cat] || !car.categorias[cat].items) {
-                        car.categorias[cat] = template.categorias[cat];
-                    }
-                }
-                // Update legacy price items
-                if(car.categorias.precio && car.categorias.precio.items.length > 0) {
-                    if(car.categorias.precio.items[0].id === 'p_contado') {
-                        car.categorias.precio.items = template.categorias.precio.items;
-                    }
-                }
-            }
-            return car;
-        }
-
+        // INICIALIZACIÓN MODO V5 (Segura ES5)
         function initApp() {
             try {
-                var storedData = localStorage.getItem('evcheck_v4_data') || localStorage.getItem('evcheck_v3_data');
+                var storedCats = localStorage.getItem('evcheck_v5_global_cats');
+                if (storedCats) globalCategories = JSON.parse(storedCats);
+            } catch(e){}
+            if (!globalCategories) {
+                globalCategories = JSON.parse(JSON.stringify(BASE_CATEGORIES));
+                localStorage.setItem('evcheck_v5_global_cats', JSON.stringify(globalCategories));
+            }
+
+            try {
+                var storedData = localStorage.getItem('evcheck_v5_data') || localStorage.getItem('evcheck_v4_data');
                 if (storedData) {
                     var parsedData = JSON.parse(storedData);
                     if (Array.isArray(parsedData)) appData = parsedData;
@@ -320,10 +288,14 @@
             for(var i=0; i<appData.length; i++){
                 appData[i] = sanitizeCar(appData[i]);
             }
+            saveData();
             
             try {
-                var storedWeights = localStorage.getItem('evcheck_v4_weights') || localStorage.getItem('evcheck_v3_weights');
-                if (storedWeights) appWeights = JSON.parse(storedWeights);
+                var storedWeights = localStorage.getItem('evcheck_v5_weights') || localStorage.getItem('evcheck_v4_weights');
+                if (storedWeights) {
+                    var pw = JSON.parse(storedWeights);
+                    for(var w in pw) appWeights[w] = pw[w];
+                }
             } catch (e) {}
 
             var currentThemeSetting = localStorage.getItem('evcheck_theme_mode') || 'auto';
@@ -338,14 +310,65 @@
             renderDashboard();
         }
 
-        // TEMA
-        function applyTheme(setting) {
-            var isLight = false;
-            if (setting === 'auto') isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-            else isLight = (setting === 'light');
+        function getNewCarTemplate() {
+            var newCats = JSON.parse(JSON.stringify(globalCategories));
+            for(var c in newCats) {
+                for(var i=0; i<newCats[c].items.length; i++) {
+                    var it = newCats[c].items[i];
+                    if (it.type === 'check' || it.type === 'check_auto') it.val = false;
+                    else it.val = 0;
+                }
+            }
+            return {
+                id: "ev-" + Date.now() + Math.floor(Math.random() * 1000),
+                marca: "Marca", modelo: "Modelo", concesionario: "Concesionario", precioCorto: "", img: "", notas: "",
+                finanzas: {
+                    activo: "contado",
+                    contado: { precioContado: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false },
+                    lineal: { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, comision: 0, tae: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false },
+                    flexible: { precioContado: 0, precioFinanciado: 0, entrada: 0, plazo: 0, cuotaMensual: 0, cuotaFinal: 0, comision: 0, tae: 0, otros: 0, incluyePlanAuto: false, incluyeCae: false, incluyeCargador: false, incluyeMantenimiento: false }
+                },
+                categorias: newCats
+            };
+        }
+
+        function sanitizeCar(car) {
+            if(!car.finanzas || !car.finanzas.activo) {
+                var old = car.finanzas || {};
+                var def = old.tipoCompra || 'contado';
+                car.finanzas = {
+                    activo: def,
+                    contado: { precioContado: old.precioContado||0, otros: old.otros||0, incluyePlanAuto: old.incluyePlanAuto||false, incluyeCae: old.incluyeCae||false, incluyeCargador: old.incluyeCargador||false, incluyeMantenimiento: old.incluyeMantenimiento||false },
+                    lineal: { precioContado: old.precioContado||0, precioFinanciado: old.precioFinanciado||0, entrada: old.entrada||0, plazo: old.plazo||0, cuotaMensual: old.cuotaMensual||0, comision: old.comision||0, tae: old.tae||0, otros: old.otros||0, incluyePlanAuto: old.incluyePlanAuto||false, incluyeCae: old.incluyeCae||false, incluyeCargador: old.incluyeCargador||false, incluyeMantenimiento: old.incluyeMantenimiento||false },
+                    flexible: { precioContado: old.precioContado||0, precioFinanciado: old.precioFinanciado||0, entrada: old.entrada||0, plazo: old.plazo||0, cuotaMensual: old.cuotaMensual||0, cuotaFinal: old.cuotaFinal||0, comision: old.comision||0, tae: old.tae||0, otros: old.otros||0, incluyePlanAuto: old.incluyePlanAuto||false, incluyeCae: old.incluyeCae||false, incluyeCargador: old.incluyeCargador||false, incluyeMantenimiento: old.incluyeMantenimiento||false }
+                };
+            }
             
-            if (isLight) document.body.classList.add('light-mode');
-            else document.body.classList.remove('light-mode');
+            var newCats = JSON.parse(JSON.stringify(globalCategories));
+            if (car.categorias) {
+                for (var c in newCats) {
+                    var oldCat = car.categorias[c];
+                    if (!oldCat || !oldCat.items) continue;
+                    var oldMap = {};
+                    for (var i=0; i<oldCat.items.length; i++) {
+                        oldMap[oldCat.items[i].id] = oldCat.items[i].val;
+                    }
+                    for (var j=0; j<newCats[c].items.length; j++) {
+                        var nId = newCats[c].items[j].id;
+                        if (oldMap[nId] !== undefined) newCats[c].items[j].val = oldMap[nId];
+                    }
+                }
+            }
+            car.categorias = newCats;
+            return car;
+        }
+
+        function saveData() { localStorage.setItem('evcheck_v5_data', JSON.stringify(appData)); }
+
+        // TEMA Y UI
+        function applyTheme(setting) {
+            var isLight = setting === 'auto' ? window.matchMedia('(prefers-color-scheme: light)').matches : setting === 'light';
+            if (isLight) document.body.classList.add('light-mode'); else document.body.classList.remove('light-mode');
         }
 
         function changeTheme() {
@@ -356,11 +379,23 @@
             }
         }
 
-        // NAVEGACIÓN
+        function checkOTA() {
+            var status = document.getElementById('ota-status');
+            if (!status) return;
+            status.innerText = "Buscando actualizaciones...";
+            setTimeout(function() {
+                var st = document.getElementById('ota-status');
+                if(st) st.innerText = "EVcheck está en la última versión (" + APP_VERSION + ").";
+                setTimeout(function() {
+                    var st2 = document.getElementById('ota-status');
+                    if(st2) st2.innerText = "";
+                }, 3000);
+            }, 1500);
+        }
+
         function showView(viewId) {
             var views = document.querySelectorAll('.view');
             for(var i=0; i<views.length; i++) views[i].classList.remove('active');
-            
             var target = document.getElementById(viewId);
             if (target) target.classList.add('active');
             
@@ -368,13 +403,13 @@
             var settingsBtn = document.getElementById('settings-btn');
             
             if (viewId === 'settings-view') {
-                if (title) title.innerText = 'Ajustes V4.0';
+                if (title) title.innerText = 'Ajustes V5.0';
                 if (settingsBtn) settingsBtn.style.display = 'none';
                 renderWeightsConfig();
             } else if (viewId === 'detail-view') {
                 if (settingsBtn) settingsBtn.style.display = 'none';
             } else {
-                if (title) title.innerText = 'EVcheck V4.0';
+                if (title) title.innerText = 'EVcheck V5.0';
                 if (settingsBtn) settingsBtn.style.display = 'flex';
                 evaluateMarket();
                 renderDashboard();
@@ -387,19 +422,15 @@
             else showView('settings-view');
         }
 
-        // GESTIÓN DE COCHES
+        // GESTIÓN BÁSICA COCHES
         function getCarById(id) {
-            for(var i=0; i<appData.length; i++){
-                if(appData[i].id === id) return appData[i];
-            }
-            return null;
+            for(var i=0; i<appData.length; i++){ if(appData[i].id === id) return appData[i]; } return null;
         }
 
         function addNewCar() {
             var newCar = getNewCarTemplate();
             appData.push(newCar);
-            saveData();
-            showDetail(newCar.id);
+            saveData(); showDetail(newCar.id);
         }
 
         function duplicateCurrentCar() {
@@ -409,102 +440,95 @@
             newCar.id = "ev-" + Date.now() + Math.floor(Math.random() * 1000);
             newCar.concesionario = newCar.concesionario + " (Copia)";
             appData.push(newCar);
-            saveData();
-            showDetail(newCar.id);
+            saveData(); showDetail(newCar.id);
         }
 
         function deleteCurrentCar() {
             if (confirm("¿Eliminar definitivamente este vehículo?")) {
                 var newData = [];
-                for(var i=0; i<appData.length; i++) {
-                    if (appData[i].id !== currentCarId) newData.push(appData[i]);
-                }
-                appData = newData;
-                saveData();
-                showView('dashboard-view');
+                for(var i=0; i<appData.length; i++) { if (appData[i].id !== currentCarId) newData.push(appData[i]); }
+                appData = newData; saveData(); showView('dashboard-view');
             }
         }
 
         function nukeData() {
             if (confirm("¡PELIGRO EXTREMO! ¿Borrar TODOS los datos guardados y vaciar la app?")) {
-                appData = [];
-                saveData();
-                showView('dashboard-view');
+                appData = []; saveData(); showView('dashboard-view');
             }
         }
 
-        function saveData() {
-            localStorage.setItem('evcheck_v4_data', JSON.stringify(appData));
-        }
-
-        // --- MATEMÁTICAS V4 (MÁXIMA INFORMACIÓN) ---
+        // --- MATEMÁTICAS FINANCIERAS Y MERCADO ---
         function calculateFinanceTotals(car) {
-            var f = car.finanzas;
-            var tasacion = (car.categorias && car.categorias.tasacion && car.categorias.tasacion.items[0]) ? Number(car.categorias.tasacion.items[0].val || 0) : 0;
+            var act = car.finanzas.activo;
+            var f = car.finanzas[act];
+            var tasacion = 0;
+            if(car.categorias && car.categorias.tasacion && car.categorias.tasacion.items.length > 0) {
+                tasacion = Number(car.categorias.tasacion.items[0].val || 0);
+            }
             
             var res = { costeTotal: 0, intereses: 0, capitalFinanciar: 0, balanceNeto: 0, sobrecoste: 0 };
+            var pContado = Number(f.precioContado||0);
             
-            if (f.tipoCompra === 'contado') {
-                res.costeTotal = Number(f.precioContado||0) + Number(f.otros||0);
-                res.balanceNeto = res.costeTotal - tasacion;
+            if (act === 'contado') {
+                res.costeTotal = pContado + Number(f.otros||0);
             } else {
-                // Lineal o Flexible
                 res.capitalFinanciar = Number(f.precioFinanciado||0) - Number(f.entrada||0);
                 var cuotasTotales = Number(f.cuotaMensual||0) * Number(f.plazo||0);
-                var cuotaF = f.tipoCompra === 'flexible' ? Number(f.cuotaFinal||0) : 0;
+                var cuotaF = act === 'flexible' ? Number(f.cuotaFinal||0) : 0;
                 
                 res.costeTotal = Number(f.entrada||0) + cuotasTotales + cuotaF + Number(f.comision||0) + Number(f.otros||0);
                 if (res.capitalFinanciar > 0 && res.costeTotal > 0 && Number(f.precioFinanciado||0) > 0) {
-                    res.intereses = res.costeTotal - Number(f.precioFinanciado||0);
+                    res.intereses = Math.max(0, res.costeTotal - Number(f.precioFinanciado||0));
                 }
-                res.sobrecoste = res.costeTotal - Number(f.precioContado||0);
-                res.balanceNeto = res.costeTotal - tasacion;
+                res.sobrecoste = res.costeTotal - pContado;
             }
+            res.balanceNeto = res.costeTotal - tasacion;
             return res;
         }
 
         function evaluateMarket() {
-            var minCosteTotal = Infinity;
+            var minNeto = Infinity;
             var minIntereses = Infinity;
             var minComision = Infinity;
 
-            // Encontrar los mínimos reales basados en la modalidad elegida por el usuario
             for(var i=0; i<appData.length; i++) {
                 var c = appData[i];
-                var totals = calculateFinanceTotals(c);
-                var f = c.finanzas;
-                if (!f) continue;
+                var t = calculateFinanceTotals(c);
+                var f = c.finanzas[c.finanzas.activo];
                 
-                if (totals.balanceNeto > 0 && totals.balanceNeto < minCosteTotal) {
-                    minCosteTotal = totals.balanceNeto;
+                if (t.balanceNeto > 0 && t.balanceNeto < minNeto) minNeto = t.balanceNeto;
+                
+                if (c.finanzas.activo !== 'contado' && t.intereses >= 0 && t.intereses < minIntereses) {
+                    minIntereses = t.intereses;
                 }
-                if (f.tipoCompra !== 'contado' && totals.intereses >= 0 && totals.intereses < minIntereses) {
-                    minIntereses = totals.intereses;
-                }
-                var comYOtros = Number(f.comision||0) + Number(f.otros||0);
-                if (comYOtros >= 0 && comYOtros < minComision) {
-                    minComision = comYOtros;
-                }
+                
+                var com = (c.finanzas.activo !== 'contado') ? (Number(f.comision||0) + Number(f.otros||0)) : Number(f.otros||0);
+                if (com >= 0 && com < minComision) minComision = com;
             }
 
-            // Asignar medallas (Check Auto)
             for(var j=0; j<appData.length; j++) {
                 var c2 = appData[j];
-                if (!c2.finanzas || !c2.categorias || !c2.categorias.precio) continue;
-                var t2 = calculateFinanceTotals(c2);
-                var f2 = c2.finanzas;
+                if (!c2.categorias || !c2.categorias.precio) continue;
                 var items = c2.categorias.precio.items;
-                if(!items || items.length < 3) continue;
+                var t2 = calculateFinanceTotals(c2);
+                var f2 = c2.finanzas[c2.finanzas.activo];
+                
+                // Función helper segura ES5
+                var getP = function(idName) {
+                    for(var k=0; k<items.length; k++){
+                        if(items[k].id === idName) return items[k];
+                    } return null;
+                };
 
-                // 1. Mejor coste total (Impacto real bolsillo)
-                items[0].val = (t2.balanceNeto > 0 && t2.balanceNeto === minCosteTotal);
+                var p1 = getP('p_coste');
+                var p2 = getP('p_intereses');
+                var p3 = getP('p_comision');
 
-                // 2. Menores intereses
-                items[1].val = (f2.tipoCompra !== 'contado' && t2.intereses === minIntereses);
-
-                // 3. Menores comisiones/gastos
-                var comYOtros2 = Number(f2.comision||0) + Number(f2.otros||0);
-                items[2].val = (comYOtros2 === minComision);
+                if(p1) p1.val = (t2.balanceNeto > 0 && t2.balanceNeto === minNeto);
+                if(p2) p2.val = (c2.finanzas.activo !== 'contado' && t2.intereses === minIntereses);
+                
+                var com2 = (c2.finanzas.activo !== 'contado') ? (Number(f2.comision||0) + Number(f2.otros||0)) : Number(f2.otros||0);
+                if(p3) p3.val = (com2 === minComision);
             }
             saveData();
         }
@@ -516,39 +540,37 @@
             
             for (var catId in CATEGORY_DEFS) {
                 var cat = car.categorias[catId];
-                if (!cat) continue;
+                if (!cat || !cat.items) continue;
                 
                 var weight = Number(appWeights[catId]);
                 if (isNaN(weight)) weight = CATEGORY_DEFS[catId].weight;
-                
                 var numItems = cat.items.length;
                 if (numItems === 0) continue;
 
                 var rawScore = 0;
                 for (var i=0; i<numItems; i++) {
                     var item = cat.items[i];
-                    if (item.type === 'check' || item.type === 'check_auto') rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
-                    else if (item.type === 'select') rawScore += Number(item.val || 0);
-                    else if (item.type === 'number_score') {
+                    if (item.type === 'check' || item.type === 'check_auto') {
+                        rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
+                    } else if (item.type === 'select') {
+                        rawScore += Number(item.val || 0);
+                    } else if (item.type === 'number_score') {
                         var valNum = Number(item.val || 0);
                         var minR = Number(item.minRef || 0);
                         var maxR = Number(item.maxRef || 1);
-                        var diff = maxR - minR;
-                        if (diff === 0) diff = 1;
+                        var diff = maxR - minR; if(diff===0) diff=1;
                         var ratio = (valNum - minR) / diff;
-                        rawScore += Math.max(0, Math.min(1, ratio));
+                        if (ratio > 1) ratio = 1; if (ratio < 0) ratio = 0;
+                        rawScore += ratio;
                     }
                 }
                 
                 if (catId === 'precio' && car.finanzas && car.categorias.tasacion) {
-                    var costeBolsillo = totals.balanceNeto;
-                    // Escala base: 15.000€ neto da un 100% de la nota, bajando hasta 40.000€
-                    var priceMathScore = 1 - ((costeBolsillo - 15000) / 25000); 
-                    priceMathScore = Math.max(0, Math.min(1, priceMathScore));
-                    
+                    var net = totals.balanceNeto;
+                    var priceMathScore = 1 - ((net - 15000) / 25000); 
+                    if (priceMathScore > 1) priceMathScore = 1; if (priceMathScore < 0) priceMathScore = 0;
                     var checkScore = rawScore / numItems; 
-                    var finalCatPercent = (priceMathScore * 0.7) + (checkScore * 0.3);
-                    total += (finalCatPercent * weight);
+                    total += ((priceMathScore * 0.7) + (checkScore * 0.3)) * weight;
                 } else {
                     total += ((rawScore / numItems) * weight);
                 }
@@ -563,9 +585,9 @@
             var list = document.getElementById('car-list');
             if (!list) return;
             
-            var sortedData = appData.slice().sort(function(a, b) { return calculateScore(b) - calculateScore(a); });
+            var sortedData = appData.slice();
+            sortedData.sort(function(a, b) { return calculateScore(b) - calculateScore(a); });
             var html = '';
-            
             for(var i=0; i<sortedData.length; i++) {
                 var c = sortedData[i];
                 var score = calculateScore(c);
@@ -599,7 +621,7 @@
 
         function updateWeight(key, val) {
             appWeights[key] = Number(val) || 0;
-            localStorage.setItem('evcheck_v4_weights', JSON.stringify(appWeights));
+            localStorage.setItem('evcheck_v5_weights', JSON.stringify(appWeights));
             updateTotalWeight();
         }
 
@@ -613,27 +635,24 @@
             }
         }
 
-        // DETALLE DE COCHE
+        // DETALLE COCHE Y TABS
         function showDetail(id) {
             currentCarId = id;
             var car = getCarById(id);
             if (!car) return;
-            
             var titleEl = document.getElementById('detail-title');
             if (titleEl) titleEl.innerText = (car.marca||'') + ' ' + (car.modelo||'');
             
             var headEl = document.getElementById('detail-header-container');
             if (headEl && car.img) {
                 var url = formatGoogleDriveUrl(car.img);
-                headEl.style.backgroundImage = "url('" + url + "')";
-            } else if(headEl) {
-                headEl.style.backgroundImage = "none";
-            }
+                headEl.style.backgroundImage = url ? "url('" + url + "')" : "none";
+            } else if(headEl) headEl.style.backgroundImage = "none";
             
             buildDetailHTML(car);
             showView('detail-view');
-            switchTab('tab-btn-anotaciones', 'tab-content-anotaciones');
-            updateFinanceDOM(); 
+            switchTab('tab-btn-precio', 'tab-content-precio');
+            updateFinanceSummaryDOM(); 
         }
 
         function buildDetailHTML(car) {
@@ -641,16 +660,14 @@
             var contentContainer = document.getElementById('tabs-content-container');
             if (!tabsWrapper || !contentContainer) return;
             
-            // Pestaña Anotaciones
             var tabsHtml = '<div class="tab" id="tab-btn-anotaciones" onclick="switchTab(\'tab-btn-anotaciones\', \'tab-content-anotaciones\')">Anotaciones</div>';
             var contentHtml = '<div id="tab-content-anotaciones" class="tab-content">';
             contentHtml += '<div class="data-group"><label>Marca</label><input type="text" value="' + (car.marca||'') + '" oninput="handleBaseInput(\'marca\', this.value)"></div>';
             contentHtml += '<div class="data-group"><label>Modelo</label><input type="text" value="' + (car.modelo||'') + '" oninput="handleBaseInput(\'modelo\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Concesionario</label><input type="text" value="' + (car.concesionario||'') + '" oninput="handleBaseInput(\'concesionario\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Precio de referencia</label><input type="text" value="' + (car.precioCorto||'') + '" oninput="handleBaseInput(\'precioCorto\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>URL Imagen (Drive/Web)</label><input type="url" value="' + (car.img||'') + '" oninput="handleBaseInput(\'img\', this.value)"></div>';
-            contentHtml += '<div class="data-group"><label>Notas</label><textarea oninput="handleBaseInput(\'notas\', this.value)">' + (car.notas||'') + '</textarea></div>';
-            contentHtml += '</div>';
+            contentHtml += '<div class="data-group"><label>Concesionario / Título</label><input type="text" value="' + (car.concesionario||'') + '" oninput="handleBaseInput(\'concesionario\', this.value)"></div>';
+            contentHtml += '<div class="data-group"><label>Precio de referencia (Portada)</label><input type="text" value="' + (car.precioCorto||'') + '" oninput="handleBaseInput(\'precioCorto\', this.value)"></div>';
+            contentHtml += '<div class="data-group"><label>URL Imagen</label><input type="url" value="' + (car.img||'') + '" oninput="handleBaseInput(\'img\', this.value)"></div>';
+            contentHtml += '<div class="data-group"><label>Notas</label><textarea oninput="handleBaseInput(\'notas\', this.value)">' + (car.notas||'') + '</textarea></div></div>';
 
             for (var catId in CATEGORY_DEFS) {
                 if (!car.categorias[catId]) continue;
@@ -658,61 +675,66 @@
                 tabsHtml += '<div class="tab" id="tab-btn-' + catId + '" onclick="switchTab(\'tab-btn-' + catId + '\', \'tab-content-' + catId + '\')">' + CATEGORY_DEFS[catId].title + '</div>';
                 
                 contentHtml += '<div id="tab-content-' + catId + '" class="tab-content">';
-                
-                contentHtml += '<div class="cat-progress-wrapper">';
-                contentHtml += '<div class="progress-bar-container"><div class="progress-fill" id="prog-fill-' + catId + '"></div></div>';
-                contentHtml += '<div class="cat-progress-text" id="prog-txt-' + catId + '">0%</div>';
-                contentHtml += '</div>';
+                contentHtml += '<div class="cat-progress-wrapper"><div class="progress-bar-container"><div class="progress-fill" id="prog-fill-' + catId + '"></div></div><div class="cat-progress-text" id="prog-txt-' + catId + '">0%</div></div>';
 
                 if (catId === 'precio') {
-                    var f = car.finanzas;
-                    
-                    // Modos de Compra
+                    var act = car.finanzas.activo;
+                    var f = car.finanzas[act];
                     contentHtml += '<div class="segmented-control">';
-                    contentHtml += '<button id="seg-contado" class="seg-btn" onclick="setTipoCompra(\'contado\')">Contado</button>';
-                    contentHtml += '<button id="seg-lineal" class="seg-btn" onclick="setTipoCompra(\'lineal\')">Lineal</button>';
-                    contentHtml += '<button id="seg-flexible" class="seg-btn" onclick="setTipoCompra(\'flexible\')">Flexible</button>';
+                    contentHtml += '<button class="seg-btn ' + (act==='contado'?'active':'') + '" onclick="setTipoCompra(\'contado\')">Contado</button>';
+                    contentHtml += '<button class="seg-btn ' + (act==='lineal'?'active':'') + '" onclick="setTipoCompra(\'lineal\')">Lineal</button>';
+                    contentHtml += '<button class="seg-btn ' + (act==='flexible'?'active':'') + '" onclick="setTipoCompra(\'flexible\')">Flexible</button>';
                     contentHtml += '</div>';
 
                     contentHtml += '<div style="margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:15px;">';
                     contentHtml += '<div class="grid-2" id="finance-grid">';
                     
-                    contentHtml += '<div class="data-group" id="wrap-precioContado"><label>Al Contado (€)</label><input type="number" value="' + (f.precioContado||'') + '" oninput="handleFinInput(\'precioContado\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-precioFinanciado"><label>Financiado Base (€)</label><input type="number" value="' + (f.precioFinanciado||'') + '" oninput="handleFinInput(\'precioFinanciado\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-entrada"><label>Entrada (€)</label><input type="number" value="' + (f.entrada||'') + '" oninput="handleFinInput(\'entrada\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-plazo"><label>Plazo (Meses)</label><input type="number" value="' + (f.plazo||'') + '" oninput="handleFinInput(\'plazo\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-cuotaMensual"><label>Cuota Mensual (€)</label><input type="number" step="0.01" value="' + (f.cuotaMensual||'') + '" oninput="handleFinInput(\'cuotaMensual\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-cuotaFinal"><label>Cuota Final (€)</label><input type="number" value="' + (f.cuotaFinal||'') + '" oninput="handleFinInput(\'cuotaFinal\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-comision"><label>Comisión Apertura (€)</label><input type="number" value="' + (f.comision||'') + '" oninput="handleFinInput(\'comision\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-tae"><label>TAE (%)</label><input type="number" step="0.1" value="' + (f.tae||'') + '" oninput="handleFinInput(\'tae\', this.value)"></div>';
-                    contentHtml += '<div class="data-group" id="wrap-otros" style="grid-column: 1/-1;"><label>Otros Gastos (€)</label><input type="number" value="' + (f.otros||'') + '" oninput="handleFinInput(\'otros\', this.value)"></div>';
+                    contentHtml += '<div class="data-group"><label>Al Contado (€)</label><input type="number" value="' + (f.precioContado||'') + '" oninput="handleFinInput(\'precioContado\', this.value)"></div>';
+                    if (act !== 'contado') {
+                        contentHtml += '<div class="data-group"><label>Financiado Base (€)</label><input type="number" value="' + (f.precioFinanciado||'') + '" oninput="handleFinInput(\'precioFinanciado\', this.value)"></div>';
+                        contentHtml += '<div class="data-group"><label>Entrada (€)</label><input type="number" value="' + (f.entrada||'') + '" oninput="handleFinInput(\'entrada\', this.value)"></div>';
+                        contentHtml += '<div class="data-group"><label>Plazo (Meses)</label><input type="number" value="' + (f.plazo||'') + '" oninput="handleFinInput(\'plazo\', this.value)"></div>';
+                        contentHtml += '<div class="data-group"><label>Cuota Mensual (€)</label><input type="number" step="0.01" value="' + (f.cuotaMensual||'') + '" oninput="handleFinInput(\'cuotaMensual\', this.value)"></div>';
+                        if (act === 'flexible') {
+                            contentHtml += '<div class="data-group"><label>Cuota Final (€)</label><input type="number" value="' + (f.cuotaFinal||'') + '" oninput="handleFinInput(\'cuotaFinal\', this.value)"></div>';
+                        }
+                        contentHtml += '<div class="data-group"><label>Comisión Apertura (€)</label><input type="number" value="' + (f.comision||'') + '" oninput="handleFinInput(\'comision\', this.value)"></div>';
+                        contentHtml += '<div class="data-group"><label>TAE (%)</label><input type="number" step="0.1" value="' + (f.tae||'') + '" oninput="handleFinInput(\'tae\', this.value)"></div>';
+                    }
+                    contentHtml += '<div class="data-group ' + (act==='contado'?'':'grid-full') + '"><label>Otros Gastos (€)</label><input type="number" value="' + (f.otros||'') + '" oninput="handleFinInput(\'otros\', this.value)"></div>';
                     contentHtml += '</div>';
 
-                    // Resumen Interactivo
-                    contentHtml += '<div id="resumen-box" style="background:rgba(0,200,0,0.05); border:1px solid var(--neon-green); border-radius:8px; padding:15px; font-size:0.95rem;">';
-                    // Se rellenará via JS en updateFinanceDOM
-                    contentHtml += '</div></div>';
+                    contentHtml += '<div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:15px;">';
+                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyePlanAuto?'checked':'') + ' onchange="handleFinInput(\'incluyePlanAuto\', this.checked, \'check\')"> Plan Auto</label>';
+                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeCae?'checked':'') + ' onchange="handleFinInput(\'incluyeCae\', this.checked, \'check\')"> CAE</label>';
+                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeCargador?'checked':'') + ' onchange="handleFinInput(\'incluyeCargador\', this.checked, \'check\')"> Cargador</label>';
+                    contentHtml += '<label style="display:flex; align-items:center; gap:5px; font-size:0.85rem;"><input type="checkbox" ' + (f.incluyeMantenimiento?'checked':'') + ' onchange="handleFinInput(\'incluyeMantenimiento\', this.checked, \'check\')"> Mant. Incl.</label>';
+                    contentHtml += '</div>';
+
+                    contentHtml += '<div id="resumen-box" style="background:rgba(0,200,0,0.05); border:1px solid var(--neon-green); border-radius:8px; padding:15px; font-size:0.95rem;"></div></div>';
                 }
 
                 for (var j=0; j<cat.items.length; j++) {
                     var item = cat.items[j];
+                    var itemValStr = (item.val === true || item.val === "true" || item.val === 1) ? 'checked' : '';
                     if (item.type === 'check') {
-                        contentHtml += '<div class="check-item"><label><input type="checkbox" ' + (item.val?'checked':'') + ' onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.checked, \'check\')"> ' + item.text + '</label></div>';
+                        contentHtml += '<div class="check-item"><label><input type="checkbox" ' + itemValStr + ' onchange="handleItemInput(\'' + catId + '\', \'' + item.id + '\', this.checked, \'check\')"> ' + item.text + '</label><button class="remove-btn" onclick="removeItemGlobal(\'' + catId + '\', \'' + item.id + '\')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
                     } else if (item.type === 'check_auto') {
-                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + (item.val?'1':'0.4') + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + (item.val?'checked':'') + ' disabled> ' + item.text + '</label></div>';
+                        var op = item.val ? '1' : '0.4';
+                        contentHtml += '<div class="check-item" style="background:rgba(0,200,0,0.05); padding:10px; border-radius:6px;"><label id="lbl-auto-' + item.id + '" style="color:var(--neon-green); opacity:' + op + '"><input type="checkbox" id="chk-auto-' + item.id + '" ' + itemValStr + ' disabled> ' + item.text + '</label></div>';
                     } else if (item.type === 'select') {
-                        contentHtml += '<div class="select-item"><label style="color:var(--neon-green); font-weight:bold;">' + item.text + '</label>';
-                        contentHtml += '<select onchange="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'select\')">';
+                        contentHtml += '<div class="select-item"><div style="display:flex; justify-content:space-between; align-items:center;"><label style="color:var(--neon-green); font-weight:bold;">' + item.text + '</label><button class="remove-btn" onclick="removeItemGlobal(\'' + catId + '\', \'' + item.id + '\')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
+                        contentHtml += '<select onchange="handleItemInput(\'' + catId + '\', \'' + item.id + '\', this.value, \'select\')">';
                         for(var o=0; o<item.options.length; o++) {
-                            var opt = item.options[o];
-                            contentHtml += '<option value="' + opt.val + '" ' + (Number(item.val)===Number(opt.val)?'selected':'') + '>' + opt.label + '</option>';
+                            contentHtml += '<option value="' + item.options[o].val + '" ' + (Number(item.val)===Number(item.options[o].val)?'selected':'') + '>' + item.options[o].label + '</option>';
                         }
                         contentHtml += '</select></div>';
                     } else if (item.type === 'number_score') {
-                        contentHtml += '<div class="data-group" style="padding:10px;"><label>' + item.text + '</label>';
-                        contentHtml += '<input type="number" value="' + (item.val||0) + '" oninput="handleItemInput(\'' + catId + '\', ' + j + ', this.value, \'number\')"></div>';
+                        contentHtml += '<div class="data-group" style="padding:10px;"><label>' + item.text + '</label><input type="number" value="' + (item.val||0) + '" oninput="handleItemInput(\'' + catId + '\', \'' + item.id + '\', this.value, \'number\')"></div>';
                     }
                 }
+                
+                contentHtml += '<div class="add-equip-row"><input type="text" id="new-item-input-' + catId + '" placeholder="Añadir a toda la plantilla"><button class="action-btn small" onclick="addNewItemGlobal(\'' + catId + '\')">Añadir</button></div>';
                 contentHtml += '</div>';
             }
             
@@ -727,22 +749,23 @@
             var contents = document.querySelectorAll('.tab-content');
             for(var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
             for(var j=0; j<contents.length; j++) contents[j].classList.remove('active');
-            
             var btn = document.getElementById(btnId);
             var content = document.getElementById(contentId);
             if (btn) btn.classList.add('active');
             if (content) content.classList.add('active');
         }
 
-        // CONTROLADORES DE INPUT UI V4
+        // CONTROLADORES DE INPUT UI V5
         function setTipoCompra(tipo) {
             var car = getCarById(currentCarId);
             if (!car) return;
-            car.finanzas.tipoCompra = tipo;
+            car.finanzas.activo = tipo;
             saveData();
-            updateFinanceDOM();
+            buildDetailHTML(car);
+            switchTab('tab-btn-precio', 'tab-content-precio');
+            updateFinanceSummaryDOM();
             evaluateMarket();
-            renderDashboard(); // Porque la nota global cambia
+            renderDashboard();
         }
 
         function handleBaseInput(key, val) {
@@ -750,7 +773,6 @@
             if (!car) return;
             car[key] = val;
             saveData();
-            
             if (key === 'marca' || key === 'modelo') {
                 var title = document.getElementById('detail-title');
                 if (title) title.innerText = (car.marca||'') + ' ' + (car.modelo||'');
@@ -758,9 +780,8 @@
             if (key === 'img') {
                 var head = document.getElementById('detail-header-container');
                 if (head) {
-                    var formatUrl = formatGoogleDriveUrl(val);
-                    if(formatUrl) head.style.backgroundImage = "url('" + formatUrl + "')";
-                    else head.style.backgroundImage = "none";
+                    var u = formatGoogleDriveUrl(val);
+                    head.style.backgroundImage = u ? "url('" + u + "')" : "none";
                 }
             }
         }
@@ -768,117 +789,65 @@
         function handleFinInput(key, val, type) {
             var car = getCarById(currentCarId);
             if (!car) return;
-            
-            if (type === 'check') car.finanzas[key] = val;
-            else car.finanzas[key] = val === '' ? 0 : Number(val);
-            
+            var t = car.finanzas.activo;
+            if (type === 'check') car.finanzas[t][key] = val;
+            else car.finanzas[t][key] = val === '' ? 0 : Number(val);
             saveData();
-            updateFinanceDOM(); 
-            evaluateMarket(); 
+            updateFinanceSummaryDOM(); 
         }
 
-        function handleItemInput(catId, itemIdx, val, type) {
+        function handleItemInput(catId, itemId, val, type) {
             var car = getCarById(currentCarId);
             if (!car) return;
-            
-            var item = car.categorias[catId].items[itemIdx];
-            if (type === 'check') item.val = val;
-            else item.val = val === '' ? 0 : Number(val);
-            
+            var items = car.categorias[catId].items;
+            for(var i=0; i<items.length; i++){
+                if(items[i].id === itemId) {
+                    if (type === 'check') items[i].val = val;
+                    else items[i].val = val === '' ? 0 : Number(val);
+                    break;
+                }
+            }
             saveData();
             updateProgressBarDOM(car, catId);
-            if (catId === 'tasacion') { updateFinanceDOM(); evaluateMarket(); renderDashboard(); }
-            else { evaluateMarket(); }
+            if (catId === 'tasacion') { updateFinanceSummaryDOM(); evaluateMarket(); renderDashboard(); }
+            else { evaluateMarket(); renderDashboard(); }
         }
 
-        // ACTUALIZADORES VISUALES (MAGIA FINANCIERA V4)
-        function updateFinanceDOM() {
+        function updateFinanceSummaryDOM() {
             var car = getCarById(currentCarId);
-            if (!car || !car.finanzas) return;
-            var f = car.finanzas;
-            var t = f.tipoCompra || 'contado';
-
-            // Actualizar botones segmentados
-            var btns = ['contado', 'lineal', 'flexible'];
-            for(var i=0; i<btns.length; i++) {
-                var b = document.getElementById('seg-' + btns[i]);
-                if (b) {
-                    if (btns[i] === t) b.classList.add('active');
-                    else b.classList.remove('active');
-                }
-            }
-
-            // Mostrar/Ocultar campos inteligentemente
-            var wCon = document.getElementById('wrap-precioContado');
-            var wFin = document.getElementById('wrap-precioFinanciado');
-            var wEnt = document.getElementById('wrap-entrada');
-            var wPla = document.getElementById('wrap-plazo');
-            var wCMe = document.getElementById('wrap-cuotaMensual');
-            var wCFi = document.getElementById('wrap-cuotaFinal');
-            var wCom = document.getElementById('wrap-comision');
-            var wTae = document.getElementById('wrap-tae');
-            
-            if (t === 'contado') {
-                if(wCon) wCon.style.display = 'block';
-                if(wFin) wFin.style.display = 'none';
-                if(wEnt) wEnt.style.display = 'none';
-                if(wPla) wPla.style.display = 'none';
-                if(wCMe) wCMe.style.display = 'none';
-                if(wCFi) wCFi.style.display = 'none';
-                if(wCom) wCom.style.display = 'none';
-                if(wTae) wTae.style.display = 'none';
-            } else if (t === 'lineal') {
-                if(wCon) wCon.style.display = 'block'; // Lo dejamos para comparar
-                if(wFin) wFin.style.display = 'block';
-                if(wEnt) wEnt.style.display = 'block';
-                if(wPla) wPla.style.display = 'block';
-                if(wCMe) wCMe.style.display = 'block';
-                if(wCFi) wCFi.style.display = 'none';
-                if(wCom) wCom.style.display = 'block';
-                if(wTae) wTae.style.display = 'block';
-            } else if (t === 'flexible') {
-                if(wCon) wCon.style.display = 'block';
-                if(wFin) wFin.style.display = 'block';
-                if(wEnt) wEnt.style.display = 'block';
-                if(wPla) wPla.style.display = 'block';
-                if(wCMe) wCMe.style.display = 'block';
-                if(wCFi) wCFi.style.display = 'block';
-                if(wCom) wCom.style.display = 'block';
-                if(wTae) wTae.style.display = 'block';
-            }
-
-            // Cálculos del Resumen
-            var totals = calculateFinanceTotals(car);
+            if (!car) return;
+            var act = car.finanzas.activo;
+            var tTotals = calculateFinanceTotals(car);
             var tasacion = (car.categorias && car.categorias.tasacion && car.categorias.tasacion.items[0]) ? Number(car.categorias.tasacion.items[0].val || 0) : 0;
-            var rBox = document.getElementById('resumen-box');
-            
-            if (rBox) {
+
+            var box = document.getElementById('resumen-box');
+            if (box) {
                 var html = '';
-                if (t === 'contado') {
-                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><span>Pago al Contado + Otros:</span> <strong>' + totals.costeTotal.toLocaleString('es-ES') + ' €</strong></p>';
+                if (act === 'contado') {
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><span>Pago al Contado + Otros:</span> <strong>' + tTotals.costeTotal.toLocaleString('es-ES') + ' €</strong></p>';
                 } else {
-                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Capital a Financiar:</span> <span>' + totals.capitalFinanciar.toLocaleString('es-ES') + ' €</span></p>';
-                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Intereses pagados:</span> <span style="color:var(--score-red);">+' + totals.intereses.toLocaleString('es-ES') + ' €</span></p>';
-                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><strong>Coste Total de la Operación:</strong> <strong>' + totals.costeTotal.toLocaleString('es-ES') + ' €</strong></p>';
-                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted); border-bottom:1px solid var(--border-color); padding-bottom:8px;"><span>Sobrecoste vs Pago Contado:</span> <span>+' + totals.sobrecoste.toLocaleString('es-ES') + ' €</span></p>';
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Capital a Financiar:</span> <span>' + tTotals.capitalFinanciar.toLocaleString('es-ES') + ' €</span></p>';
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted);"><span>Intereses pagados al banco:</span> <span style="color:var(--score-red);">+' + tTotals.intereses.toLocaleString('es-ES') + ' €</span></p>';
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between;"><strong>Coste Total de la Operación:</strong> <strong>' + tTotals.costeTotal.toLocaleString('es-ES') + ' €</strong></p>';
+                    html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; color:var(--text-muted); border-bottom:1px solid var(--border-color); padding-bottom:8px;"><span>Sobrecoste vs Pago Contado:</span> <span>+' + tTotals.sobrecoste.toLocaleString('es-ES') + ' €</span></p>';
                 }
-                
-                html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; margin-top:10px;"><span>Tasación del Coche Usado:</span> <span style="color:var(--neon-green);">- ' + tasacion.toLocaleString('es-ES') + ' €</span></p>';
-                html += '<p style="margin-bottom:0; display:flex; justify-content:space-between;"><strong>BALANCE NETO REAL:</strong> <span style="font-size:1.15rem; font-weight:bold; color:' + (totals.balanceNeto < 0 ? 'var(--neon-green)' : 'var(--text-color)') + ';">' + totals.balanceNeto.toLocaleString('es-ES') + ' €</span></p>';
-                rBox.innerHTML = html;
+                html += '<p style="margin-bottom:8px; display:flex; justify-content:space-between; margin-top:10px;"><span>Tasación Coche Usado:</span> <span style="color:var(--neon-green);">- ' + tasacion.toLocaleString('es-ES') + ' €</span></p>';
+                html += '<p style="margin-bottom:0; display:flex; justify-content:space-between;"><strong>BALANCE NETO REAL:</strong> <span style="font-size:1.15rem; font-weight:bold; color:' + (tTotals.balanceNeto < 0 ? 'var(--neon-green)' : 'var(--text-color)') + ';">' + tTotals.balanceNeto.toLocaleString('es-ES') + ' €</span></p>';
+                box.innerHTML = html;
             }
 
+            evaluateMarket();
             if(car.categorias.precio) {
                 var items = car.categorias.precio.items;
                 for(var i=0; i<items.length; i++) {
-                    var item = items[i];
-                    var chk = document.getElementById('chk-auto-' + item.id);
-                    var lbl = document.getElementById('lbl-auto-' + item.id);
-                    if(chk) chk.checked = item.val;
-                    if(lbl) lbl.style.opacity = item.val ? '1' : '0.4';
+                    var chk = document.getElementById('chk-auto-' + items[i].id);
+                    var lbl = document.getElementById('lbl-auto-' + items[i].id);
+                    if(chk) chk.checked = items[i].val;
+                    if(lbl) lbl.style.opacity = items[i].val ? '1' : '0.4';
                 }
                 updateProgressBarDOM(car, 'precio');
             }
+            renderDashboard();
         }
 
         function updateProgressBarDOM(car, catId) {
@@ -889,7 +858,7 @@
 
             for(var i=0; i<maxVal; i++) {
                 var item = cat.items[i];
-                if (item.type === 'check' || item.type === 'check_auto') currentVal += (item.val ? 1 : 0);
+                if (item.type === 'check' || item.type === 'check_auto') currentVal += (item.val === true || item.val === "true" || item.val === 1 ? 1 : 0);
                 else if (item.type === 'select') currentVal += Number(item.val || 0);
                 else if (item.type === 'number_score') {
                     var v = Number(item.val || 0);
@@ -899,67 +868,109 @@
             }
 
             var perc = maxVal > 0 ? (currentVal / maxVal) * 100 : 0;
+            if (isNaN(perc)) perc = 0;
             var visPerc = Math.max(0, Math.min(100, perc));
             var color = visPerc >= 80 ? 'var(--score-green)' : (visPerc >= 50 ? 'var(--score-yellow)' : 'var(--score-red)');
             
             var fill = document.getElementById('prog-fill-' + catId);
             var txt = document.getElementById('prog-txt-' + catId);
-            
             if (fill) { fill.style.width = visPerc + '%'; fill.style.backgroundColor = color; }
             if (txt) { txt.innerText = Math.round(perc) + '%'; txt.style.color = color; }
         }
 
-        // DESCARGAS A PRUEBA DE iPHONE
+        // SISTEMA GLOBAL DE EQUIPAMIENTO
+        function addNewItemGlobal(catId) {
+            var input = document.getElementById('new-item-input-' + catId);
+            if (!input) return;
+            var val = input.value.trim();
+            if (!val) return;
+
+            var newItem = { id: "custom_" + Date.now(), text: val, type: "check", val: false };
+            globalCategories[catId].items.push(newItem);
+            localStorage.setItem('evcheck_v5_global_cats', JSON.stringify(globalCategories));
+
+            for (var i=0; i<appData.length; i++) {
+                appData[i].categorias[catId].items.push(JSON.parse(JSON.stringify(newItem)));
+            }
+            saveData();
+            
+            var car = getCarById(currentCarId);
+            buildDetailHTML(car);
+            switchTab('tab-btn-'+catId, 'tab-content-'+catId);
+            evaluateMarket();
+            renderDashboard();
+        }
+
+        function removeItemGlobal(catId, itemId) {
+            if (itemId === 'p_coste' || itemId === 'p_intereses' || itemId === 'p_comision' || itemId === 't1') {
+                alert("Este es un campo base matemático y no puede borrarse."); return;
+            }
+            if (!confirm("¿Borrar este elemento de TODAS las ofertas de tu garaje?")) return;
+            
+            var gItems = globalCategories[catId].items;
+            var newGItems = [];
+            for(var k=0; k<gItems.length; k++){ if(gItems[k].id !== itemId) newGItems.push(gItems[k]); }
+            globalCategories[catId].items = newGItems;
+            localStorage.setItem('evcheck_v5_global_cats', JSON.stringify(globalCategories));
+            
+            for (var i=0; i<appData.length; i++) {
+                var cItems = appData[i].categorias[catId].items;
+                var newCItems = [];
+                for(var j=0; j<cItems.length; j++){ if(cItems[j].id !== itemId) newCItems.push(cItems[j]); }
+                appData[i].categorias[catId].items = newCItems;
+            }
+            saveData();
+            
+            var car = getCarById(currentCarId);
+            buildDetailHTML(car);
+            switchTab('tab-btn-'+catId, 'tab-content-'+catId);
+            evaluateMarket();
+            renderDashboard();
+        }
+
+        // EXPORTACIÓN BLINDADA IOS
         function exportData() {
+            var backup = { data: appData, weights: appWeights, version: APP_VERSION };
+            var dataStr = JSON.stringify(backup, null, 2);
             try {
-                var backup = { data: appData, weights: appWeights, version: APP_VERSION };
-                var dataStr = JSON.stringify(backup, null, 2);
                 var blob = new Blob([dataStr], { type: "application/json" });
                 var url = window.URL.createObjectURL(blob);
-                
                 var a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = url;
-                
                 var date = new Date();
-                var ds = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
-                a.download = "EVcheck_V4_backup_" + ds + ".json";
-                
-                // ESENCIAL EN iOS: Añadir el botón al DOM antes de hacer clic
+                a.download = "EVcheck_V5_" + date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + ".json";
                 document.body.appendChild(a);
                 a.click();
-                
-                // Limpiar
-                setTimeout(function() {
-                    document.body.removeChild(a);
+                setTimeout(function(){ 
+                    document.body.removeChild(a); 
                     window.URL.revokeObjectURL(url);
-                }, 100);
+                }, 200);
             } catch (e) {
-                alert("Error al exportar: " + e.message);
+                var copyText = document.createElement("textarea");
+                copyText.value = dataStr;
+                document.body.appendChild(copyText);
+                copyText.select();
+                document.execCommand("copy");
+                document.body.removeChild(copyText);
+                alert("La descarga directa está bloqueada por iOS. El código se ha COPIADO a tu portapapeles. Pégalo en Notas para guardarlo.");
             }
         }
 
-        // LIMPIADOR DE JSON ANTI-MARKDOWN EXTREMO
         function sanitizeJSONString(rawText) {
             var text = rawText.replace(/\[span_\d+\]\((start_span|end_span)\)/g, '');
             text = text.replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'");
-            var start = text.indexOf('{');
-            var startArr = text.indexOf('[');
+            var start = text.indexOf('{'); var startArr = text.indexOf('[');
             var first = -1;
             if (start !== -1 && startArr !== -1) first = Math.min(start, startArr);
             else if (start !== -1) first = start;
             else if (startArr !== -1) first = startArr;
-            
-            var end = text.lastIndexOf('}');
-            var endArr = text.lastIndexOf(']');
+            var end = text.lastIndexOf('}'); var endArr = text.lastIndexOf(']');
             var last = -1;
             if (end !== -1 && endArr !== -1) last = Math.max(end, endArr);
             else if (end !== -1) last = end;
             else if (endArr !== -1) last = endArr;
-
-            if (first !== -1 && last !== -1 && first < last) {
-                return text.substring(first, last + 1);
-            }
+            if (first !== -1 && last !== -1 && first < last) return text.substring(first, last + 1);
             return text.trim();
         }
 
@@ -969,16 +980,12 @@
             var reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    var cleanText = sanitizeJSONString(e.target.result);
-                    var parsed = JSON.parse(cleanText);
+                    var parsed = JSON.parse(sanitizeJSONString(e.target.result));
                     if (parsed.data && parsed.version) {
-                        localStorage.setItem('evcheck_v4_data', JSON.stringify(parsed.data));
-                        if(parsed.weights) localStorage.setItem('evcheck_v4_weights', JSON.stringify(parsed.weights));
-                        alert('Copia restaurada correctamente.');
-                        location.reload();
-                    } else {
-                        alert('El archivo no es una copia de seguridad válida.');
-                    }
+                        localStorage.setItem('evcheck_v5_data', JSON.stringify(parsed.data));
+                        if(parsed.weights) localStorage.setItem('evcheck_v5_weights', JSON.stringify(parsed.weights));
+                        alert('Copia V5 restaurada correctamente.'); location.reload();
+                    } else alert('El archivo no es una copia de seguridad válida.');
                 } catch (err) { alert('Error al restaurar. Archivo corrupto.'); }
                 event.target.value = '';
             };
@@ -991,36 +998,29 @@
             var reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    var cleanText = sanitizeJSONString(e.target.result);
-                    var parsed = JSON.parse(cleanText);
+                    var parsed = JSON.parse(sanitizeJSONString(e.target.result));
                     var carsToAdd = Array.isArray(parsed) ? parsed : [parsed];
                     var added = 0;
-
                     for(var i=0; i<carsToAdd.length; i++) {
                         var data = carsToAdd[i];
                         var newCar = getNewCarTemplate(); 
                         newCar.id = "ev-" + Date.now() + Math.floor(Math.random() * 1000);
-                        
                         if(data.marca) newCar.marca = data.marca;
                         if(data.modelo) newCar.modelo = data.modelo;
                         if(data.concesionario) newCar.concesionario = data.concesionario;
                         if(data.precioCorto) newCar.precioCorto = data.precioCorto;
                         if(data.notas) newCar.notas = data.notas;
                         if(data.img) newCar.img = data.img;
-                        
                         if(data.finanzas) {
-                            for(var fKey in data.finanzas) {
-                                newCar.finanzas[fKey] = data.finanzas[fKey];
-                            }
+                            var t = data.finanzas.tipoCompra || 'contado';
+                            newCar.finanzas.activo = t;
+                            for(var fKey in data.finanzas) newCar.finanzas[t][fKey] = data.finanzas[fKey];
                         }
-
                         if (data.valores) {
                             for (var catKey in data.valores) {
                                 if (newCar.categorias[catKey]) {
                                     for(var v=0; v<data.valores[catKey].length; v++) {
-                                        if (newCar.categorias[catKey].items[v]) {
-                                            newCar.categorias[catKey].items[v].val = data.valores[catKey][v];
-                                        }
+                                        if (newCar.categorias[catKey].items[v]) newCar.categorias[catKey].items[v].val = data.valores[catKey][v];
                                     }
                                 }
                             }
@@ -1028,16 +1028,11 @@
                         appData.push(newCar);
                         added++;
                     }
-
                     if (added > 0) {
-                        saveData();
-                        alert('Se han importado ' + added + ' vehículo(s) correctamente.');
-                        evaluateMarket(); 
-                        renderDashboard();
+                        saveData(); alert('Se han importado ' + added + ' vehículo(s) correctamente.');
+                        evaluateMarket(); renderDashboard();
                     }
-                } catch (err) {
-                    alert('Error al leer el archivo JSON.');
-                }
+                } catch (err) { alert('Error al leer el archivo JSON.'); }
                 event.target.value = '';
             };
             reader.readAsText(file);
@@ -1047,9 +1042,7 @@
             if (!url) return '';
             if (url.indexOf('drive.google.com') !== -1) {
                 var match = url.match(/(?:file\/d\/|id=|open\?id=)([a-zA-Z0-9_-]{25,})/);
-                if (match && match[1]) {
-                    return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w1200';
-                }
+                if (match && match[1]) return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w1200';
             }
             return url;
         }
