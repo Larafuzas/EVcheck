@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EVcheck V5.3.1</title>
+    <title>EVcheck V5.4.0</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/svg+xml" href="icono.svg">
@@ -35,10 +35,11 @@
         
         header { background-color: var(--surface-color); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;}
         .header-left { display: flex; align-items: center; gap: 10px; }
-        .header-right { display: flex; align-items: center; gap: 8px; }
+        .header-right { display: flex; align-items: center; gap: 6px; }
         h1 { font-size: 1.2rem; font-weight: 600; }
         
-        .nav-btn { background: none; border: none; color: var(--neon-green); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px; }
+        .nav-btn { background: none; border: none; color: var(--neon-green); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 8px; }
+        .nav-btn:active { background: rgba(57, 255, 20, 0.1); }
 
         .view { display: none; padding: 20px; }
         .view.active { display: block; }
@@ -63,6 +64,7 @@
         .weight-row input, .theme-select { width: 60px; padding: 5px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
         .theme-select { width: 150px; font-size: 0.9rem; padding: 8px; }
 
+        /* Pantalla Detalle */
         #detail-view { padding: 0; }
         .detail-header { position: relative; height: 180px; background-color: var(--surface-color); border-bottom: 1px solid var(--border-color); overflow: hidden; background-size: cover; background-position: center;}
         .detail-header-overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(transparent, var(--bg-color)); }
@@ -73,6 +75,7 @@
         .view-image-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--neon-green); border-radius: 12px; z-index: 5; backdrop-filter: blur(4px);}
         .view-image-btn p { color: var(--neon-green); font-size: 0.8rem; font-weight: bold; margin-top: 8px; }
 
+        /* Pestañas */
         .tabs-wrapper { display: flex; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--border-color); background: var(--surface-color); scroll-behavior: smooth; }
         .tabs-wrapper::-webkit-scrollbar { display: none; }
         .tab { padding: 14px 15px; font-size: 0.85rem; flex-shrink: 0; color: var(--text-muted); cursor: pointer; border-bottom: 2px transparent solid; }
@@ -80,6 +83,7 @@
         .tab-content { display: none; padding: 20px; }
         .tab-content.active { display: block; }
 
+        /* Formularios */
         .data-group { margin-bottom: 15px; background: var(--surface-color); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); }
         .data-group label { display: block; font-size: 0.85rem; color: var(--neon-green); margin-bottom: 8px; font-weight: bold; }
         .data-group input, .data-group select, .data-group textarea { width: 100%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px; border-radius: 6px; font-size: 1rem; }
@@ -117,6 +121,14 @@
         .add-equip-row input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
         .add-equip-row button { margin-top: 0; width: auto; padding: 10px 20px; }
         
+        /* Estilos de Estadísticas */
+        .stat-card { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-bottom: 18px; }
+        .stat-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
+        .stat-row { display: flex; flex-direction: column; margin-bottom: 10px; }
+        .stat-row-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px; }
+        .stat-progress-bar { width: 100%; background: var(--bg-color); height: 6px; border-radius: 3px; overflow: hidden; border: 1px solid var(--border-color); }
+        .stat-progress-fill { height: 100%; transition: width 0.3s ease; }
+
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
         .modal-content { position: relative; width: 100%; height: 85%; max-width: 800px; background: var(--surface-color); border-radius: 12px; overflow: hidden; border: 1px solid var(--neon-green); }
@@ -134,7 +146,7 @@
                 <path d="M 84 80 L 36 80 Q 36 92 28 92 Q 20 92 20 80 C 14 65, 16 55, 26 55 L 36 55 C 38 55, 40 30, 44 30 L 56 30 L 46 52 L 58 52 L 54 75 L 72 48 L 60 48 L 68 30 L 76 30 C 80 30, 82 55, 84 55 L 94 55 C 104 55, 106 65, 100 80 Q 100 92 92 92 Q 84 92 84 80 Z" stroke-width="4" />
               </g>
             </svg>
-            <h1 id="header-title">EVcheck V5.3.1</h1>
+            <h1 id="header-title">EVcheck V5.4.0</h1>
         </div>
         <div class="header-right">
             <!-- Icono Lata Gasolina -->
@@ -145,16 +157,25 @@
                     <path d="M7 11V7a3 3 0 0 1 6 0v4"></path>
                 </svg>
             </button>
+            <!-- Icono Gráfico de Barras (Estadísticas y Comparativa) -->
+            <button class="nav-btn" onclick="showStatsView()" aria-label="Estadísticas" title="Estadísticas y Comparativa">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+            </button>
             <!-- Icono Ajustes -->
             <button class="nav-btn" onclick="toggleSettings()" aria-label="Ajustes">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                 </svg>
             </button>
         </div>
     </header>
 
+    <!-- DASHBOARD -->
     <div id="dashboard-view" class="view active">
         <div id="car-list"></div>
         <div style="display: flex; gap: 10px; margin-top: 20px;">
@@ -168,6 +189,36 @@
             </button>
             <input type="file" id="import-car-file" style="display: none;" accept=".json, .txt" onchange="importSingleCar(event)">
         </div>
+    </div>
+
+    <!-- PANTALLA: ESTADÍSTICAS Y COMPARATIVA -->
+    <div id="stats-view" class="view">
+        <div class="config-section" style="margin-bottom:15px;">
+            <h3 style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Estadísticas y Comparativa</span>
+                <button class="action-btn small" style="margin:0; width:auto; padding:5px 15px;" onclick="showView('dashboard-view')">Volver</button>
+            </h3>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Visualiza el cumplimiento pormenorizado de cada categoría y la aportación en puntos de cada oferta.</p>
+
+            <div class="grid-2">
+                <div class="data-group" style="margin:0; padding:8px;">
+                    <label>Modo de Comparación</label>
+                    <select id="stats-mode-select" onchange="renderStats()">
+                        <option value="cars">Por Oferta / Vehículo</option>
+                        <option value="categories">Por Categoría / Pestaña</option>
+                    </select>
+                </div>
+                <div class="data-group" style="margin:0; padding:8px;">
+                    <label>Ordenación</label>
+                    <select id="stats-order-select" onchange="renderStats()">
+                        <option value="desc">De Mejor a Peor (Descendente)</option>
+                        <option value="asc">De Peor a Mejor (Ascendente)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="stats-content-area"></div>
     </div>
 
     <!-- CALCULADORA GASOLINA VS ELÉCTRICO -->
@@ -203,6 +254,7 @@
         </div>
     </div>
 
+    <!-- AJUSTES -->
     <div id="settings-view" class="view">
         <div class="config-section">
             <h3>Apariencia y Sistema</h3>
@@ -243,6 +295,7 @@
         </div>
     </div>
 
+    <!-- DETALLE DEL VEHÍCULO -->
     <div id="detail-view" class="view">
         <div class="detail-header" id="detail-header-container">
             <button class="back-btn" onclick="showView('dashboard-view')">
@@ -279,7 +332,7 @@
     </div>
 
     <script>
-        var APP_VERSION = "V5.3.1";
+        var APP_VERSION = "V5.4.0";
 
         var CATEGORY_DEFS = {
             precio: { title: "Precio", weight: 20, items: [
@@ -309,10 +362,10 @@
         var currentCarId = null;
         var currentModalUrl = '';
 
-        // INICIALIZACIÓN MODO V5.3.1 (Recuperador Seguro en Cascada)
+        // INICIALIZACIÓN MODO V5.4.0 (Recuperador Seguro en Cascada)
         function initApp() {
             try {
-                var storedCats = localStorage.getItem('evcheck_v53_global_cats');
+                var storedCats = localStorage.getItem('evcheck_v54_global_cats') || localStorage.getItem('evcheck_v53_global_cats');
                 if (storedCats) {
                     var parsedCats = JSON.parse(storedCats);
                     if (parsedCats && typeof parsedCats === 'object' && parsedCats.precio && parsedCats.precio.items) {
@@ -323,11 +376,10 @@
             
             if (!globalCategories) {
                 globalCategories = JSON.parse(JSON.stringify(CATEGORY_DEFS));
-                localStorage.setItem('evcheck_v53_global_cats', JSON.stringify(globalCategories));
+                localStorage.setItem('evcheck_v54_global_cats', JSON.stringify(globalCategories));
             }
 
-            // Búsqueda en cascada en versiones previas
-            var storageKeys = ['evcheck_v53_data', 'evcheck_v5_data', 'evcheck_v4_data', 'evcheck_v3_data', 'evcheck_v2_data', 'evcheck_data'];
+            var storageKeys = ['evcheck_v54_data', 'evcheck_v53_data', 'evcheck_v5_data', 'evcheck_v4_data', 'evcheck_v3_data', 'evcheck_v2_data', 'evcheck_data'];
             for(var k=0; k<storageKeys.length; k++) {
                 var raw = localStorage.getItem(storageKeys[k]);
                 if (raw) {
@@ -419,9 +471,9 @@
             return car;
         }
 
-        function saveData() { localStorage.setItem('evcheck_v53_data', JSON.stringify(appData)); }
+        function saveData() { localStorage.setItem('evcheck_v54_data', JSON.stringify(appData)); }
 
-        // TEMA Y UI
+        // TEMA
         function applyTheme(setting) {
             var isLight = setting === 'auto' ? window.matchMedia('(prefers-color-scheme: light)').matches : setting === 'light';
             if (isLight) document.body.classList.add('light-mode'); else document.body.classList.remove('light-mode');
@@ -449,6 +501,7 @@
             }, 1500);
         }
 
+        // NAVEGACIÓN
         function showView(viewId) {
             var views = document.querySelectorAll('.view');
             for(var i=0; i<views.length; i++) views[i].classList.remove('active');
@@ -459,13 +512,17 @@
             var settingsBtn = document.getElementById('settings-btn');
             
             if (viewId === 'settings-view') {
-                if (title) title.innerText = 'Ajustes V5.3.1';
+                if (title) title.innerText = 'Ajustes V5.4.0';
                 if (settingsBtn) settingsBtn.style.display = 'none';
                 renderWeightsConfig();
-            } else if (viewId === 'detail-view' || viewId === 'calculator-view') {
+            } else if (viewId === 'detail-view' || viewId === 'calculator-view' || viewId === 'stats-view') {
                 if (settingsBtn) settingsBtn.style.display = 'none';
+                if (viewId === 'stats-view') {
+                    if (title) title.innerText = 'Estadísticas';
+                    renderStats();
+                }
             } else {
-                if (title) title.innerText = 'EVcheck V5.3.1';
+                if (title) title.innerText = 'EVcheck V5.4.0';
                 if (settingsBtn) settingsBtn.style.display = 'flex';
                 evaluateMarket();
                 renderDashboard();
@@ -481,6 +538,10 @@
         function showCalculatorView() {
             showView('calculator-view');
             calculateSavings();
+        }
+
+        function showStatsView() {
+            showView('stats-view');
         }
 
         function calculateSavings() {
@@ -628,56 +689,168 @@
             saveData();
         }
 
+        // MOTOR DE ESTADÍSTICAS POR CATEGORÍA
+        function getCategoryStats(car, catId) {
+            var cat = car.categorias[catId];
+            var weight = Number(appWeights[catId]);
+            if (isNaN(weight)) weight = CATEGORY_DEFS[catId].weight;
+            
+            if (!cat || !cat.items || cat.items.length === 0) {
+                return { percent: 0, points: 0, weight: weight, title: CATEGORY_DEFS[catId].title };
+            }
+
+            var numItems = cat.items.length;
+            var rawScore = 0;
+
+            for (var i=0; i<numItems; i++) {
+                var item = cat.items[i];
+                if (item.type === 'check' || item.type === 'check_auto') {
+                    rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
+                } else if (item.type === 'select') {
+                    rawScore += Number(item.val || 0);
+                } else if (item.type === 'number_score') {
+                    var valNum = Number(item.val || 0);
+                    var minR = Number(item.minRef || 0);
+                    var maxR = Number(item.maxRef || 1);
+                    var diff = maxR - minR; if(diff===0) diff=1;
+                    var rat = (valNum - minR) / diff;
+                    rawScore += Math.max(0, Math.min(1, rat));
+                }
+            }
+
+            var catPercent = numItems > 0 ? (rawScore / numItems) : 0;
+            if (catPercent < 0) catPercent = 0;
+
+            var finalPerc = catPercent;
+            if (catId === 'precio' && car.finanzas && car.categorias.tasacion) {
+                var totals = calculateFinanceTotals(car);
+                var net = totals.balanceNeto;
+                var priceMathScore = 1 - ((net - 15000) / 25000); 
+                if (priceMathScore > 1) priceMathScore = 1; if (priceMathScore < 0) priceMathScore = 0;
+                finalPerc = (priceMathScore * 0.7) + (catPercent * 0.3);
+            }
+
+            if (finalPerc > 1) finalPerc = 1;
+            if (finalPerc < 0) finalPerc = 0;
+
+            var pointsEarned = finalPerc * weight;
+            return {
+                percent: Math.round(finalPerc * 100),
+                points: Math.round(pointsEarned * 10) / 10,
+                weight: weight,
+                title: CATEGORY_DEFS[catId].title
+            };
+        }
+
         function calculateScore(car) {
             if (!car || !car.categorias) return 0;
             var total = 0;
-            var totals = calculateFinanceTotals(car);
-            
             for (var catId in CATEGORY_DEFS) {
-                var cat = car.categorias[catId];
-                if (!cat || !cat.items || cat.items.length === 0) continue;
-                
-                var weight = Number(appWeights[catId]);
-                if (isNaN(weight)) weight = CATEGORY_DEFS[catId].weight;
-                var numItems = cat.items.length;
-
-                var rawScore = 0;
-
-                for (var i=0; i<numItems; i++) {
-                    var item = cat.items[i];
-                    if (item.type === 'check' || item.type === 'check_auto') {
-                        rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
-                    } else if (item.type === 'select') {
-                        rawScore += Number(item.val || 0);
-                    } else if (item.type === 'number_score') {
-                        var valNum = Number(item.val || 0);
-                        var minR = Number(item.minRef || 0);
-                        var maxR = Number(item.maxRef || 1);
-                        var diff = maxR - minR; if(diff===0) diff=1;
-                        var ratio = (valNum - minR) / diff;
-                        rawScore += Math.max(0, Math.min(1, ratio));
-                    }
-                }
-                
-                // Si la suma es 0 o menor, porcentaje = 0%
-                var catPercent = numItems > 0 ? (rawScore / numItems) : 0;
-                if (catPercent < 0) catPercent = 0;
-
-                if (catId === 'precio' && car.finanzas && car.categorias.tasacion) {
-                    var net = totals.balanceNeto;
-                    var priceMathScore = 1 - ((net - 15000) / 25000); 
-                    if (priceMathScore > 1) priceMathScore = 1; if (priceMathScore < 0) priceMathScore = 0;
-                    total += ((priceMathScore * 0.7) + (catPercent * 0.3)) * weight;
-                } else {
-                    total += (catPercent * weight);
-                }
+                var stat = getCategoryStats(car, catId);
+                total += stat.points;
             }
-            
             if (isNaN(total)) return 0;
             return Math.min(100, Math.max(0, Math.round(total)));
         }
 
-        // RENDERIZADOS
+        // RENDERIZADO DE ESTADÍSTICAS Y COMPARATIVA
+        function renderStats() {
+            var container = document.getElementById('stats-content-area');
+            if (!container) return;
+
+            if (appData.length === 0) {
+                container.innerHTML = '<div class="config-section" style="text-align:center; padding:30px;"><p style="color:var(--text-muted);">No hay vehículos registrados para comparar.</p></div>';
+                return;
+            }
+
+            var mode = document.getElementById('stats-mode-select').value || 'cars';
+            var order = document.getElementById('stats-order-select').value || 'desc';
+            var html = '';
+
+            if (mode === 'cars') {
+                // VISTA POR VEHÍCULO
+                var carsList = appData.slice().sort(function(a, b) {
+                    var sA = calculateScore(a);
+                    var sB = calculateScore(b);
+                    return order === 'desc' ? (sB - sA) : (sA - sB);
+                });
+
+                for (var i = 0; i < carsList.length; i++) {
+                    var car = carsList[i];
+                    var score = calculateScore(car);
+                    var colorClass = score >= 80 ? 'score-80' : (score >= 50 ? 'score-60' : 'score-0');
+                    var rankingNum = (order === 'desc') ? (i + 1) : (carsList.length - i);
+
+                    html += '<div class="stat-card">';
+                    html += '<div class="stat-card-header">';
+                    html += '<div>';
+                    html += '<h2 style="font-size:1.1rem; color:var(--neon-green);">' + (car.marca || 'Marca') + ' ' + (car.modelo || 'Modelo') + '</h2>';
+                    html += '<p style="font-size:0.8rem; color:var(--text-muted);">' + (car.concesionario || 'Sin Concesionario') + '</p>';
+                    html += '</div>';
+                    html += '<div class="car-score ' + colorClass + '" style="font-size:1.1rem; padding:6px 12px;">' + score + ' pts</div>';
+                    html += '</div>';
+
+                    // Desglose de las 10 categorías
+                    for (var catId in CATEGORY_DEFS) {
+                        var stat = getCategoryStats(car, catId);
+                        var barColor = stat.percent >= 80 ? 'var(--score-green)' : (stat.percent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)');
+
+                        html += '<div class="stat-row">';
+                        html += '<div class="stat-row-info">';
+                        html += '<span><strong>' + stat.title + '</strong> <small style="color:var(--text-muted);">(' + stat.weight + '%)</small></span>';
+                        html += '<span><strong style="color:' + barColor + ';">' + stat.percent + '%</strong> <small style="color:var(--text-muted);">(' + stat.points + ' / ' + stat.weight + ' pts)</small></span>';
+                        html += '</div>';
+                        html += '<div class="stat-progress-bar">';
+                        html += '<div class="stat-progress-fill" style="width:' + stat.percent + '%; background-color:' + barColor + ';"></div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                }
+            } else {
+                // VISTA POR CATEGORÍA
+                for (var cId in CATEGORY_DEFS) {
+                    var catDef = CATEGORY_DEFS[cId];
+                    
+                    var carsInCat = appData.map(function(c) {
+                        var st = getCategoryStats(c, cId);
+                        return {
+                            car: c,
+                            stat: st
+                        };
+                    });
+
+                    carsInCat.sort(function(a, b) {
+                        return order === 'desc' ? (b.stat.percent - a.stat.percent) : (a.stat.percent - b.stat.percent);
+                    });
+
+                    html += '<div class="stat-card">';
+                    html += '<div class="stat-card-header">';
+                    html += '<h2 style="font-size:1.1rem; color:var(--neon-green);">' + catDef.title + ' <small style="color:var(--text-muted); font-size:0.85rem;">(Peso: ' + appWeights[cId] + '%)</small></h2>';
+                    html += '</div>';
+
+                    for (var j = 0; j < carsInCat.length; j++) {
+                        var item = carsInCat[j];
+                        var barColor2 = item.stat.percent >= 80 ? 'var(--score-green)' : (item.stat.percent >= 50 ? 'var(--score-yellow)' : 'var(--score-red)');
+
+                        html += '<div class="stat-row">';
+                        html += '<div class="stat-row-info">';
+                        html += '<span>' + (item.car.marca || '') + ' ' + (item.car.modelo || '') + ' <small style="color:var(--text-muted);">(' + (item.car.concesionario || '') + ')</small></span>';
+                        html += '<span><strong style="color:' + barColor2 + ';">' + item.stat.percent + '%</strong> <small style="color:var(--text-muted);">(' + item.stat.points + ' pts)</small></span>';
+                        html += '</div>';
+                        html += '<div class="stat-progress-bar">';
+                        html += '<div class="stat-progress-fill" style="width:' + item.stat.percent + '%; background-color:' + barColor2 + ';"></div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                }
+            }
+
+            container.innerHTML = html;
+        }
+
+        // RENDERIZADO DASHBOARD
         function renderDashboard() {
             var list = document.getElementById('car-list');
             if (!list) return;
@@ -823,8 +996,7 @@
                         contentHtml += '<div class="select-item"><div style="display:flex; justify-content:space-between; align-items:center;"><label style="color:var(--neon-green); font-weight:bold;">' + item.text + '</label><button class="remove-btn" onclick="removeItemGlobal(\'' + catId + '\', \'' + item.id + '\')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
                         contentHtml += '<select onchange="handleItemInput(\'' + catId + '\', \'' + item.id + '\', this.value, \'select\')">';
                         for(var o=0; o<item.options.length; o++) {
-                            var opt = item.options[o];
-                            contentHtml += '<option value="' + opt.val + '" ' + (Number(item.val)===Number(opt.val)?'selected':'') + '>' + opt.label + '</option>';
+                            contentHtml += '<option value="' + item.options[o].val + '" ' + (Number(item.val)===Number(item.options[o].val)?'selected':'') + '>' + item.options[o].label + '</option>';
                         }
                         contentHtml += '</select></div>';
                     } else if (item.type === 'number_score') {
@@ -853,7 +1025,7 @@
             if (content) content.classList.add('active');
         }
 
-        // CONTROLADORES DE INPUT UI V5.3.1
+        // CONTROLADORES DE INPUT
         function setTipoCompra(tipo) {
             var car = getCarById(currentCarId);
             if (!car) return;
@@ -942,9 +1114,8 @@
                 var items = car.categorias.precio.items;
                 for(var i=0; i<items.length; i++) {
                     var chk = document.getElementById('chk-auto-' + items[i].id);
-                    var lbl = document.getElementById('lbl-auto-' + items[i].id);
+                    var lbl = document.getElementById('label-auto-' + items[i].id);
                     if(chk) chk.checked = items[i].val;
-                    if(lbl) lbl.style.opacity = items[i].val ? '1' : '0.4';
                 }
                 updateProgressBarDOM(car, 'precio');
             }
@@ -960,7 +1131,7 @@
             for(var i=0; i<numItems; i++) {
                 var item = cat.items[i];
                 if (item.type === 'check' || item.type === 'check_auto') {
-                    rawScore += (item.val === true || item.val === "true" || item.val === 1) ? 1 : 0;
+                    rawScore += (item.val === true || item.val === "true" || item.val === 1 ? 1 : 0);
                 } else if (item.type === 'select') {
                     rawScore += Number(item.val || 0);
                 } else if (item.type === 'number_score') {
@@ -973,7 +1144,6 @@
                 }
             }
 
-            // Normalización: si da negativo o 0, es 0% clavado
             var perc = numItems > 0 ? (rawScore / numItems) * 100 : 0;
             if (isNaN(perc) || perc < 0) perc = 0;
             if (perc > 100) perc = 100;
@@ -996,7 +1166,7 @@
 
             var newItem = { id: "custom_" + Date.now(), text: val, type: "check", val: false };
             globalCategories[catId].items.push(newItem);
-            localStorage.setItem('evcheck_v53_global_cats', JSON.stringify(globalCategories));
+            localStorage.setItem('evcheck_v54_global_cats', JSON.stringify(globalCategories));
 
             for (var i=0; i<appData.length; i++) {
                 appData[i].categorias[catId].items.push(JSON.parse(JSON.stringify(newItem)));
@@ -1020,7 +1190,7 @@
             var newGItems = [];
             for(var k=0; k<gItems.length; k++){ if(gItems[k].id !== itemId) newGItems.push(gItems[k]); }
             globalCategories[catId].items = newGItems;
-            localStorage.setItem('evcheck_v53_global_cats', JSON.stringify(globalCategories));
+            localStorage.setItem('evcheck_v54_global_cats', JSON.stringify(globalCategories));
             
             for (var i=0; i<appData.length; i++) {
                 var cItems = appData[i].categorias[catId].items;
@@ -1091,9 +1261,9 @@
                 try {
                     var parsed = JSON.parse(sanitizeJSONString(e.target.result));
                     if (parsed.data && parsed.version) {
-                        localStorage.setItem('evcheck_v53_data', JSON.stringify(parsed.data));
+                        localStorage.setItem('evcheck_v54_data', JSON.stringify(parsed.data));
                         if(parsed.weights) localStorage.setItem('evcheck_v5_weights', JSON.stringify(parsed.weights));
-                        alert('Copia V5 restaurada correctamente.'); location.reload();
+                        alert('Copia restaurada correctamente.'); location.reload();
                     } else alert('El archivo no es una copia de seguridad válida.');
                 } catch (err) { alert('Error al restaurar. Archivo corrupto.'); }
                 event.target.value = '';
